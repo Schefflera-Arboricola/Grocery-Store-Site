@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add Product</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .product {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .product h2 {
+        font-size: 32px;
+        margin-top: 0;
+      }
+      .product img {
+        max-width: 50%;
+        height: auto;
+        margin-right: 20px;
+      }
+      .product .product-details {
+        display: flex;
+        flex-direction: column;
+      }
+      .product .product-details p {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .product .product-details .product-price,
+      .product .product-details .product-quantity {
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 24px;
+      }
+      .product .product-details .product-tags {
+        font-style: italic;
+      }
+      .product .product-details .product-description {
+        margin-top: 20px;
+      }
+      .product .product-details .edit-link {
+        margin-top: 20px;
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .button-container button {
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    
+    .product {
+      margin: 0 auto;
+      max-width: 600px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    
+    button[type="submit"],
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    
+    a {
+      background-color: #ccc;
+    }
+    
+    button[type="submit"]:hover,
+    a:hover {
+      background-color: #3e8e41;
+    }
+    
+    .button-container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="product">
+    <h1>Add Product</h1>
+    <form>
+      <label for="product-name">Name:</label>
+      <input type="text" id="product-name" name="product-name"><br>
+      <label for="product-price">Price:</label>
+      <input type="text" id="product-price" name="product-price"><br>
+      <label for="product-quantity">Quantity:</label>
+      <input type="text" id="product-quantity" name="product-quantity"><br>
+      <label for="product-tags">Tags:</label>
+      <input type="text" id="product-tags" name="product-tags"><br>
+      <label for="product-description">Description:</label>
+      <textarea id="product-description" name="product-description" rows="5" cols="40"></textarea>
+      <label for="product-image">Image :</label>
+      <button type="button">Upload</button>
+      
+      <div class="button-container">
+        <button type="submit">Add Product</button>
+        <a href="producer_farm_products.html">Cancel</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

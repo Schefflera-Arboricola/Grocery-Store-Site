@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Cart</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+
+		.cart-item {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 20px;
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		.cart-item img {
+			width: 200px;
+			height: 200px;
+			margin-right: 20px;
+		}
+
+		.cart-item-details {
+			flex-grow: 1;
+		}
+
+		.cart-item-name {
+			font-size: 24px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.cart-item-price {
+			font-size: 18px;
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+			margin-right: 20px;
+		}
+
+		.cart-item-quantity {
+			font-size: 18px;
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+		}
+
+		.cart-item-tags {
+			font-style: italic;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		.cart-item-description {
+			margin: 0;
+			padding: 0;
+		}
+
+		.cart-item-remove-link {
+			font-size: 16px;
+			text-decoration: none;
+			color: #0077cc;
+			margin-left: auto;
+			margin-right: 20px;
+			align-self: center;
+		}
+
+		.checkout-button {
+			display: block;
+			margin: 20px auto;
+			text-align: center;
+			font-size: 20px;
+			background-color: #6def85;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.total-price {
+			text-align: right;
+			font-size: 20px;
+			margin-top: 20px;
+			margin-right: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Cart</h1>
+
+	<!-- Cart Item 1 -->
+	<div class="cart-item">
+		<img src="https://atlantablackstar.com/wp-content/uploads/2013/10/tomato.jpg" alt="Product Image">
+		<div class="cart-item-details">
+			<h2 class="cart-item-name">Tomato</h2>
+			<p class="cart-item-price">Ananda farms</p>
+			<br>
+			<p class="cart-item-price">Rs. 10</p>
+			<p class="cart-item-quantity">1 kg</p>
+            <br>
+			<a href="#" class="cart-item-remove-link">Edit quantity</a>
+            <br>
+            <br>
+			<a href="#" class="cart-item-remove-link">Remove Item</a>
+		</div>
+	</div>
+
+    <!-- Cart Item 2 -->
+	<div class="cart-item">
+		<img src="https://www.theayurveda.org/wp-content/uploads/2015/08/Ladyfinger-vegetable.png" alt="Product Image">
+		<div class="cart-item-details">
+			<h2 class="cart-item-name">Lady finger</h2>
+			<p class="cart-item-price">Ananda farms</p>
+			<br>
+			<p class="cart-item-price">Rs. 20</p>
+			<p class="cart-item-quantity">1 kg</p>
+            <br>
+			<a href="#" class="cart-item-remove-link">Edit quantity</a>
+            <br>
+            <br>
+			<a href="#" class="cart-item-remove-link">Remove Item</a>
+		</div>
+	</div>
+
+    <div>
+        <p class="total-price">Total Price: Rs. 30</p>
+    </div>
+	<!-- Checkout and Continue Shopping -->
+	<div>
+		<button type="button">Checkout</button>
+	<button type="button">Continue Shopping</button>
+	</div>
+</body>
+</html>

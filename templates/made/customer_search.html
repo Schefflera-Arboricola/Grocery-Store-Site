@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Product Search</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+
+		.search-bar {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		.search-bar label {
+			font-size: 20px;
+			margin-right: 10px;
+		}
+
+		.search-bar input[type="text"] {
+			flex-grow: 1;
+			font-size: 20px;
+			padding: 5px;
+			border: none;
+		}
+
+		.search-bar button {
+			font-size: 20px;
+			padding: 5px 10px;
+			background-color: #6def85;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.product-item {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 20px;
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		.product-item img {
+			width: 200px;
+			height: 200px;
+			margin-right: 20px;
+		}
+
+		.product-item-details {
+			flex-grow: 1;
+		}
+
+		.product-item-name {
+			font-size: 24px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.product-item-farm {
+			font-style: italic;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		.product-item-price {
+			font-size: 18px;
+			margin: 0;
+			padding: 0;
+			display: inline-block;
+			margin-right: 20px;
+		}
+
+		.add-to-cart-button {
+			display: inline-block;
+			font-size: 20px;
+			background-color: #6def85;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 5px 10px;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<h1>Product Search</h1>
+
+	<!-- Search Bar -->
+	<div class="search-bar">
+		<label for="search">Search:</label>
+		<input type="text" id="search" name="search">
+		<button type="button">Search</button>
+	</div>
+
+	<!-- Product List -->
+	<div class="product-list">
+		<!-- Product Item 1 -->
+		<div class="product-item">
+			<img src="https://atlantablackstar.com/wp-content/uploads/2013/10/tomato.jpg" alt="Product Image">
+			<div class="product-item-details">
+				<h2 class="product-item-name">Tomato</h2>
+				<p class="product-item-farm">Garden Fresh Farm</p>
+				<p class="product-item-price">Rs. 10</p>
+				<button class="add-to-cart-button">Add to Cart</button>
+			</div>
+		</div>
+
+        <!-- Product Item 2 -->
+		<div class="product-item">
+			<img src="https://www.theayurveda.org/wp-content/uploads/2015/08/Ladyfinger-vegetable.png" alt="Product Image">
+			<div class="product-item-details">
+				<h2 class="product-item-name">Lady finger</h2>
+				<p class="product-item-farm">Garden Fresh Farm</p>
+				<p class="product-item-price">Rs. 20</p>
+				<button class="add-to-cart-button">Add to Cart</button>
+			</div>
+		</div>
+
+        </div>
+        </body>
+        </html>

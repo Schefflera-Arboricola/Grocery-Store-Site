@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Farm Signup</title>    
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/assets/css/signin.css" rel="stylesheet">
+        <script src="/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        <style>
+            body {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background-image: url('https://thumbs.dreamstime.com/b/indian-rural-farmer-using-laptop-149929405.jpg');
+              background-size: cover;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #fff; /* Add a white background color */
+                padding: 20px; /* Add padding to the container */
+                border-radius: 10px;
+            }
+
+
+            .form-signup {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-signup-heading {
+              margin-bottom: 20px;
+            }
+
+            .form-control {
+              font-size: 24px;
+            }
+
+            .btn {
+              font-size: 24px;
+            }
+
+            .heading {
+              font-size: 36px;
+              font-weight: bold;
+              text-align: center;
+              margin-top: 20px;
+              margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="heading">Online Farmer's Market</h1>
+            <br>
+            <form class="form-signup" role="form" action="/auth/signup" method="post">
+                <h1 class="form-signup-heading">Create an account</h1>
+                <input type="text" class="form-control" placeholder="Farm Name" name="fname" required autofocus><br>
+                <input type="text" class="form-control" placeholder="Owner Name" name="oname" required autofocus><br>
+                <input type="text" class="form-control" placeholder="Email address" name="email" required><br>
+                <input type="tel" class="form-control" placeholder="Phone number" name="phone" required><br>
+                <input type="text" class="form-control" placeholder="Address" name="address" required><br>
+                <input type="text" class="form-control" placeholder="Farm description" name="fdesc" required autofocus><br>
+                <input type="password" class="form-control" placeholder="Password" name="password" required>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><br><br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            </form>
+            <p class="text-center">Already have an account? <a href="/signin">Sign in</a></p>
+        </div>
+    </body>
+</html>

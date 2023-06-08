@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Product</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .product {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .product h2 {
+        font-size: 32px;
+        margin-top: 0;
+      }
+      .product img {
+        max-width: 50%;
+        height: auto;
+        margin-right: 20px;
+      }
+      .product .product-details {
+        display: flex;
+        flex-direction: column;
+      }
+      .product .product-details p {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .product .product-details .product-price,
+      .product .product-details .product-quantity {
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 24px;
+      }
+      .product .product-details .product-tags {
+        font-style: italic;
+      }
+      .product .product-details .product-description {
+        margin-top: 20px;
+      }
+      .product .product-details .edit-link {
+        margin-top: 20px;
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .button-container button {
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="product">
+      <h1>Edit Product</h1>
+      <form>
+        <div>
+            <img src="https://atlantablackstar.com/wp-content/uploads/2013/10/tomato.jpg" alt="Product Image">
+            <a href="#">Change Image</a>
+        </div>
+        </form>
+        <div class="product-details">
+          <label for="product-name">Name:</label>
+          <input type="text" id="product-name" name="product-name" value="Tomato"><br>
+          <label for="product-price">Price:</label>
+          <input type="text" id="product-price" name="product-price" value="10"><br>
+          <label for="product-quantity">Quantity:</label>
+          <input type="text" id="product-quantity" name="product-quantity" value="10 kg"><br>
+          <label for="product-tags">Tags:</label>
+          <input type="text" id="product-tags" name="product-tags" value="tomato, organic, local, vegetables"><br>
+          <label for="product-description">Description:</label>
+          <textarea id="product-description" name="product-description" rows="5" cols="40">This is a description of the product. It can be multiple lines long.</textarea>
+          <div class="button-container">
+            <button type="submit">Save Changes</button>
+            <a href="producer_farm_products.html">Cancel</a>
+        </div>
+      </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Order Details</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .details {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+      }
+      .details-info {
+        width: 50%;
+      }
+      .details-info h2 {
+        margin-top: 0;
+      }
+      .details-info p {
+        font-size: 16px;
+      }
+      .details-map {
+        width: 50%;
+        height: 400px;
+        margin-left: 20px;
+      }
+      .details-map iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      .details-links {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+      .details-links a {
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+      }
+      .details-price {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+      .details-payment {
+        font-size: 16px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="details">
+      <div class="details-info">
+        <h2>Order Details</h2>
+        <p><strong>Pick up location:</strong> Ananda Farms</p>
+        <p><strong>Drop location:</strong> XYZ</p>
+        <br>
+        <p><strong>Farmer's name:</strong> Rahul</p>
+        <p><strong>Phone number:</strong> 555-555-5555</p>
+        <br>
+        <p><strong>Customer's name:</strong> Seema</p>
+        <p><strong>Phone number:</strong> 555-555-5555</p>
+        <br>
+        <div class="details-price">
+          <p><strong>Total price : 1260</strong></p>
+        </div>
+        <div class="details-payment">
+          <p><strong>Payment:</strong> CoD</p>
+        </div>
+        
+      <div class="right">
+        <h2>Items to be Delivered</h2>
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          <tr>
+            <td>Apples</td>
+            <td>10</td>
+            <td>1200</td>
+          </tr>
+          <tr>
+            <td>Oranges</td>
+            <td>5</td>
+            <td>60</td>
+          </tr>
+        </table>
+        <div class="details-links">
+          <p><a href="#">Pick up Location</a></p>
+          <p><a href="#">Drop Location</a></p>
+        </div>
+      </div>
+    
+    </div>
+  </body>
+</html>
