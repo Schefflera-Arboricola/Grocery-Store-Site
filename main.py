@@ -7,7 +7,8 @@ from application.config import LocalDevelopmentConfig
 from application.database import db
 
 def create_app():
-    app=Flask(__name__,template_folder="templates")
+    app=Flask(__name__)
+    app.secret_key = 'your_secret_key'
     CORS(app)
     if os.getenv('ENV',"development")=="production": 
         raise Exception("Currently no production config is setup.")
@@ -23,9 +24,9 @@ def create_app():
 app,api=create_app()
 
 from application.controllers import *
-from application.api import UserAPI
+#from application.api import UserAPI
 
-api.add_resource(UserAPI,'/api/user','/api/user/<string:username>')
+#api.add_resource(UserAPI,'/api/user','/api/user/<string:username>')
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',debug=True,port=8080)

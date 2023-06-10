@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Forgot Password</title>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">Grocery Store</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <br>
+        <form class="form-signin" role="form" action="{{ url_for('signin') }}" method="post">
+            <div class="role-selection">
+                <input type="radio" id="customer" name="role" value="customer" required>
+                <label for="customer">Customer</label>
+                <input type="radio" id="store-manager" name="role" value="store-manager" required>
+                <label for="store-manager">Store Manager</label>
+                <input type="radio" id="app-manager" name="role" value="app-manager" required>
+                <label for="app-manager">App Manager</label>
+            </div>
+            <br>
+            <h1 class="form-signin-heading">Please enter your details</h1>
+            <br>
+            <input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+            <br>
+            <input type="password" class="form-control" placeholder="Email" name="email" required>
+            <br>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="action" value="send-otp">Submit</button>
+        </form>           
+    </div>
+</body>
+</html>

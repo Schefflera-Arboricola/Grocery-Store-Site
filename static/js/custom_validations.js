@@ -1,3 +1,0 @@
-function validation_for(){
-    
-}
