@@ -22,23 +22,25 @@
                 {% endif %}
             {% endwith %}
             <br>
-            <form class="form-signin" role="form" action="{{ url_for('signin') }}" method="post">
+            <form class="form-signin" role="form" action="{{ url_for('auth.signin') }}" method="post">
                 <div class="role-selection">
                     <input type="radio" id="customer" name="role" value="customer" required>
                     <label for="customer">Customer</label>
                     <input type="radio" id="store-manager" name="role" value="store-manager" required>
                     <label for="store-manager">Store Manager</label>
-                    <input type="radio" id="app-manager" name="role" value="app-manager" required>
-                    <label for="app-manager">App Manager</label>
+                    <input type="radio" id="delivery-executive" name="role" value="delivery-executive" required>
+                    <label for="delivery-executive">Delivery Executive</label>
                 </div>
                 <br>
                 <h1 class="form-signin-heading">Please sign in</h1>
                 <br>
-                <input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+                <input type="text" id="username" class="form-control" placeholder="Username" name="username" required autofocus>
                 <br>
-                <input type="password" class="form-control" placeholder="Password" name="password" required>
+                <input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <!--
                 <a href="/forgot_password">Forgot password?</a>
+                -->
                 <br>
                 <br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" name="action" value="signin">Sign in</button>

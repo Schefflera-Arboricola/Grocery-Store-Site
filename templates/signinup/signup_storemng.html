@@ -1,9 +1,11 @@
-{% extends "signinup/base_signup.html" %}
+{% extends "signinup/signup_base.html" %}
 
 {% block title %}Store Manager Sign Up{% endblock %}
 
 
 {% block content %}
-<input type="text" class="form-control" placeholder="Address" name="address" required><br>
 <input type="text" class="form-control" placeholder="Store-manager-id" name="store-manager-id" required><br>
+<!--
+<input type="text" class="form-control" placeholder="Branch-id" name="branch-id" required><br>
+-->
 {% endblock %}

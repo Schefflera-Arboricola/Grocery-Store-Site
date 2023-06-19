@@ -12,7 +12,18 @@
         <div class="container">
             <h1 class="heading">Grocery Store</h1>
             <br>
-            <form class="form-signup" role="form" action="/auth/signup" method="post">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <br>
+            
+            <form class="form-signup" role="form" method="post">
                 <h1 class="form-signup-heading">Create an account</h1>
                 <input type="text" class="form-control" placeholder="Name" name="name" required autofocus><br>
                 <input type="text" class="form-control" placeholder="Username" name="username" required><br>
