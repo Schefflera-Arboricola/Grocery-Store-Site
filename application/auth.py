@@ -3,6 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user, L
 from flask import current_app as app
 from application.models import *
 from application.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def LoginManagerfunc(app):
     login_manager = LoginManager()
@@ -34,7 +35,7 @@ def signin():
         elif role=='delivery-executive': user = DeliveryExecutive.query.filter_by(username=username).first()
         else: flash("Please select a role before proceeding to sign in.", category='error')
         if user:
-            if user.password== password:
+            if check_password_hash(user.password, password):
                 login_user(user, remember=True)
                 if role=='customer': 
                     session['account_type'] = 'Customer'
@@ -90,7 +91,7 @@ def customer_signup():
         if validate_features!=True: flash(validate_features, category='error')
         elif validate_address!=True: flash(validate_address, category='error')
         else:
-            new = Customer(email=email, name=name, password=password, username=username, phone_no=phone, address=address)
+            new = Customer(email=email, name=name, password=generate_password_hash(password), username=username, phone_no=phone, address=address)
             db.session.add(new)
             db.session.commit()
             cart = Cart(customer_id=new.customer_id,product_id='NULL',quantity=0)
@@ -117,7 +118,7 @@ def store_manager_signup():
         if validate_features!=True: flash(validate_features, category='error')
         elif validate_strmng_ids!=True: flash(validate_strmng_ids, category='error')
         else:
-            new = StoreManager(store_manager_id=int(strmng_id),branch_id=int(branch_id),email=email, name=name, password=password, username=username, phone_no=phone)
+            new = StoreManager(store_manager_id=int(strmng_id),branch_id=int(branch_id),email=email, name=name, password=generate_password_hash(password), username=username, phone_no=phone)
             db.session.add(new)
             db.session.commit()
             flash('Account created!', category='success')
@@ -140,7 +141,7 @@ def delivery_executive_signup():
         if validate_features!=True: flash(validate_features, category='error')
         elif validate_delexe_ids!=True: flash(validate_delexe_ids, category='error')
         else:
-            new = DeliveryExecutive(delivery_executive_id=int(delexe_id),branch_id=int(branch_id),email=email, name=name, password=password, username=username, phone_no=phone)
+            new = DeliveryExecutive(delivery_executive_id=int(delexe_id),branch_id=int(branch_id),email=email, name=name, password=generate_password_hash(password), username=username, phone_no=phone)
             db.session.add(new)
             db.session.commit()
             flash('Account created!', category='success')

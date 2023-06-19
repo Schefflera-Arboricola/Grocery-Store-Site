@@ -126,7 +126,98 @@ def send_password_reset_email(email, token):
 '''
 
 
+'''
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+from flask import Flask, render_template, request, redirect, flash
+import os
+import requests
+from werkzeug.security import generate_password_hash
+from itsdangerous import URLSafeTimedSerializer
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your-secret-key'  # Set a secret key for the app
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+SENDGRID_API_KEY = 'your-sendgrid-api-key'  # Replace with your SendGrid API key
+
+@app.route('/customer_signup', methods=['GET', 'POST'])
+def customer_signup():
+    if request.method == 'POST':  
+        name = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password') 
+        phone = request.form.get('phone')
+        email = request.form.get('email')
+        address = request.form.get('address')
+
+        validate_features = check_user_features(Customer, name, username, phone, password, email)
+        validate_address = check_address(address)
+        if validate_features != True:
+            flash(validate_features, category='error')
+        elif validate_address != True:
+            flash(validate_address, category='error')
+        else:
+            new = Customer(email=email, name=name, password=generate_password_hash(password), username=username, phone_no=phone, address=address)
+            db.session.add(new)
+            db.session.commit()
+
+            # Generate a verification token for the email address
+            token = serializer.dumps(email, salt='email-verification')
+            
+            # Create the verification link using the token
+            verification_link = request.host_url + 'verify_email/' + token
+
+            # Send the verification email using SendGrid API
+            send_verification_email(email, verification_link)
+
+            flash('Account created! Please check your email to verify your email address.', category='success')
+            return redirect('/')
+    return render_template('signinup/signup_customer.html')
+
+@app.route('/verify_email/<token>')
+def verify_email(token):
+    try:
+        email = serializer.loads(token, salt='email-verification', max_age=3600)  # Verify the token
+        # Update the user's email verification status in the database
+        # You can implement your logic here, such as setting a flag or updating a field to mark the email as verified
+        flash('Email verified successfully! You can now log in.', category='success')
+    except Exception:
+        flash('The verification link is invalid or has expired.', category='error')
+    return redirect('/')
+
+def send_verification_email(email, verification_link):
+    url = 'https://api.sendgrid.com/v3/mail/send'
+    headers = {
+        'Authorization': f'Bearer {SENDGRID_API_KEY}',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'personalizations': [
+            {
+                'to': [
+                    {
+                        'email': email
+                    }
+                ],
+                'subject': 'Verify Your Email'
+            }
+        ],
+        'from': {
+            'email': 'noreply@example.com'  # Replace with your desired sender email
+        },
+        'content': [
+            {
+                'type': 'text/html',
+                'value': f'Click the following link to verify your email address: <a href="{verification_link}">Verify Email</a>'
+            }
+        ]
+    }
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code != 202:
+        flash('Failed to send the verification email. Please try again later.', category='error')
+
+'''
 
 '''
 alembic==0.9.10
