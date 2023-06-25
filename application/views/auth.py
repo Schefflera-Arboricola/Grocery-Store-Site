@@ -39,13 +39,13 @@ def signin():
                 login_user(user, remember=True)
                 if role=='customer': 
                     session['account_type'] = 'Customer'
-                    return render_template('dashboard/dashboard_customer.html', user=current_user)
+                    return redirect(url_for('viewsCustomer.dashboard', c_id=int(user.customer_id)))
                 elif role=='store-manager': 
                     session['account_type'] = 'StoreManager'
-                    return render_template('dashboard/dashboard_storemng.html', user=current_user)
+                    return redirect(url_for('viewsStoreMng.dashboard', strmng_id=int(user.store_manager_id)))
                 elif role=='delivery-executive': 
                     session['account_type'] = 'DeliveryExecutive'
-                    return render_template('dashboard/dashboard_delexe.html', user=current_user)
+                    return redirect(url_for('viewsDelExe.dashboard', delexe_id=int(user.delivery_executive_id)))
                 else: flash("Can't get the correct role. Report admin.", category='error')
             else:
                 flash('Incorrect password, try again.', category='error')

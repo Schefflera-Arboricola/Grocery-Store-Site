@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Dashboard {% endblock %}</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .left-column {
+            width: 66%;
+            background-color: #f2db80;
+            padding: 20px; 
+            border-radius: 10px;
+        }
+        .right-column {
+            width: 34%;
+            align-items: center;
+            text-align: center;
+            background-color: #f2db80;
+            padding: 20px; 
+            border-radius: 10px;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">Welcome to your Dashboard {{ name }}</h1>
+    <div class="container">
+        <div class="left-column">
+            <strong>Name:</strong> {{ name }} <br>
+            <strong>Username:</strong> {{ username }} <br>
+            <strong>Email:</strong> {{ email }} <br>
+            <strong>Phone:</strong> {{ phone }} <br>
+            {% block additional_info %}
+            {% endblock %}
+            <br>
+            <button onclick="window.location.href='/{{ account_type }}/{{ id }}/editProfile'">Edit Profile</button>
+        </div>
+
+        <div class="right-column">
+            {% block buttons %}
+            <button></button> <br><br>
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

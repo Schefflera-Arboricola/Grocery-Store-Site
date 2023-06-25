@@ -20,10 +20,14 @@ def create_app():
     db.init_app(app)
     app.app_context().push()
 
-    from application.viewsCustomer import viewsCustomer
-    from application.auth import auth, LoginManagerfunc
+    from application.views.viewsCustomer import viewsCustomer
+    from application.views.viewsDelExe import viewsDelExe 
+    from application.views.viewsStoreMng import viewsStoreMng
+    from application.views.auth import auth, LoginManagerfunc
 
     app.register_blueprint(viewsCustomer, url_prefix='/')
+    app.register_blueprint(viewsDelExe, url_prefix='/')
+    app.register_blueprint(viewsStoreMng, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
     api=Api(app)

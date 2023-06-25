@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Executive Dashboard</title>
-</head>
-<body>
-    <h1>Delivery Executive Dashboard</h1>
-	<a href="/signout_delivery_executive">Sign-out</a>
-</body>
-</html>
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}Delivery Executive Dashboard{% endblock %}
+
+{% block buttons %}
+    <button onclick="window.location.href='/delexe/{{ id }}/pendingDelieveries'">Pending Delieveries</button> <br><br>
+    <button onclick="window.location.href='/delexe/{{ id }}/completedDelieveries'">Completed Delieveries</button> <br><br>
+    <button onclick="window.location.href='/signout_delivery_executive'">Sign-out</button> 
+{% endblock %}

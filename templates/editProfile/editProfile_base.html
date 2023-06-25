@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %} Edit Profile {% endblock %}</title>    
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/signinup.css" rel="stylesheet">
+        <script src="/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <br>
+            <form class="form-signup" role="form" method="post">
+                <h1 class="form-signup-heading">Edit Profile</h1>
+                <input type="text" class="form-control" value="{{ name }}" name="name" required autofocus><br>
+                <input type="tel" class="form-control" value="{{ phone }}" name="phone" required><br>
+                {% block content %}
+                {% endblock %}
+                <input type="password" class="form-control" placeholder="Password" name="password" required><br>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><br><br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
+            </form>
+        </div>
+    </body>
+</html>

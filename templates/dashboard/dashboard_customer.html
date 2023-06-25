@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Dashboard</title>
-</head>
-<body>
-    <h1>Customer Dashboard</h1>
-	<a href="/signout_customer">Sign-out</a>
-</body>
-</html>
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block additional_info %}
+            <strong>Address:</strong> {{ address }} <br>
+{% endblock %}
+
+{% block buttons %}
+    <button onclick="window.location.href='/customer/{{ id }}/searchProducts'">Start shopping</button> <br><br>
+    <button onclick="window.location.href='/customer/{{ id }}/cart'">Cart</button> <br><br>
+    <button onclick="window.location.href='/customer/{{ id }}/past_orders'">Past Orders</button> <br><br>
+    <button onclick="window.location.href='/signout_customer'">Sign-out</button> 
+{% endblock %}

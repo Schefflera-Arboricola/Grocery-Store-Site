@@ -54,20 +54,21 @@ class Branch(db.Model):
 class Category(db.Model):
     __tablename__='category'
     category_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
-    name=db.Column(db.String)
-    description=db.Column(db.String)
+    name=db.Column(db.String,nullable=False, unique=True)
+    description=db.Column(db.String,nullable=False)
     
 class Products(db.Model):
     __tablename__='products'
     product_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
-    name=db.Column(db.String)
-    description=db.Column(db.String)
-    price=db.Column(db.String)
-    quantity=db.Column(db.Integer)
+    name=db.Column(db.String,nullable=False)
+    description=db.Column(db.String,nullable=False)
+    price=db.Column(db.String,nullable=False)
+    quantity=db.Column(db.Integer,nullable=False)
     branch_id=db.Column(db.Integer, db.ForeignKey("branch.branch_id"),nullable=False)
     category_id=db.Column(db.Integer, db.ForeignKey("category.category_id"),nullable=False)
     manufacture_date=db.Column(db.Date)
     expiry_date=db.Column(db.Date)
+    image_url=db.Column(db.String,nullable=False)
 
 class Cart(db.Model):
     __tablename__='cart'
@@ -81,8 +82,10 @@ class Payment(db.Model):
     __tablename__='payment'
     payment_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
     customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
-    payment_status=db.Column(db.String)
-    payment_date=db.Column(db.String)
+    payment_status=db.Column(db.String,nullable=False)
+    payment_date=db.Column(db.String,nullable=False)
+    payment_amount=db.Column(db.Float,nullable=False)
+    account_details=db.Column(db.String,nullable=False)
 
 class OrderDetails(db.Model):
     __tablename__='order_details'
@@ -100,11 +103,13 @@ class OrdersItems(db.Model):
     price=db.Column(db.String)
     quantity=db.Column(db.Integer)
 
+'''
 class PasswordReset(db.Model):
     __tablename__='password_reset'
     token=db.Column(db.String, primary_key=True)
     email = db.Column(db.String, unique=True)
     expiration_time = db.Column(db.DateTime)
+'''
 
 db.create_all()
 
