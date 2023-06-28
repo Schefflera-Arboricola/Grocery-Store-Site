@@ -64,7 +64,12 @@ def cart(c_id):
 def past_orders(c_id):
     return render_template("userviews/customer/pastOrders.html", cid=c_id)
 
-@viewsCustomer.route('/customer/searchProducts', methods=['GET', 'POST'])
-def searchProducts():
+@viewsCustomer.route('/customer/<int:c_id>/searchProducts', methods=['GET', 'POST'])
+def searchProducts(c_id):
     return render_template("userviews/customer/searchProducts.html")
 
+
+
+@viewsCustomer.route('/customer/<int:c_id>/pastOrders/<int:order_id>')
+def pastOrderDetails(c_id,order_id):
+    return render_template("userviews/customer/orderDetails.html")

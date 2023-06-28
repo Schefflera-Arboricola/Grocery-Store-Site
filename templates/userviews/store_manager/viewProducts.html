@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Products</title>
+	<style>
+		.product {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 20px;
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		.product img {
+			width: 200px;
+			height: 200px;
+			margin-right: 20px;
+		}
+
+		.product-name {
+			font-size: 24px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.product-price {
+			font-size: 18px;
+			margin: 0;
+			display: inline-block;
+			margin-right: 20px;
+		}
+
+		.product-quantity {
+			font-size: 18px;
+			margin: 0;
+			display: inline-block;
+		}
+
+
+	</style>
+</head>
+<body>
+	<h1 style="text-align: center;">Products</h1>
+	<h2><a href="/storemng/{{ strmng_id }}/addProduct">Add a Product</a></h2>
+
+	{% for product in products %}
+		<div class="product">
+			<img src="{{ product['image_url'] }}" alt="Product Image">
+			<div>
+				<h2 class="product-name">{{ product['name'] }}</h2>
+				<p class="product-price">Price : {{ product['price'] }}</p>
+				<p class="product-quantity">Quantity : {{ product['quantity'] }} {{ product['unit'] }}</p>
+				<br>
+				<p class="product-price">category_id : {{ product['category_id'] }}</p>
+				<p class="product-quantity">Price per unit : {{ product['pricePerUnit'] }}</p>
+				<br>
+				<p class="product-price">Life : {{ product['manufacture_date'] }} to {{ product['expiry_date'] }}</p>
+				<br>
+				<p>{{ product['description'] }}</p>
+				<a href="/storemng/{{ strmng_id }}/editProduct/{{ product['product_id'] }}">Edit Product</a>
+				<br>
+				<a href="/storemng/{{ strmng_id }}/deleteProduct/{{ product['product_id'] }}" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+			</div>
+		</div>
+	{% endfor %}
+</body>
+</html>

@@ -3,7 +3,7 @@
 {% block title %}Store Manager Dashboard{% endblock %}
 
 {% block buttons %}
-    <button onclick="window.location.href='/strmng/Products'">Go to Products</button> <br><br>
-    <button onclick="window.location.href='/strmng/Category'">Go to Categories</button> <br><br>
+    <button onclick="window.location.href='/storemng/{{ id }}/Product'">Go to Products</button> <br><br>
+    <button onclick="window.location.href='/storemng/{{ id }}/Category'">Go to Categories</button> <br><br>
     <button onclick="window.location.href='/signout_store_manager'">Sign-out</button> 
 {% endblock %}

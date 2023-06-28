@@ -70,47 +70,37 @@
 <body>
 	<h1>Cart</h1>
 
-	<!-- Cart Item 1 -->
-	<div class="cart-item">
-		<img src="https://atlantablackstar.com/wp-content/uploads/2013/10/tomato.jpg" alt="Product Image">
-		<div class="cart-item-details">
-			<h2 class="cart-item-name">Tomato</h2>
-			<p class="cart-item-price">Ananda farms</p>
-			<br>
-			<p class="cart-item-price">Rs. 10</p>
-			<p class="cart-item-quantity">1 kg</p>
-            <br>
-			<a href="#" class="cart-item-remove-link">Edit quantity</a>
-            <br>
-            <br>
-			<a href="#" class="cart-item-remove-link">Remove Item</a>
-		</div>
-	</div>
-
-    <!-- Cart Item 2 -->
-	<div class="cart-item">
-		<img src="https://www.theayurveda.org/wp-content/uploads/2015/08/Ladyfinger-vegetable.png" alt="Product Image">
-		<div class="cart-item-details">
-			<h2 class="cart-item-name">Lady finger</h2>
-			<p class="cart-item-price">Ananda farms</p>
-			<br>
-			<p class="cart-item-price">Rs. 20</p>
-			<p class="cart-item-quantity">1 kg</p>
-            <br>
-			<a href="#" class="cart-item-remove-link">Edit quantity</a>
-            <br>
-            <br>
-			<a href="#" class="cart-item-remove-link">Remove Item</a>
-		</div>
-	</div>
+	<div class="cart-items">
+		{% for product in products %}
+			<div class="cart-item">
+				<img src="{{ product['image_url'] }}" alt="{{ product['name'] }}">
+				<div class="cart-item-details">
+					<h2 class="cart-item-name">{{ product['name'] }}</h2>
+					<br>
+					<p class="cart-item-price">{{ product['price'] }}</p>
+					{% if product['quantity'] != 0 %}
+						<p class="cart-item-quantity">product['quantity'] product['unit']</p>
+					{% else %}
+						<p style="color: red;">Out of stock</p>
+					{% endif %}
+					<p class="cart-item-quantity"> Price per {{ product['unit'] }} : {{ product['pricePerUnit'] }}</p>
+					<br>
+					<a href="#" class="cart-item-remove-link">Edit quantity</a>
+					<br>
+					<br>
+					<a href="#" class="cart-item-remove-link">Remove Item</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>		
 
     <div>
-        <p class="total-price">Total Price: Rs. 30</p>
+        <p class="total-price">Total Price: {{ total_price }}</p>
     </div>
-	<!-- Checkout and Continue Shopping -->
+	
 	<div>
-		<button type="button">Checkout</button>
-	<button type="button">Continue Shopping</button>
+		<button type="submit">Checkout</button>
+		<button onclick="window.location.href='/customer/{{ cid }}/searchProducts'">Continue Shopping</button>
 	</div>
 </body>
 </html>

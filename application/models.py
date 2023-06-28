@@ -55,19 +55,20 @@ class Category(db.Model):
     __tablename__='category'
     category_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
     name=db.Column(db.String,nullable=False, unique=True)
-    description=db.Column(db.String,nullable=False)
+    description=db.Column(db.String)
     
 class Products(db.Model):
     __tablename__='products'
     product_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
     name=db.Column(db.String,nullable=False)
     description=db.Column(db.String,nullable=False)
-    price=db.Column(db.String,nullable=False)
-    quantity=db.Column(db.Integer,nullable=False)
-    branch_id=db.Column(db.Integer, db.ForeignKey("branch.branch_id"),nullable=False)
-    category_id=db.Column(db.Integer, db.ForeignKey("category.category_id"),nullable=False)
-    manufacture_date=db.Column(db.Date)
-    expiry_date=db.Column(db.Date)
+    price=db.Column(db.Float,nullable=False) #price of minimum quantity
+    quantity=db.Column(db.Integer,nullable=False) #quantity available in store
+    unit=db.Column(db.String,nullable=False) #kg, liters, packet etc
+    pricePerUnit=db.Column(db.Float,nullable=False) #price of 1 kg, litre etc.
+    category_id=db.Column(db.Integer, db.ForeignKey("category.category_id")) #one product can be in one category only
+    manufacture_date=db.Column(db.String)
+    expiry_date=db.Column(db.String)
     image_url=db.Column(db.String,nullable=False)
 
 class Cart(db.Model):
@@ -75,7 +76,7 @@ class Cart(db.Model):
     sno=db.Column(db.Integer, autoincrement=True,primary_key=True)
     customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
     product_id=db.Column(db.Integer, db.ForeignKey("products.product_id"))
-    quantity=db.Column(db.Integer)
+    quantity=db.Column(db.Integer) #quantity of product in cart
 
 #once the payment is done(i.e. payment_status='Successful') the cart gets emptied and all the items in cart goes to orders_items table
 class Payment(db.Model):
