@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Pending</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+</style>
+</head>
+<body>
+    <div>
+        <h1 style="text-align: center;">Pending Deliveries</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              <tr>
+                <td><a href="/delexe/{{ delexe_id }}/delivery_details/{{ order['order_id'] }}">{{ order['order_id'] }}</a></td>
+                <td>{{ order['order_date'] }}</td>
+                <td>{{ order['total_price'] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      </body>
+      </html>
+      

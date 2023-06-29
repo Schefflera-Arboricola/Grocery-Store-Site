@@ -25,8 +25,8 @@
             
             <form class="form-signup" role="form" method="post">
                 <h1 class="form-signup-heading">Edit Category</h1>
-                <input type="text" class="form-control" value="{{ category['name'] }}" name="name" required autofocus><br>
-                <input type="text" class="form-control" value="{{ category['description'] }}" name="description" required>
+                <input type="text" class="form-control" placeholder="Name" value="{{ category['name'] }}" name="name" required autofocus><br>
+                <input type="text" class="form-control" placeholder="Description" value="{{ category['description'] }}" name="description" required>
                 <br><br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
             </form>

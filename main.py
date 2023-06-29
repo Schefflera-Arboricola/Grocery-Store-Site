@@ -37,12 +37,15 @@ def create_app():
     api=Api(app)
     api.init_app(app)
 
-    api.add_resource(CategoryAPI, '/categories', '/categories/<int:category_id>', '/categories/<int:category_id>/products')
-    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>')
+    api.add_resource(CategoryAPI, '/categories', '/categories/<int:category_id>')
+    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>', '/products/<int:flag>/<int:category_id>/')
 
     return app,api
 
 app,api=create_app()
+
+
+
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',debug=True,port=8080)

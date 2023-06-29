@@ -4,40 +4,6 @@
     <meta charset="UTF-8">
     <title>Past Orders</title>
     <style>
-      /* Basic styling for the body */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-      }
-        /* Header styling */
-      header {
-        background-color: #333;
-        color: white;
-        padding: 10px;
-      }
-      header h1 {
-        margin: 0;
-        font-size: 24px;
-      }
-      header a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        margin-right: 20px;
-      }
-      
-      /* Container for the sales table */
-      #sales-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      #sales-container h2 {
-        font-size: 32px;
-        margin-top: 0;
-      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -53,22 +19,22 @@
 </style>
 </head>
 <body>
-    <div id="sales-container">
-        <h2>Past Orders</h2>
+    <div>
+        <h1 style="text-align: center;">Past Orders</h1>
         <table>
           <thead>
             <tr>
+              <th>Order ID</th>
               <th>Date</th>
               <th>Total Price</th>
-              <th>Details</th>
             </tr>
           </thead>
           <tbody>
             {% for order in orders %}
               <tr>
-                <td>order['date']</td>
-                <td>order['total_price']</td>
-                <td><a href="/customer/{{ cid }}/pastOrders/{{ order_id }}">view details</a></td>
+                <td><a href="/customer/{{ c_id }}/order/{{ order['order_id'] }}">{{ order['order_id'] }}</a></td>
+                <td>{{ order['order_date'] }}</td>
+                <td>{{ order['total_price'] }}</td>
               </tr>
             {% endfor %}
           </tbody>

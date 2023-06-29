@@ -1,1 +1,34 @@
-open any past order to see it's details
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Order details</title>    
+    </head>
+    <body>
+        <div>
+            <h1>Order details</h1>
+            <strong>Products : </strong><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product['name'] }}</td>
+                            <td>{{ product['cart_quantity'] }}</td>
+                            <td>{{ product['price'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <strong>Total : </strong>{{ total_price }}<br>
+            <strong>Status : </strong> {{ delivery_status }}<br>
+        </div>
+    </body>
+</html>

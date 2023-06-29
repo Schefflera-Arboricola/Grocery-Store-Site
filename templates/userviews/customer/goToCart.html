@@ -39,26 +39,6 @@
 			display: inline-block;
 		}
 
-		.cart-item-tags {
-			font-style: italic;
-			margin-top: 5px;
-			margin-bottom: 5px;
-		}
-
-		.cart-item-description {
-			margin: 0;
-			padding: 0;
-		}
-
-		.cart-item-remove-link {
-			font-size: 16px;
-			text-decoration: none;
-			color: #0077cc;
-			margin-left: auto;
-			margin-right: 20px;
-			align-self: center;
-		}	
-
 		.total-price {
 			text-align: right;
 			font-size: 20px;
@@ -69,26 +49,24 @@
 </head>
 <body>
 	<h1>Cart</h1>
-
 	<div class="cart-items">
 		{% for product in products %}
 			<div class="cart-item">
 				<img src="{{ product['image_url'] }}" alt="{{ product['name'] }}">
 				<div class="cart-item-details">
 					<h2 class="cart-item-name">{{ product['name'] }}</h2>
-					<br>
-					<p class="cart-item-price">{{ product['price'] }}</p>
+					<p class="cart-item-price"><strong>Price : </strong> {{ product['price'] }}</p>
 					{% if product['quantity'] != 0 %}
-						<p class="cart-item-quantity">product['quantity'] product['unit']</p>
+						<p class="cart-item-quantity"><strong>Quantity : </strong>{{ product['cart_quantity'] }}</p>
 					{% else %}
 						<p style="color: red;">Out of stock</p>
 					{% endif %}
-					<p class="cart-item-quantity"> Price per {{ product['unit'] }} : {{ product['pricePerUnit'] }}</p>
 					<br>
-					<a href="#" class="cart-item-remove-link">Edit quantity</a>
-					<br>
-					<br>
-					<a href="#" class="cart-item-remove-link">Remove Item</a>
+					<form>
+						<input type="hidden" name="product_id" value="{{ product['product_id'] }}">
+						<input type="hidden" name="c_id" value="{{ c_id }}">
+						<a href="/customer/{{ c_id }}/removeFromCart/{{ product['product_id'] }}" class="cart-item-remove-link">Remove Item</a>
+					</form>
 				</div>
 			</div>
 		{% endfor %}
@@ -99,8 +77,25 @@
     </div>
 	
 	<div>
-		<button type="submit">Checkout</button>
-		<button onclick="window.location.href='/customer/{{ cid }}/searchProducts'">Continue Shopping</button>
+		<form action="/customer/{{ c_id }}/checkout/{{ m }}" method="POST">
+			<input type="hidden" name="c_id" value="{{ c_id }}">
+			<input type="hidden" name="total_price" value="{{ total_price }}">
+			<input type="hidden" name="products" value="{{ products }}">
+			<button type="submit">Checkout</button>
+		</form>
+		<br>
+		<button onclick="window.location.href='/customer/{{ c_id }}/searchProducts'">Continue Shopping</button>
+	</div>
+	<div>
+		{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 	</div>
 </body>
 </html>

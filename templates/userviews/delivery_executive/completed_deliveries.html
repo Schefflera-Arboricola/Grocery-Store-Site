@@ -1,76 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Pending Orders</title>
+    <meta charset="UTF-8">
+    <title>Completed</title>
     <style>
-      body {
-              background-image: url('https://l450v.alamy.com/450v/2dekt74/delivery-boy-delivering-parcel-with-precautions-2dekt74.jpg') ;
-              background-size: cover;
-            }
-
-      nav {
-        background-color: #333;
-        color: white;
-        display: flex;
-        justify-content: center;
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
         padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
       }
-      nav a {
-        color: white;
-        text-decoration: none;
-        padding: 5px;
-      }
-      .orders {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        padding: 20px;
-      }
-      .order {
+      th {
         background-color: #f2f2f2;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        margin: 10px;
-        padding: 10px;
-        text-align: center;
-        width: 300px;
       }
-      .order h2 {
-        font-size: 24px;
-        margin: 10px 0;
-      }
-      .order a {
-        background-color: #333;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        margin-top: 10px;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-      }
-    </style>
-  </head>
-  <body>
-    <nav>
-      <a href="#">Pending</a>
-      <a href="#">Completed</a>
-    </nav>
-    <div class="orders">
-      <div class="order">
-        <h2>Gurugram Farms</h2>
-        <p>Drop location: XYZ</p>
-        <a href="#">Details</a>
-        <a href="#">Delivered</a>
+</style>
+</head>
+<body>
+    <div>
+        <h1 style="text-align: center;">Completed Deliveries</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              <tr>
+                <td><a href="/delexe/{{ delexe_id }}/delivery_details/{{ order['order_id'] }}">{{ order['order_id'] }}</a></td>
+                <td>{{ order['order_date'] }}</td>
+                <td>{{ order['total_price'] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-      <div class="order">
-        <h2>Rohit's Farms</h2>
-        <p>Drop location: ABC</p>
-        <a href="#">Details</a>
-        <a href="#">Delivered</a>
-      </div>
-    </div>
-  </body>
-</html>
+
+      </body>
+      </html>
+      

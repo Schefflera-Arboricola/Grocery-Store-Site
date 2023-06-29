@@ -1,2 +1,52 @@
-based on category
-based on other product features
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Search Products</title>    
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/signinup.css" rel="stylesheet">
+        <script src="/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="heading">Grocery Store Search</h1>
+            <br>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <br>
+            
+            <form class="form-signup" role="form" method="post">
+                <input type="text" class="form-control" placeholder="Product name" name="name" autofocus><br>
+                <select class="form-control" name="category" required>
+                    <option value="">Select category</option>
+                    <option value="all">All</option>
+                    {% for category in categories %}
+                        <option value="{{ category['category_id'] }}">{{ category['name'] }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="price-range">Price range:</label>
+                <input type="number" step="0.01" class="form-control" placeholder="Minimum price" name="min_price" id="price-range">
+                <input type="number" step="0.01" class="form-control" placeholder="Maximum price" name="max_price"><br>
+                
+                <label for="manufacture-date">Manufacture date range:</label>
+                <input type="date" class="form-control" name="min_manufacture_date" id="manufacture-date">
+                <input type="date" class="form-control" name="max_manufacture_date"><br>
+                
+                <label for="expiry-date">Expiry date range:</label>
+                <input type="date" class="form-control" name="min_expiry_date" id="expiry-date">
+                <input type="date" class="form-control" name="max_expiry_date"><br>
+    
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+            </form>
+        </div>
+    </body>
+</html>

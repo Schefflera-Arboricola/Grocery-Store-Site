@@ -2,110 +2,51 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Order Details</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      .details {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-      }
-      .details-info {
-        width: 50%;
-      }
-      .details-info h2 {
-        margin-top: 0;
-      }
-      .details-info p {
-        font-size: 16px;
-      }
-      .details-map {
-        width: 50%;
-        height: 400px;
-        margin-left: 20px;
-      }
-      .details-map iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-      .details-links {
-        display: flex;
-        flex-direction: column;
-        margin-top: 20px;
-        margin-bottom: 10px;
-      }
-      .details-links a {
-        background-color: #333;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-      }
-      .details-price {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-size: 16px;
-      }
-      .details-payment {
-        font-size: 16px;
-        margin-top: 20px;
-      }
-    </style>
+    <title>Delivery Details</title>
   </head>
   <body>
-    <div class="details">
-      <div class="details-info">
-        <h2>Order Details</h2>
-        <p><strong>Pick up location:</strong> Ananda Farms</p>
-        <p><strong>Drop location:</strong> XYZ</p>
+    <h1>Delivery Details</h1>
+      <p><strong>Drop location :</strong> {{ customer['address'] }}</p>
         <br>
-        <p><strong>Farmer's name:</strong> Rahul</p>
-        <p><strong>Phone number:</strong> 555-555-5555</p>
+        <p><strong>Phone number :</strong> {{ customer['phone'] }}</p>
         <br>
-        <p><strong>Customer's name:</strong> Seema</p>
-        <p><strong>Phone number:</strong> 555-555-5555</p>
+        <p><strong>Customer's name :</strong> {{ customer['name'] }}</p>
         <br>
-        <div class="details-price">
-          <p><strong>Total price : 1260</strong></p>
-        </div>
-        <div class="details-payment">
-          <p><strong>Payment:</strong> CoD</p>
-        </div>
-        
-      <div class="right">
-        <h2>Items to be Delivered</h2>
+        <p><strong>Total price : {{ total_price }}</strong></p>
+        <br>
+      <div>
+        <h2>Products to be Delivered : </h2>
         <table>
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-          <tr>
-            <td>Apples</td>
-            <td>10</td>
-            <td>1200</td>
-          </tr>
-          <tr>
-            <td>Oranges</td>
-            <td>5</td>
-            <td>60</td>
-          </tr>
-        </table>
-        <div class="details-links">
-          <p><a href="#">Pick up Location</a></p>
-          <p><a href="#">Drop Location</a></p>
-        </div>
+          <thead>
+              <tr>
+                  <th>Product name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for product in products %}
+                  <tr>
+                      <td>{{ product['name'] }}</td>
+                      <td>{{ product['quantity'] }}</td>
+                      <td>{{ product['price'] }}</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
       </div>
-    
-    </div>
+      <br>
+      <div>
+        <form action="/delexe/{{ delexe_id }}/delivery_details/{{ order_id }}" method="POST">
+          {% if delivery_status== 'ORDER PLACED' %}
+            <label for="delivery_confirmation">
+            <input type="checkbox" id="delivery_confirmation" required>
+            'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
+            </label>
+            <br>
+            <button type="submit">Submit</button>
+          {% endif %}
+        </form>
+      </div>
   </body>
 </html>

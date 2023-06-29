@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Search Results</title>
+	<style>
+		.product {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 20px;
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		.product img {
+			width: 200px;
+			height: 200px;
+			margin-right: 20px;
+		}
+
+		.product-name {
+			font-size: 24px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.product-attr1 {
+			font-size: 18px;
+			margin: 0;
+			display: inline-block;
+			margin-right: 20px;
+		}
+
+		.product-attr2 {
+			font-size: 18px;
+			margin: 0;
+			display: inline-block;
+		}
+
+
+	</style>
+</head>
+<body>
+	<h1 style="text-align: center;">Search Results</h1>
+	{% for product in products %}
+		<form action="/customer/{{ c_id }}/searchResults" method="POST">
+			<div class="product">
+				<img src="{{ product['image_url'] }}" alt="Product Image">
+				<div>
+					{% if product['quantity']==0 %}
+						<h3 style="color: red;">Out of Stock</h3>
+					{% endif %}
+					<h2 class="product-name">{{ product['name'] }}</h2>
+					<p class="product-attr1"><strong>Price :</strong> {{ product['price'] }}</p>
+					<p class="product-attr2"><strong>Quantity :</strong> <select name="quantity" id="quantity" required>
+						{% for number in range(1, 6) %}
+							<option value="{{ number }}">{{ number }}</option>
+						{% endfor %}
+					</select></p>
+					<br>
+					<p class="product-attr2"><strong>Price per unit : </strong>{{ product['pricePerUnit'] }} per {{ product['unit'] }}</p>
+					<br>
+					<p class="product-attr1"><strong>Life : </strong>{{ product['manufacture_date'] }} to {{ product['expiry_date'] }}</p>
+					<br>
+					<p><strong>Description : </strong>{{ product['description'] }}</p>
+					{% if product['quantity']==0 %}
+						<button type="submit" disabled>Add to cart</button>
+					{% else %}
+							<input type="hidden" name="product_id" value="{{ product['product_id'] }}">
+							<input type="hidden" name="c_id" value="{{ c_id }}">
+							<button type="submit">Add to cart</button>
+					{% endif %}
+				</div>
+			</div>
+		</form>
+	{% endfor %}	
+</body>
+</html>

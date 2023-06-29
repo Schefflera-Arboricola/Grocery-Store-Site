@@ -79,6 +79,7 @@ class Cart(db.Model):
     quantity=db.Column(db.Integer) #quantity of product in cart
 
 #once the payment is done(i.e. payment_status='Successful') the cart gets emptied and all the items in cart goes to orders_items table
+'''
 class Payment(db.Model):
     __tablename__='payment'
     payment_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
@@ -87,22 +88,25 @@ class Payment(db.Model):
     payment_date=db.Column(db.String,nullable=False)
     payment_amount=db.Column(db.Float,nullable=False)
     account_details=db.Column(db.String,nullable=False)
-
+'''
 class OrderDetails(db.Model):
     __tablename__='order_details'
     order_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
     customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
     branch_id=db.Column(db.Integer, db.ForeignKey("branch.branch_id"),nullable=False)
     delivery_executive_id=db.Column(db.Integer, db.ForeignKey("delivery_executive.delivery_executive_id"),nullable=False)
-    payment_id=db.Column(db.Integer, db.ForeignKey("payment.payment_id"),nullable=False)
+    #payment_id=db.Column(db.Integer, db.ForeignKey("payment.payment_id"),nullable=False)
     delivery_status=db.Column(db.String)
+    order_date=db.Column(db.String,nullable=False)
+    total_price=db.Column(db.Float,nullable=False)
 
 class OrdersItems(db.Model):
     __tablename__='orders_items'
     sno=db.Column(db.Integer, autoincrement=True,primary_key=True)
     order_id=db.Column(db.Integer, db.ForeignKey("order_details.order_id"),nullable=False)
-    price=db.Column(db.String)
-    quantity=db.Column(db.Integer)
+    product_id=db.Column(db.Integer, db.ForeignKey("products.product_id"),nullable=False)
+    price=db.Column(db.String,nullable=False)
+    quantity=db.Column(db.Integer,nullable=False)
 
 '''
 class PasswordReset(db.Model):

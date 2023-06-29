@@ -4,40 +4,6 @@
     <meta charset="UTF-8">
     <title>Categories</title>
     <style>
-      /* Basic styling for the body */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-      }
-        /* Header styling */
-      header {
-        background-color: #333;
-        color: white;
-        padding: 10px;
-      }
-      header h1 {
-        margin: 0;
-        font-size: 24px;
-      }
-      header a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        margin-right: 20px;
-      }
-      
-      /* Container for the sales table */
-      #sales-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      #sales-container h2 {
-        font-size: 32px;
-        margin-top: 0;
-      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -53,9 +19,9 @@
 </style>
 </head>
 <body>
-    <div id="sales-container">
-        <h2>Categories</h2>
-        <a href="/storemng/{{ strmng_id }}/addCategory">Add a Category</a>
+    <div>
+        <h1 style="text-align: center;">Categories</h1>
+        <h3><a href="/storemng/{{ strmng_id }}/addCategory">Add a Category</a></h3>
         <table>
           <thead>
             <tr>
