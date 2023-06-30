@@ -48,6 +48,9 @@
 		<div class="product">
 			<img src="{{ product['image_url'] }}" alt="Product Image">
 			<div>
+				{% if product['quantity']==0 %}
+						<h3 style="color: red;">Out of Stock</h3>
+				{% endif %}
 				<h2 class="product-name">{{ product['name'] }}</h2>
 				<p class="product-attr1"><strong>Price :</strong> {{ product['price'] }}</p>
 				<p class="product-attr2"><strong>Quantity :</strong> {{ product['quantity'] }} {{ product['unit'] }}</p>
