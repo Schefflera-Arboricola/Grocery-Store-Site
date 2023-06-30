@@ -116,7 +116,7 @@ def searchProducts(c_id):
             if max_expiry_date=='': max_expiry_date='31-12-9999'
             products=[product for product in products if product['expiry_date']>=min_expiry_date and product['expiry_date']<=max_expiry_date]
         return render_template("userviews/customer/searchResults.html",c_id=c_id,products=products)
-    return render_template("userviews/customer/searchProducts.html",categories=categories,cid=c_id)
+    return render_template("userviews/customer/searchProducts.html",categories=categories,c_id=c_id)
 
 @viewsCustomer.route('/customer/<int:c_id>/searchResults', methods=['GET', 'POST'])
 def searchResults(c_id):
@@ -139,24 +139,44 @@ def searchResults(c_id):
 
 
 
-@viewsCustomer.route('/customer/<int:c_id>/cart')
+@viewsCustomer.route('/customer/<int:c_id>/cart', methods=['GET', 'POST'])
 def cart(c_id):
-    base_url = request.host_url[:-1]
-    products=[]
-    m=1
-    cart=Cart.query.filter_by(customer_id=c_id).all()
-    for product in cart:
-        id=product.product_id
-        response = requests.get(f'{base_url}/products/{id}')
-        cart_item=response.json()
-        if cart_item['quantity']==0: m=0
-        cart_item['cart_quantity']=product.quantity
-        products.append(cart_item)
-    total_price=getTotalPrice(products)
+    if request.method == 'GET':
+        base_url = request.host_url[:-1]
+        products=[]
+        cart=Cart.query.filter_by(customer_id=c_id).all()
+        for product in cart:
+            id=product.product_id
+            response = requests.get(f'{base_url}/products/{id}')
+            cart_item=response.json()
+            cart_item['cart_quantity']=product.quantity
+            products.append(cart_item)
+        total_price=getTotalPrice(products)
+        return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
+    
     if request.method == 'POST':
-        return redirect(url_for('viewsCustomer.checkout',c_id=c_id,m=m))
-    return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price,m=m)
-
+        m=False
+        products=eval(request.form.get('products')) #cart_products
+        total_price=request.form.get('total_price')
+        for i in products:
+            if (i['cart_quantity']*(i['price']/i['pricePerUnit']))>i['quantity']:
+                flash(f'Only {str(i["quantity"])} {i["unit"]} of {i["name"]} is available in stock. Please remove the extra units from your cart to proceed.', category='error')
+                m=True
+                #return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
+            elif i['quantity']==0:
+                flash(f'{i["name"]} is out of stock. Please remove it from your cart to proceed.', category='error')
+                m=True
+                #return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
+        if not m:
+            customer=Customer.query.filter_by(customer_id=c_id).first()
+            name=customer.name
+            address=customer.address
+            phone=customer.phone_no
+            total_price=request.form.get('total_price')
+            products=eval(request.form.get('products'))
+            return render_template("userviews/customer/orderPreview.html",c_id=c_id,name=name,address=address,phone=phone,products=products,total_price=total_price)
+        return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
+    
 def getTotalPrice(products):
     tp=0
     for product in products:
@@ -174,21 +194,8 @@ def removeFromCart(c_id,p_id):
 
 
 
-@viewsCustomer.route('/customer/<int:c_id>/checkout/<int:m>', methods=['GET', 'POST'])
-def checkout(c_id,m):
-    if request.method == 'POST':
-        if not m:
-            flash('Some of the products in your cart are out of stock. Please remove them from your cart to proceed.')
-            return redirect(url_for('viewsCustomer.cart',c_id=c_id))
-        else:
-            customer=Customer.query.filter_by(customer_id=c_id).first()
-            name=customer.name
-            address=customer.address
-            phone=customer.phone_no
-            total_price=request.form.get('total_price')
-            products=eval(request.form.get('products'))
-            return render_template("userviews/customer/orderPreview.html",c_id=c_id,name=name,address=address,phone=phone,products=products,total_price=total_price)
 
+    
 #use a payment gateway instead
 @viewsCustomer.route('/customer/<int:c_id>/placeOrder/<float:total_price>', methods=['GET', 'POST'])
 def placeOrder(c_id,total_price):
@@ -206,6 +213,10 @@ def placeOrder(c_id,total_price):
         new_order_item=OrdersItems(order_id=order_id,product_id=product_id,quantity=quantity,price=product['price']) 
         db.session.add(new_order_item)
         db.session.commit()
+        #reducing stock quantity
+        new_quantity=product['quantity']-(quantity*(product['price']/product['pricePerUnit']))
+        product['quantity']=new_quantity
+        response=requests.put(f'{base_url}/products/{product_id}',json=product)
     for cart_item in cart_items:
         db.session.delete(cart_item)
         db.session.commit()

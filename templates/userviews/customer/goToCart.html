@@ -49,6 +49,7 @@
 </head>
 <body>
 	<h1>Cart</h1>
+	<h2><a href='/customer/{{ c_id }}/dashboard'>Dashboard</a></h2>
 	<div class="cart-items">
 		{% for product in products %}
 			<div class="cart-item">
@@ -77,7 +78,19 @@
     </div>
 	
 	<div>
-		<form action="/customer/{{ c_id }}/checkout/{{ m }}" method="POST">
+		<div>
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class="flash-messages">
+						{% for message in messages %}
+							<div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			{% endwith %}
+		</div>
+		
+		<form method="POST">
 			<input type="hidden" name="c_id" value="{{ c_id }}">
 			<input type="hidden" name="total_price" value="{{ total_price }}">
 			<input type="hidden" name="products" value="{{ products }}">
@@ -85,17 +98,6 @@
 		</form>
 		<br>
 		<button onclick="window.location.href='/customer/{{ c_id }}/searchProducts'">Continue Shopping</button>
-	</div>
-	<div>
-		{% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
 	</div>
 </body>
 </html>

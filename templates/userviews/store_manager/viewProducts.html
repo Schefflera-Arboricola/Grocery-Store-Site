@@ -43,7 +43,7 @@
 <body>
 	<h1 style="text-align: center;">Products</h1>
 	<h2><a href="/storemng/{{ strmng_id }}/addProduct">Add a Product</a></h2>
-
+	<h5><a href='/storemng/{{ strmng_id }}/dashboard'>Dashboard</a></h5>
 	{% for product in products %}
 		<div class="product">
 			<img src="{{ product['image_url'] }}" alt="Product Image">
