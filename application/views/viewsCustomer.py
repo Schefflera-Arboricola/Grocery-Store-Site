@@ -200,7 +200,10 @@ def placeOrder(c_id,total_price):
     for cart_item in cart_items:
         product_id=cart_item.product_id
         quantity=cart_item.quantity
-        new_order_item=OrdersItems(order_id=order_id,product_id=product_id,quantity=quantity,price=Products.query.filter_by(product_id=product_id).first().price) #use product api instead
+        base_url = request.host_url[:-1]
+        response = requests.get(f'{base_url}/products/{product_id}')
+        product=response.json()
+        new_order_item=OrdersItems(order_id=order_id,product_id=product_id,quantity=quantity,price=product['price']) 
         db.session.add(new_order_item)
         db.session.commit()
     for cart_item in cart_items:

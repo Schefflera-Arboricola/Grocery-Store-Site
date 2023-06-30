@@ -68,8 +68,10 @@ def delivery_details(delexe_id,order_id):
     products=[]
     for i in orderItems:
         d={'quantity': i.quantity,'price': i.price}
-        name=Products.query.filter_by(product_id=i.product_id).first().name #use api instead
-        d['name']=name
+        base_url = request.host_url[:-1]
+        response = requests.get(f'{base_url}/products/{i.product_id}')
+        product=response.json()
+        d['name']=product['name']
         products.append(d)
     total_price=order.total_price
     if request.method == 'POST':
