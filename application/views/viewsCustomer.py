@@ -19,7 +19,14 @@ def require_login():
 @viewsCustomer.route('/customer/<int:c_id>/dashboard')
 def dashboard(c_id):
     user=Customer.query.filter_by(customer_id=c_id).first()
-    return render_template("dashboard/dashboard_customer.html", account_type='customer',id=c_id,name=user.name,address=user.address,phone=user.phone_no,username=user.username,email=user.email)
+    base_url = request.host_url[:-1]
+    response = requests.get(f'{base_url}/categories')
+    categories=response.json()
+    cat_wise_products={}
+    for category in categories:
+        response = requests.get(f'{base_url}/products/1/{category["category_id"]}')
+        cat_wise_products[category["name"]]=response.json()
+    return render_template("dashboard/dashboard_customer.html", account_type='customer',id=c_id,name=user.name,address=user.address,phone=user.phone_no,username=user.username,email=user.email,cat_wise_products=cat_wise_products)
 
 @viewsCustomer.route('/customer/<int:c_id>/editProfile', methods=['GET', 'POST'])
 def editProfile(c_id):

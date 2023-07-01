@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} Dashboard {% endblock %}</title>
+    {% block style %}
     <style>
         .container {
             display: flex;
@@ -26,6 +27,7 @@
             margin-left: 20px;
         }
     </style>
+    {% endblock %}
 </head>
 <body>
     <h1 style="text-align: center">Welcome to your Dashboard {{ name }}</h1>
@@ -47,5 +49,6 @@
             {% endblock %}
         </div>
     </div>
+    {% block products %} {% endblock %}
 </body>
 </html>
