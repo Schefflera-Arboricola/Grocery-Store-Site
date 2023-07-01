@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %} Title {% endblock %}</title>    
+        {% block jsCSSlinks %} {% endblock %}
+        <link href="/static/css/forms.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            {% block heading %}{% endblock %}
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+ 
+            <form class="form" role="form" method="post">
+                {% block roleSelection %} {% endblock %}
+                {% block formHeading %} {% endblock %}
+                {% block inputs %}  
+                {% endblock %}
+                
+                {% block passwordInput %} {% endblock %}   
+                {% block submitButtons %}  {% endblock %}
+            </form>
+            {% block belowSubmit %} {% endblock %}
+        </div>
+    </body>
+</html>

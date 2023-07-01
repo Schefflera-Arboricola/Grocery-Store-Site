@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_user, login_required, logout_user, current_user, LoginManager
+from flask_login import login_user, login_required, logout_user, LoginManager
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -11,7 +11,6 @@ def LoginManagerfunc(app):
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(user_id):
-        # Determine the user type based on the prefix in the user_id
         if session['account_type'] == 'Customer':
             return Customer.query.get(int(user_id))
         elif session['account_type'] == 'StoreManager':
@@ -23,6 +22,8 @@ def LoginManagerfunc(app):
             
 auth = Blueprint('auth', __name__)
 
+
+# Signin route
 
 @auth.route('/', methods=['GET', 'POST'])
 def signin():
@@ -55,6 +56,8 @@ def signin():
     return render_template("signinup/signin_base.html")
 
 
+# Signout routes
+
 @auth.route('/signout_customer')
 @login_required
 def logout_customer():
@@ -76,6 +79,8 @@ def logout_delivery_executive():
 
 
 
+# Signup routes
+
 @auth.route('/customer_signup', methods=['GET', 'POST'])
 def customer_signup():
     if request.method == 'POST':  
@@ -95,7 +100,6 @@ def customer_signup():
             db.session.add(new)
             db.session.commit()
             flash('Account created!', category='success')
-            #feature : send email('thanks for signing up! verify your email : <link>')
             return redirect('/')
     return render_template('signinup/signup_customer.html')
 
@@ -145,6 +149,9 @@ def delivery_executive_signup():
             return redirect('/')
     return render_template('signinup/signup_delexe.html')
 
+
+
+# Validation functions for sign up
 
 def check_user_features(dbClass,name,username,phone,password,email):
     if dbClass.query.filter_by(username=username).first():

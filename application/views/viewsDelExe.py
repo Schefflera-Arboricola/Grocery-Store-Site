@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_user, login_required, logout_user, current_user, LoginManager
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_required
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -48,6 +48,8 @@ def check_user_features(name,phone):
     elif type(name)!=str:
         return 'Name must be a string'
     else: return True
+
+
 
 @viewsDelExe.route('/delexe/<int:delexe_id>/pendingDelieveries', methods=['GET', 'POST'])
 def pendingDelieveries(delexe_id):

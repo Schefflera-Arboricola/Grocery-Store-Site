@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_user, login_required, logout_user, current_user, LoginManager
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_required
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -49,6 +49,10 @@ def check_user_features(name,phone):
         return 'Name must be a string'
     else: return True
     
+
+
+# Product Management
+
 @viewsStoreMng.route('/storemng/<int:strmng_id>/Product', methods=['GET', 'POST'])
 def Product(strmng_id):
     base_url = request.host_url[:-1]
@@ -85,7 +89,6 @@ def editProduct(strmng_id,prod_id):
     product=Products.query.filter_by(product_id=prod_id).first()
     return render_template("userviews/store_manager/editProduct.html", product=product)
 
-
 @viewsStoreMng.route('/storemng/<int:strmng_id>/deleteProduct/<int:prod_id>', methods=['GET', 'POST'])
 def deleteProduct(strmng_id,prod_id):
     base_url = request.host_url[:-1]
@@ -101,6 +104,8 @@ def deleteProduct(strmng_id,prod_id):
 
 
 
+
+# Category Management
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/Category', methods=['GET', 'POST'])
 def Categories(strmng_id):
@@ -137,8 +142,6 @@ def editCategory(strmng_id,cat_id):
         else:
             flash('Something went wrong. Contact Admin', category='error')
     return render_template("userviews/store_manager/editCategory.html", category=category)
-
-#click on category name to view products in that category
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/deleteCategory/<int:cat_id>', methods=['GET', 'POST'])
 def deleteCategory(strmng_id,cat_id):

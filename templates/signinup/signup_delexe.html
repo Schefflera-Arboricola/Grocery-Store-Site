@@ -3,10 +3,8 @@
 {% block title %}Delivery Executive Sign Up{% endblock %}
 
 
-{% block content %}
+{% block sub_inputs %}
 <input type="password" class="form-control" placeholder="Delivery-Executive-id" name="delivery-executive-id" required><br>
-<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
 <input type="password" class="form-control" placeholder="Branch-id" name="branch-id" required><br>
-<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 {% endblock %}

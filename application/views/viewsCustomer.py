@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_user, login_required, logout_user, current_user
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_required
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -40,7 +40,7 @@ def editProfile(c_id):
                 return render_template("editProfile/editProfile_customer.html", name=user.name,phone=user.phone_no,address=user.address)
             elif add!=True: 
                 flash(add, category='error')
-                
+                return render_template("editProfile/editProfile_customer.html", name=user.name,phone=user.phone_no,address=user.address)
             else:
                 db.session.commit()
                 return redirect(url_for('viewsCustomer.dashboard',c_id=c_id))
@@ -154,19 +154,20 @@ def cart(c_id):
         total_price=getTotalPrice(products)
         return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
     
-    if request.method == 'POST':
+    if request.method == 'POST': #checkout
         m=False
         products=eval(request.form.get('products')) #cart_products
         total_price=request.form.get('total_price')
+        if len(products)==0: 
+            flash('Your cart is empty. Please add some products to your cart to proceed.', category='error')
+            m=True
         for i in products:
             if (i['cart_quantity']*(i['price']/i['pricePerUnit']))>i['quantity']:
                 flash(f'Only {str(i["quantity"])} {i["unit"]} of {i["name"]} is available in stock. Please remove the extra units from your cart to proceed.', category='error')
                 m=True
-                #return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
             elif i['quantity']==0:
                 flash(f'{i["name"]} is out of stock. Please remove it from your cart to proceed.', category='error')
                 m=True
-                #return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
         if not m:
             customer=Customer.query.filter_by(customer_id=c_id).first()
             name=customer.name
@@ -192,16 +193,14 @@ def removeFromCart(c_id,p_id):
 
 
 
-
-
-
-    
-#use a payment gateway instead
 @viewsCustomer.route('/customer/<int:c_id>/placeOrder/<float:total_price>', methods=['GET', 'POST'])
 def placeOrder(c_id,total_price):
+    #adding order to order_details table
     new_order=OrderDetails(customer_id=c_id,branch_id=1,delivery_executive_id=delivery_executive_assign(len(OrderDetails.query.all())),delivery_status='ORDER PLACED',order_date=datetime.now(),total_price=total_price)
     db.session.add(new_order)
     db.session.commit()
+
+    #transfering cart items to order_items table and reducing stock quantity
     order_id=new_order.order_id
     cart_items=Cart.query.filter_by(customer_id=c_id).all()
     for cart_item in cart_items:
@@ -217,6 +216,8 @@ def placeOrder(c_id,total_price):
         new_quantity=product['quantity']-(quantity*(product['price']/product['pricePerUnit']))
         product['quantity']=new_quantity
         response=requests.put(f'{base_url}/products/{product_id}',json=product)
+    
+    #emptying the cart
     for cart_item in cart_items:
         db.session.delete(cart_item)
         db.session.commit()

@@ -1,43 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Edit Product</title>    
-        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/css/signinup.css" rel="stylesheet">
-        <script src="/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <h1 class="heading">Grocery Store</h1>
-            <br>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <br>
-            
-            <form class="form-signup" role="form" method="post">
-                <h1 class="form-signup-heading">Edit product</h1>
-                <input type="text" class="form-control" placeholder="Name" value="{{ product['name'] }}" name="name" required autofocus><br>
-                <input type="text" class="form-control" placeholder="Description" value="{{ product['description'] }}" name="description" required><br>
-                <input type="number" step="0.01" class="form-control" placeholder="Price" value="{{ product['price'] }}" name="price" required><br>
-                <input type="number" step="0.01" class="form-control" placeholder="Quantity" value="{{ product['quantity'] }}" name="quantity" required><br>
-                <input type="text" class="form-control" placeholder="Unit" value="{{ product['unit'] }}" name="unit" required><br>
-                <input type="number" step="0.01" class="form-control" placeholder="pricePerUnit" value="{{ product['pricePerUnit'] }}" name="pricePerUnit" required><br>
-                <input type="number" class="form-control" placeholder="category_id" value="{{ product['category_id'] }}" name="category_id" required><br>
-                <label for="manufacture-date">Manufacture date :</label> <input type="date" class="form-control" placeholder="manufacture_date" value="{{ product['manufacture_date'] }}" name="manufacture_date" required><br>
-                <label for="expiry-date">Expiry date :</label> <input type="date" class="form-control" placeholder="expiry_date" value="{{ product['expiry_date'] }}" name="expiry_date" required><br>
-                <input type="text" class="form-control" placeholder="image_url" value="{{ product['image_url'] }}" name="image_url" required><br>
-                <br><br>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
-            </form>
-        </div>
-    </body>
-</html>
+{% extends "form.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block heading %}<h1 class="heading">Grocery Store</h1>{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Edit Product</h1>{% endblock %}
+
+{% block inputs %} 
+<input type="text" class="form-control" placeholder="Name" value="{{ product['name'] }}" name="name" required autofocus><br>
+<input type="text" class="form-control" placeholder="Description" value="{{ product['description'] }}" name="description" required><br>
+<input type="number" step="0.01" class="form-control" placeholder="Price" value="{{ product['price'] }}" name="price" required><br>
+<input type="number" step="0.01" class="form-control" placeholder="Quantity" value="{{ product['quantity'] }}" name="quantity" required><br>
+<input type="text" class="form-control" placeholder="Unit" value="{{ product['unit'] }}" name="unit" required><br>
+<input type="number" step="0.01" class="form-control" placeholder="pricePerUnit" value="{{ product['pricePerUnit'] }}" name="pricePerUnit" required><br>
+<input type="number" class="form-control" placeholder="category_id" value="{{ product['category_id'] }}" name="category_id" required><br>
+<label for="manufacture-date">Manufacture date :</label> <input type="date" class="form-control" placeholder="manufacture_date" value="{{ product['manufacture_date'] }}" name="manufacture_date" required><br>
+<label for="expiry-date">Expiry date :</label> <input type="date" class="form-control" placeholder="expiry_date" value="{{ product['expiry_date'] }}" name="expiry_date" required><br>
+<input type="text" class="form-control" placeholder="image_url" value="{{ product['image_url'] }}" name="image_url" required><br>
+<br>
+{% endblock %}
+
+{% block submitButtons %}
+<button class="btn" type="submit">Save changes</button>
+{% endblock %}

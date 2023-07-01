@@ -1,43 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %} Sign Up {% endblock %}</title>    
-        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/css/signinup.css" rel="stylesheet">
-        <script src="/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <h1 class="heading">Grocery Store</h1>
-            <br>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <br>
-            
-            <form class="form-signup" role="form" method="post">
-                <h1 class="form-signup-heading">Create an account</h1>
-                <input type="text" class="form-control" placeholder="Name" name="name" required autofocus><br>
-                <input type="text" class="form-control" placeholder="Username" name="username" required><br>
-                <input type="text" class="form-control" placeholder="Email address" name="email" required><br>
-                <input type="tel" class="form-control" placeholder="Phone number" name="phone" required><br>
-                {% block content %}
-                <input type="text" class="form-control" placeholder="Address" name="address" required><br>
-                {% endblock %}
-                <input type="password" class="form-control" placeholder="Password" name="password" required><br>
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><br><br>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-            </form>
-            <p class="text-center">Already have an account? <a href="/">Sign-in</a> 
-            </p>
-        </div>
-    </body>
-</html>
+{% extends "form.html" %}
+{% block heading %}<h1 class="heading">Grocery Store</h1>{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Create an account</h1>{% endblock %}
+
+{% block inputs %}
+<input type="text" class="form-control" placeholder="Name" name="name" required autofocus><br>
+<input type="text" class="form-control" placeholder="Username" name="username" required><br>
+<input type="text" class="form-control" placeholder="Email address" name="email" required><br>
+<input type="tel" class="form-control" placeholder="Phone number" name="phone" required><br>
+{% block sub_inputs %}
+<input type="text" class="form-control" placeholder="Address" name="address" required><br>
+{% endblock %}
+{% endblock %}
+
+{% block passwordInput %} 
+<input type="password" class="form-control" placeholder="Password" name="password" required><br>
+{% endblock %} 
+
+{% block submitButtons %}  
+<button class="btn" type="submit">Sign up</button>
+{% endblock %}
+
+{% block belowSubmit %}<p class="belowSubmit">Already have an account? <a href="/">Sign-in</a></p> {% endblock %}

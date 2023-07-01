@@ -217,7 +217,7 @@ def check_product(name, description, price, quantity, unit, pricePerUnit, catego
     elif type(unit)!=str:
         return 'Unit must be a string', 400
     elif not Category.query.get(category_id):    
-        return 'Invalid category_id', 404
+        return 'Invalid category_id', 400
     elif type(image_url)!=str:
         return 'Image_url must be a string', 400
     else:

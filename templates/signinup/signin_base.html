@@ -1,54 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Sign In</title>    
-        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/css/signinup.css" rel="stylesheet">
-        <script src="/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-        <script src="static/js/signup.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <h1 class="heading">Grocery Store</h1>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <br>
-            <form class="form-signin" role="form" action="{{ url_for('auth.signin') }}" method="post">
-                <div class="role-selection">
-                    <input type="radio" id="customer" name="role" value="customer" required>
-                    <label for="customer">Customer</label>
-                    <input type="radio" id="store-manager" name="role" value="store-manager" required>
-                    <label for="store-manager">Store Manager</label>
-                    <input type="radio" id="delivery-executive" name="role" value="delivery-executive" required>
-                    <label for="delivery-executive">Delivery Executive</label>
-                </div>
-                <br>
-                <h1 class="form-signin-heading">Please sign in</h1>
-                <br>
-                <input type="text" id="username" class="form-control" placeholder="Username" name="username" required autofocus>
-                <br>
-                <input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <!--
-                <a href="/forgot_password">Forgot password?</a>
-                -->
-                <br>
-                <br>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="action" value="signin">Sign in</button>
-            </form>
-            <div class="signup">
-                Don't have an account? <button class="btn btn-lg btn-primary btn-block" onclick="redirectToSignup()">Sign up</button>
-            </div>            
-        </div>
-        
-    </body>
-</html>
+{% extends "form.html" %}
+{% block title %} Sign In {% endblock %}
+{% block jsCSSlinks %}<script src="static/js/signup.js"></script>{% endblock %}
+{% block heading %}<h1 class="heading">Grocery Store</h1><br>{% endblock %}
+
+{% block roleSelection %}
+<br>
+<div class="role-selection">
+    <input type="radio" id="customer" name="role" value="customer" required>
+    <label for="customer">Customer</label>
+    <input type="radio" id="store-manager" name="role" value="store-manager" required>
+    <label for="store-manager">Store Manager</label>
+    <input type="radio" id="delivery-executive" name="role" value="delivery-executive" required>
+    <label for="delivery-executive">Delivery Executive</label>
+</div>
+<br>
+{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Please sign in </h1>{% endblock %}
+
+{% block inputs %}  
+<br>
+<input type="text" id="username" class="form-control" placeholder="Username" name="username" required autofocus>
+<br>
+{% endblock %}
+
+{% block passwordInput %}<input type="password" id="password" class="form-control" placeholder="Password" name="password" required><br><br> {% endblock %} 
+
+{% block submitButtons %}<button class="btn" type="submit" name="action" value="signin">Sign in</button>{% endblock %}
+
+{% block belowSubmit %} 
+<div class="belowSubmit">
+    Don't have an account? <button class="btn" onclick="redirectToSignup()">Sign up</button>
+</div>  
+{% endblock %}

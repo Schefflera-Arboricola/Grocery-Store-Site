@@ -1,29 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Search Products</title>    
-        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/css/signinup.css" rel="stylesheet">
-        <script src="/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <h1 class="heading">Grocery Store Search</h1>
-            <br>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <br>
-            
-            <form class="form-signup" role="form" method="post">
+{% extends "form.html" %}
+{% block title %}Search Products{% endblock %}
+
+{% block heading %}<h1 class="heading">Grocery Store Search</h1><br>{% endblock %}
+
+{% block inputs %} 
                 <input type="text" class="form-control" placeholder="Product name" name="name" autofocus><br>
                 <select class="form-control" name="category" required>
                     <option value="">Select category</option>
@@ -44,10 +24,9 @@
                 <label for="expiry-date">Expiry date range:</label>
                 <input type="date" class="form-control" name="min_expiry_date" id="expiry-date">
                 <input type="date" class="form-control" name="max_expiry_date"><br>
-    
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-                <h3><a href='/customer/{{ c_id }}/dashboard'>Dashboard</a></h3>
-            </form>
-        </div>
-    </body>
-</html>
+{% endblock %}
+
+{% block submitButtons %}
+<button class="btn" type="submit">Search</button>
+<h3><a href='/customer/{{ c_id }}/dashboard'>Dashboard</a></h3>
+{% endblock %}

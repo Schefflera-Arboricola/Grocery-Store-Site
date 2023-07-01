@@ -1,4 +1,16 @@
 '''
+#for online payment
+class Payment(db.Model):
+    __tablename__='payment'
+    payment_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
+    customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
+    payment_status=db.Column(db.String,nullable=False)
+    payment_date=db.Column(db.String,nullable=False)
+    payment_amount=db.Column(db.Float,nullable=False)
+    account_details=db.Column(db.String,nullable=False)
+'''
+
+'''
 #flask : blueprint and views
 @app.after_request
 def after_request(response):
@@ -8,6 +20,7 @@ def after_request(response):
 '''
 
 #<product search html page> : see on github
+
 
 
 #forgot password
