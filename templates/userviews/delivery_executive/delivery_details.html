@@ -40,12 +40,18 @@
       <div>
         <form action="/delexe/{{ delexe_id }}/delivery_details/{{ order_id }}" method="POST">
           {% if delivery_status== 'ORDER PLACED' %}
+          {% if flag %}  
             <label for="delivery_confirmation">
-            <input type="checkbox" id="delivery_confirmation" required>
-            'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
-            </label>
-            <br>
-            <button type="submit">Submit</button>
+              <input type="checkbox" id="delivery_confirmation" required>
+              'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
+              </label>
+              <br>
+              <button type="submit">Generate OTP</button>
+            {% else %}
+              <input type="password" placeholder="6 digit OTP" name="otp" required autofocus>
+              <br>
+              <button type="submit"></button>
+            {% endif %}
           {% endif %}
         </form>
       </div>

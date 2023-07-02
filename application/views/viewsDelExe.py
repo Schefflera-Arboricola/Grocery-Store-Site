@@ -3,6 +3,7 @@ from flask_login import login_required
 from flask import current_app as app
 from application.models import *
 from application.database import db
+from application.config import client,sender_phone
 from werkzeug.security import check_password_hash
 import requests
 
@@ -68,6 +69,7 @@ def delivery_details(delexe_id,order_id):
     customer={'name': customer.name ,'phone' : customer.phone_no,'address': customer.address}
     orderItems=OrdersItems.query.filter_by(order_id=order_id).all()
     products=[]
+    flag=True
     for i in orderItems:
         d={'quantity': i.quantity,'price': i.price}
         base_url = request.host_url[:-1]
@@ -76,8 +78,45 @@ def delivery_details(delexe_id,order_id):
         d['name']=product['name']
         products.append(d)
     total_price=order.total_price
+    otp_obj=OTP()
     if request.method == 'POST':
-        order.delivery_status='DELIVERED'
-        db.session.commit()
-    return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status)
-        
+        if flag :
+            flag=False
+            otp=generateOTP()
+            otp_obj.otp=otp
+            sendOTP(otp,customer['phone'])
+            return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag)
+        else:
+            otp=request.form.get('otp')
+            if otp==otp_obj.getOTP():
+                order.delivery_status='DELIVERED'
+                db.session.commit()
+                return redirect(url_for('viewsDelExe.dashboard',delexe_id=delexe_id))
+            else:
+                flag = True
+                return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag)
+
+class OTP:
+    def __init__(self,otp):
+        self.otp=otp
+    def getOTP(self):
+        if self.otp==None:
+            raise Exception('OTP not generated')
+        else:
+            return self.otp
+    
+def generateOTP():
+    import random
+    OTP = ""
+    for i in range(6):
+        OTP += str(random.randint(0, 9))
+    return OTP
+
+def sendOTP(otp,phone_no):
+    
+    message = client.messages.create(
+            body=f'Your OTP is: {str(otp)}',
+            from_=sender_phone,
+            to='+91'+str(phone_no) #this number should be verified if you are using a trail account
+        )
+    return None

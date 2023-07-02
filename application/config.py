@@ -1,5 +1,11 @@
 import os
 
+from twilio.rest import Client
+account_sid = ''
+auth_token = '' 
+sender_phone = ''
+client = Client(account_sid, auth_token)
+
 basedir=os.path.abspath(os.path.dirname(__file__))
 
 class Config():
