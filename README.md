@@ -10,10 +10,13 @@ how to run the code :
 <br><br>
 
 <h2>Database schema </h2>
-![db](static/img/dbs.jpg)
+
+![db](/static/img/dbs.jpg)
+
 <br>
 
 <h2>Some points about the DB :</h2>
+
 1. Database is initialized with one branch in Branch table and one Store Manager in StoreManagerIds and three Delivery Executives in DeliveryExecutiveIds. These IDs are required while signing up as store manager and delivery executive.
 2. Cart table has all the items currently in the carts of all the customers.
 3. OrdersItems has all the items ordered by all the customers.
@@ -22,6 +25,7 @@ in the Cart table(for that customer) are transferred to the OrdersItems table an
 <br>
 
 <h2>Features :</h2>
+
 1. 3 types of users : Customer, Store Manager, Delivery Executive 
 2. CRUD APIs for Product and Category management
 3. Proper signin-signup framework made using flask-login
