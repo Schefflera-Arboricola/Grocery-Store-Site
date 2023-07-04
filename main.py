@@ -9,8 +9,14 @@ from flask_restful import Api
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
-    app.secret_key = 'your_secret_key'
+    app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # 1 hour : session time(for OTPs)
+    app.config['SECRET_KEY'] = 'asdfghjklzxcvbnm'
+    app.secret_key = 'qwertyuiopasdfghjkl'
+    import stripe
+    
+    app.config['STRIPE_PUBLIC_KEY']=''
+    app.config['STRIPE_SECRET_KEY']=''
+
     CORS(app)
     if os.getenv('ENV',"development")=="production": 
         raise Exception("Currently no production config is setup.")
@@ -38,13 +44,11 @@ def create_app():
     api.init_app(app)
 
     api.add_resource(CategoryAPI, '/categories', '/categories/<int:category_id>')
-    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>', '/products/<int:flag>/<int:category_id>/')
+    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>', '/products/<int:flag>/<int:category_id>/') #flag tells if the entered id is category_id or product_id
 
     return app,api
 
 app,api=create_app()
-
-
 
 
 if __name__=='__main__':

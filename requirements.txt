@@ -10,3 +10,4 @@ Werkzeug
 itsdangerous
 requests
 twilio
+stripe

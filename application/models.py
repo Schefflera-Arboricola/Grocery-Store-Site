@@ -88,7 +88,7 @@ class OrderDetails(db.Model):
     customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
     branch_id=db.Column(db.Integer, db.ForeignKey("branch.branch_id"),nullable=False)
     delivery_executive_id=db.Column(db.Integer, db.ForeignKey("delivery_executive.delivery_executive_id"),nullable=False)
-    #payment_id=db.Column(db.Integer, db.ForeignKey("payment.payment_id"),nullable=False)
+    modeOfPayment=db.Column(db.String,nullable=False)
     delivery_status=db.Column(db.String)
     order_date=db.Column(db.String,nullable=False)
     total_price=db.Column(db.Float,nullable=False)
@@ -101,6 +101,15 @@ class OrdersItems(db.Model):
     price=db.Column(db.String,nullable=False)
     quantity=db.Column(db.Integer,nullable=False)
 
+class onlinePayments(db.Model):
+    __tablename__='online_payments'
+    payment_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
+    order_id=db.Column(db.Integer, db.ForeignKey("order_details.order_id"))
+    customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
+    payment_status=db.Column(db.String,nullable=False)
+    payment_date=db.Column(db.String,nullable=False)
+    payment_amount=db.Column(db.Float,nullable=False)
+    payment_intent_id=db.Column(db.String,nullable=False,unique=True)
 
 db.create_all()
 

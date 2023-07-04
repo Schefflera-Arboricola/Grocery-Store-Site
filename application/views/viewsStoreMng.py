@@ -28,7 +28,7 @@ def editProfile(strmng_id):
         user.name=name
         user.phone_no=phone
         if check_password_hash(user.password, password):
-            features=check_user_features(StoreManager,name,user.username,phone,password,user.email)
+            features=check_user_features(name,phone)
             if features!=True: 
                 flash(features, category='error')
                 return render_template("editProfile/editProfile_storemng.html", name=user.name,phone=user.phone_no)

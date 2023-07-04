@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash
 from application.views.auth import check_address
 import requests
 from datetime import datetime
+import stripe
 
 viewsCustomer = Blueprint('viewsCustomer', __name__)
 
@@ -84,7 +85,7 @@ def order_details(c_id,order_id):
         product=response.json()
         pname=product['name']
         products.append({'cart_quantity':item.quantity,'price':item.price,'name':pname})
-    return render_template("userviews/customer/orderDetails.html", c_id=c_id,products=products,total_price=total_price,delivery_status=order.delivery_status,order_id=order_id)
+    return render_template("userviews/customer/orderDetails.html", c_id=c_id,products=products,total_price=total_price,delivery_status=order.delivery_status,order_id=order_id,modeOfPayment=order.modeOfPayment,order_date=order.order_date)
 
 
 
@@ -202,8 +203,69 @@ def removeFromCart(c_id,p_id):
 
 @viewsCustomer.route('/customer/<int:c_id>/placeOrder/<float:total_price>', methods=['GET', 'POST'])
 def placeOrder(c_id,total_price):
+    if request.method == 'POST':
+        mode=request.form.get('payment_mode')
+        if mode=='cod':
+            placeorder(c_id,total_price,'Cash on Delivery')
+            return redirect(url_for('viewsCustomer.past_orders',c_id=c_id))
+        elif mode=='online':
+            return redirect(url_for('viewsCustomer.paynow',c_id=c_id,total_price=total_price))
+        else : return 'error : contact admin'
+
+@viewsCustomer.route('/customer/<int:c_id>/paynow/<float:total_price>', methods=['GET', 'POST'])
+def paynow(c_id,total_price):
+    stripe.api_key=app.config['STRIPE_SECRET_KEY']
+    stripe_public_key=app.config['STRIPE_PUBLIC_KEY']
+    # Create a Stripe Payment Intent
+    tp=int(total_price)*100 #in paise
+    payment_intent = stripe.PaymentIntent.create(amount=tp, currency='inr', payment_method_types=['card'])
+    # Update the user's payment status in your database
+    new_payment=onlinePayments(customer_id=c_id,payment_amount=total_price,order_id='NULL',payment_intent_id=payment_intent.id,payment_status = 'pending',payment_date=datetime.now())
+    db.session.add(new_payment)
+    db.session.commit()
+    return render_template('userviews/customer/checkout.html', client_secret=payment_intent.client_secret,stripe_public_key=stripe_public_key, total_price=total_price,c_id=c_id)
+
+@viewsCustomer.route('/customer/<int:c_id>/payment_failure/<float:total_price>')
+def payment_failure(c_id,total_price):
+    placeorder(c_id, total_price, 'Cash on Delivery')
+    db.session.commit()
+    return redirect(url_for('viewsCustomer.past_orders', c_id=c_id))
+    
+@viewsCustomer.route('/customer/<int:c_id>/payment_success/<float:total_price>')
+def payment_success(c_id,total_price):
+    try:
+        payment = onlinePayments.query.filter_by(customer_id=c_id).order_by(onlinePayments.payment_id.desc()).first()
+        if payment:
+            placeorder(c_id, total_price, 'Online')
+            payment.payment_status = 'paid'
+            payment.order_id = OrderDetails.query.filter_by(customer_id=c_id).order_by(OrderDetails.order_id.desc()).first().order_id
+            db.session.commit()
+            return redirect(url_for('viewsCustomer.past_orders', c_id=c_id))
+    except Exception as e:
+        print(e)
+        return '', 400
+
+stripe.api_key = app.config['STRIPE_SECRET_KEY']
+@viewsCustomer.route('/webhook', methods=['POST'])
+def webhook():
+    payload = request.get_json()
+    event = None
+    try:
+        event = stripe.Event.construct_from(payload, stripe.api_key)
+    except ValueError as e:
+        # Invalid payload
+        print(f'error : {e}')
+        return '', 400
+    # Handle the event based on its type
+    if event.type == 'payment_intent.succeeded':
+        return redirect(url_for('viewsCustomer.past_orders', c_id=c_id))
+    else:
+        return '', 400
+
+        
+def placeorder(c_id,total_price,payment_mode):
     #adding order to order_details table
-    new_order=OrderDetails(customer_id=c_id,branch_id=1,delivery_executive_id=delivery_executive_assign(len(OrderDetails.query.all())),delivery_status='ORDER PLACED',order_date=datetime.now(),total_price=total_price)
+    new_order=OrderDetails(customer_id=c_id,branch_id=1,delivery_executive_id=delivery_executive_assign(len(OrderDetails.query.all())),delivery_status='ORDER PLACED',order_date=datetime.now(),total_price=total_price,modeOfPayment=payment_mode)
     db.session.add(new_order)
     db.session.commit()
 
@@ -223,12 +285,11 @@ def placeOrder(c_id,total_price):
         new_quantity=product['quantity']-(quantity*(product['price']/product['pricePerUnit']))
         product['quantity']=new_quantity
         response=requests.put(f'{base_url}/products/{product_id}',json=product)
-    
+            
     #emptying the cart
     for cart_item in cart_items:
         db.session.delete(cart_item)
         db.session.commit()
-    return redirect(url_for('viewsCustomer.past_orders',c_id=c_id))
-
+    
 def delivery_executive_assign(n):
     return (n+1)%3

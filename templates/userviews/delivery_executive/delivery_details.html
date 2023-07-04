@@ -46,11 +46,14 @@
               'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
               </label>
               <br>
+              <input type="hidden" name="flag" value="True">
               <button type="submit">Generate OTP</button>
             {% else %}
               <input type="password" placeholder="6 digit OTP" name="otp" required autofocus>
               <br>
-              <button type="submit"></button>
+              <input type="hidden" name="flag" value="False">
+              <br>
+              <button type="submit">Submit</button>
             {% endif %}
           {% endif %}
         </form>

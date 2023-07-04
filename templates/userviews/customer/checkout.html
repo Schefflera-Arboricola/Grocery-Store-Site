@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <p>Price : {{ total_price }}</p>
+    <form id="payment-form">
+        <div id="card-element">
+            <!-- Stripe will insert the card input field here -->
+        </div>
+        <br>
+        <button id="submit-button" type="submit">Pay Now</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve the client secret from the backend
+            var clientSecret = "{{ client_secret }}";
+
+            // Create a Stripe instance
+            var stripe = Stripe('{{ stripe_public_key }}');
+
+            // Create a card element
+            var elements = stripe.elements();
+            var cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+
+            // Handle form submission
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            // Include billing details here if needed
+                        }
+                    }
+                }).then(function(result) {
+                    if (result.error) {
+                        // Handle payment failure
+                        console.error(result.error);
+                        window.location.href = "/customer/{{ c_id }}/payment_failure/{{ total_price }}";
+                    } else {
+                        // Payment succeeded
+                        // Redirect or show a success message
+                        console.log(result.paymentIntent);
+                        window.location.href = "/customer/{{ c_id }}/payment_success/{{ total_price }}";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

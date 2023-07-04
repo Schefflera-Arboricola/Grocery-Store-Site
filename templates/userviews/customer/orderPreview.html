@@ -34,8 +34,14 @@
             <br>
             <strong>Total : </strong>{{ total_price }}<br>
             <br><br>
-            <button onclick="window.location.href='/customer/{{ c_id }}/placeOrder/{{ total_price }}'">Place order</button>
-           
+            <form method="POST" action="/customer/{{ c_id }}/placeOrder/{{ total_price }}">
+                <input type="radio" name="payment_mode" value="cod" required>
+                <label for="cod">Cash on delivery</label><br>
+                <input type="radio" name="payment_mode" value="online" required>
+                <label for="online">Pay Now</label>
+                <br><br>
+                <button type="submit">Place order</button>
+            </form>
         </div>
     </body>
 </html>
