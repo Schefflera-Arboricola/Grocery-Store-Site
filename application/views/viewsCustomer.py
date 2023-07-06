@@ -258,8 +258,9 @@ def webhook():
         return '', 400
     # Handle the event based on its type
     if event.type == 'payment_intent.succeeded':
-        return redirect(url_for('viewsCustomer.past_orders', c_id=c_id))
+        return '', 200
     else:
+        print(f'error : {event.type}')
         return '', 400
 
         
