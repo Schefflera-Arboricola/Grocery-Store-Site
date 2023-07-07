@@ -36,5 +36,3 @@ in the Cart table(for that customer) are transferred to the OrdersItems table an
 
 <br>
 <br>
-
-[`extra` directory has half baked code for the issues and other features]

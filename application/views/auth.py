@@ -4,6 +4,8 @@ from flask import current_app as app
 from application.models import *
 from application.database import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from application.config import client,sender_phone
+from application.views.viewsDelExe import generateOTP, sendOTP
 
 def LoginManagerfunc(app):
     login_manager = LoginManager()
@@ -201,3 +203,150 @@ def check_delexe_ids(delexe_id,branch_id):
         return 'Enter correct Branch ID'
     else:
         return 'Something went wrong! Contact Admin.'
+
+# forgot password routes
+
+@auth.route('/customer_forgot_password', methods=['GET', 'POST'])
+def customer_forgot_password():
+    if request.method=='POST':
+        flag=request.form.get('flag')
+        id=request.form.get('id')
+        if flag=='True':
+            username=request.form.get('username')
+            email=request.form.get('email')
+            phone_no=request.form.get('phone_no')
+            user=Customer.query.filter_by(username=username).first()
+            if user:
+                if user.email==email and user.phone_no==phone_no:
+                    otp=generateOTP()
+                    session['otp'] = otp
+                    sendOTP(otp,phone_no)
+                    return render_template('signinup/forgot_pswd.html',flag=False,id=user.customer_id)
+                else:
+                    flash('Email and phone number doesnot match username',category='error')
+                    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+            else:
+                flash('Invalid credentials',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+        else:
+            otp=request.form.get('otp')
+            saved_otp = session.get('otp')
+            id=request.form.get('id')
+            if str(otp) == str(saved_otp):
+                return redirect(url_for('auth.customer_reset_password',c_id=id))
+            else:
+                flash('Invalid OTP',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+
+@auth.route('/customer_reset_password/<int:c_id>', methods=['GET', 'POST'])
+def customer_reset_password(c_id):
+    if request.method=='POST':
+        new_pswd=request.form.get('new_pswd')
+        if len(new_pswd)<8 :
+            flash('Password must have atleast 8 characters',category='error')
+            return render_template('signinup/set_new_pswd.html',id=c_id)
+        else:
+            user=Customer.query.filter_by(customer_id=c_id).first()
+            user.password=generate_password_hash(new_pswd)
+            db.session.commit()
+            flash('Password changed successfully',category='success')
+            return redirect('/')
+    return render_template('signinup/set_new_pswd.html',id=c_id)
+
+
+@auth.route('/store_manager_forgot_password', methods=['GET', 'POST'])
+def store_manager_forgot_password():
+    if request.method=='POST':
+        flag=request.form.get('flag')
+        id=request.form.get('id')
+        if flag=='True':
+            username=request.form.get('username')
+            email=request.form.get('email')
+            phone_no=request.form.get('phone_no')
+            user=StoreManager.query.filter_by(username=username).first()
+            if user:
+                if user.email==email and user.phone_no==phone_no:
+                    otp=generateOTP()
+                    session['otp'] = otp
+                    sendOTP(otp,phone_no)
+                    return render_template('signinup/forgot_pswd.html',flag=False,id=user.store_manager_id)
+                else:
+                    flash('Email and phone number doesnot match username',category='error')
+                    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+            else:
+                flash('Invalid credentials',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+        else:
+            otp=request.form.get('otp')
+            saved_otp = session.get('otp')
+            id=request.form.get('id')
+            if str(otp) == str(saved_otp):
+                return redirect(url_for('auth.store_manager_reset_password',strmng_id=id))
+            else:
+                flash('Invalid OTP',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+
+@auth.route('/store_manager_reset_password/<int:strmng_id>', methods=['GET', 'POST'])
+def store_manager_reset_password(strmng_id):
+    if request.method=='POST':
+        new_pswd=request.form.get('new_pswd')
+        if len(new_pswd)<8 :
+            flash('Password must have atleast 8 characters',category='error')
+            return render_template('signinup/set_new_pswd.html',id=strmng_id)
+        else:
+            user=StoreManager.query.filter_by(store_manager_id=strmng_id).first()
+            user.password=generate_password_hash(new_pswd)
+            db.session.commit()
+            flash('Password changed successfully',category='success')
+            return redirect('/')
+    return render_template('signinup/set_new_pswd.html',id=strmng_id)
+
+@auth.route('/delivery_executive_forgot_password', methods=['GET', 'POST'])
+def delivery_executive_forgot_password():
+    if request.method=='POST':
+        flag=request.form.get('flag')
+        id=request.form.get('id')
+        if flag=='True':
+            username=request.form.get('username')
+            email=request.form.get('email')
+            phone_no=request.form.get('phone_no')
+            user=DeliveryExecutive.query.filter_by(username=username).first()
+            if user:
+                if user.email==email and user.phone_no==phone_no:
+                    otp=generateOTP()
+                    session['otp'] = otp
+                    sendOTP(otp,phone_no)
+                    return render_template('signinup/forgot_pswd.html',flag=False,id=user.delivery_executive_id)
+                else:
+                    flash('Email and phone number doesnot match username',category='error')
+                    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+            else:
+                flash('Invalid credentials',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+        else:
+            otp=request.form.get('otp')
+            saved_otp = session.get('otp')
+            id=request.form.get('id')
+            if str(otp) == str(saved_otp):
+                return redirect(url_for('auth.delivery_executive_reset_password',delexe_id=id))
+            else:
+                flash('Invalid OTP',category='error')
+                return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+    return render_template('signinup/forgot_pswd.html',flag=True,id=None)
+
+@auth.route('/delivery_executive_reset_password/<int:delexe_id>', methods=['GET', 'POST'])
+def delivery_executive_reset_password(delexe_id):
+    if request.method=='POST':
+        new_pswd=request.form.get('new_pswd')
+        if len(new_pswd)<8 :
+            flash('Password must have atleast 8 characters',category='error')
+            return render_template('signinup/set_new_pswd.html',id=delexe_id)
+        else:
+            user=DeliveryExecutive.query.filter_by(delivery_executive_id=delexe_id).first()
+            user.password=generate_password_hash(new_pswd)
+            db.session.commit()
+            flash('Password changed successfully',category='success')
+            return redirect('/')
+    return render_template('signinup/set_new_pswd.html',id=delexe_id)

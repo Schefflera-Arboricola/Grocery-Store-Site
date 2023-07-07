@@ -1,0 +1,28 @@
+{% extends "form.html" %}
+{% block title %} Forgot Password {% endblock %}
+{% block formHeading %} {% if flag %} Please enter your details <br> {% endif %} {% endblock %}
+                
+{% block inputs %}  
+{% if flag %}
+<input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+<br>
+<input type="text" class="form-control" placeholder="Email" name="email" required>
+<br>
+<input type="tel" class="form-control" placeholder="Phone No" name="phone_no" required>
+<br>
+{% endif %}
+{% endblock %}
+
+{% block submitButtons %}
+{% if flag %}
+<input type="hidden" name="flag" value="True">
+<input type="hidden" name="id" value="{{ id }}">
+<button class="btn" type="submit">Generate OTP</button>  
+{% else %}
+<input type="hidden" name="flag" value="False">
+<input type="hidden" name="id" value="{{ id }}">
+<input type="password" class="form-control" placeholder="OTP" name="otp" required>
+<button class="btn" type="submit">Submit</button>
+{% endif %}
+{% endblock %}
+

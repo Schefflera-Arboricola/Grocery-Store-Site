@@ -6,13 +6,13 @@ from application.config import LocalDevelopmentConfig
 from application.database import db
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
+import stripe
 
 def create_app():
     app = Flask(__name__)
     app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # 1 hour : session time(for OTPs)
     app.config['SECRET_KEY'] = 'asdfghjklzxcvbnm'
     app.secret_key = 'qwertyuiopasdfghjkl'
-    import stripe
     
     app.config['STRIPE_PUBLIC_KEY']=''
     app.config['STRIPE_SECRET_KEY']=''

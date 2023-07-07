@@ -24,7 +24,9 @@
 <br>
 {% endblock %}
 
-{% block passwordInput %}<input type="password" id="password" class="form-control" placeholder="Password" name="password" required><br><br> {% endblock %} 
+{% block passwordInput %}<input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
+<p style="color: blue ; text-decoration: underline;"><a onclick="redirectToForgotPswd()">Forgot Password</a></p>
+<br><br> {% endblock %} 
 
 {% block submitButtons %}<button class="btn" type="submit" name="action" value="signin">Sign in</button>{% endblock %}
 

@@ -1,0 +1,12 @@
+{% extends "form.html" %}
+{% block title %} Set new password {% endblock %}
+
+                
+{% block inputs %}  
+<input type="password" class="form-control" placeholder="New Password" name="new_pswd" required autofocus>
+<br>
+{% endblock %}
+
+{% block submitButtons %}
+<button class="btn" type="submit">Change Password</button>  
+{% endblock %}
