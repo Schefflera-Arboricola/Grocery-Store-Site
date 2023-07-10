@@ -71,7 +71,17 @@ class Products(db.Model):
     manufacture_date=db.Column(db.String)
     expiry_date=db.Column(db.String)
     image_url=db.Column(db.String,nullable=False)
+    avg_rating=db.Column(db.Float) 
 
+class Reviews(db.Model):
+    __tablename__='reviews'
+    review_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
+    customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
+    product_id=db.Column(db.Integer, db.ForeignKey("products.product_id"),nullable=False)
+    stars=db.Column(db.Integer,nullable=False)
+    review_text=db.Column(db.String)
+    date=db.Column(db.String,nullable=False)
+    isPurchased=db.Column(db.String,nullable=False)
 
 
 #once the order is placed, the items in cart are moved to this table, and cart is emptied, and product quantity is reduced in products table

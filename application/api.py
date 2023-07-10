@@ -89,7 +89,8 @@ class ProductAPI(Resource):
                         'category_id': product.category_id,
                         'manufacture_date': product.manufacture_date,
                         'expiry_date': product.expiry_date,
-                        'image_url': product.image_url
+                        'image_url': product.image_url,
+                        'avg_rating': product.avg_rating
                     }, 200
                 else:
                     return {'message': 'Product not found'}, 404
@@ -107,7 +108,8 @@ class ProductAPI(Resource):
                         'category_id': product.category_id,
                         'manufacture_date': product.manufacture_date,
                         'expiry_date': product.expiry_date,
-                        'image_url': product.image_url
+                        'image_url': product.image_url,
+                        'avg_rating': product.avg_rating
                     }
                     for product in products
                 ]
@@ -128,7 +130,8 @@ class ProductAPI(Resource):
                         'category_id': product.category_id,
                         'manufacture_date': product.manufacture_date,
                         'expiry_date': product.expiry_date,
-                        'image_url': product.image_url
+                        'image_url': product.image_url,
+                        'avg_rating': product.avg_rating
                     }
                     for product in products
                 ]
@@ -150,10 +153,11 @@ class ProductAPI(Resource):
         manufacture_date = data.get('manufacture_date')
         expiry_date = data.get('expiry_date')
         image_url = data.get('image_url')
+        avg_rating= data.get('avg_rating')
         
-        product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url)
+        product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)
         if status==200:
-            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url)
+            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=float(avg_rating))
             db.session.add(product)
             db.session.commit()
             return {'message': 'Product created successfully'}, 201
@@ -177,8 +181,9 @@ class ProductAPI(Resource):
             manufacture_date = data.get('manufacture_date')
             expiry_date = data.get('expiry_date')
             image_url = data.get('image_url')
+            avg_rating= data.get('avg_rating')
 
-            product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url)
+            product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)
             if status==200:
                 product.name = name
                 product.description = description
@@ -190,6 +195,7 @@ class ProductAPI(Resource):
                 product.manufacture_date = manufacture_date
                 product.expiry_date = expiry_date
                 product.image_url = image_url
+                product.avg_rating=avg_rating
                 db.session.commit()
                 return {'message': 'Product updated successfully'}, 201
             elif status==400:
@@ -209,7 +215,7 @@ class ProductAPI(Resource):
             return {'message': 'Product not found'}, 404
 
 
-def check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url):
+def check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating):
     if type(name)!=str:
         return 'Name must be a string', 400
     elif type(description)!=str:
@@ -220,5 +226,7 @@ def check_product(name, description, price, quantity, unit, pricePerUnit, catego
         return 'Invalid category_id', 400
     elif type(image_url)!=str:
         return 'Image_url must be a string', 400
+    elif float(avg_rating)>5 or float(avg_rating)<0:
+        return 'Invalid avg_rating', 400
     else:
         return 'Valid', 200
