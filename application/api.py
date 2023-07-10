@@ -157,7 +157,7 @@ class ProductAPI(Resource):
         
         product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)
         if status==200:
-            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=float(avg_rating))
+            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=avg_rating)
             db.session.add(product)
             db.session.commit()
             return {'message': 'Product created successfully'}, 201
@@ -226,7 +226,5 @@ def check_product(name, description, price, quantity, unit, pricePerUnit, catego
         return 'Invalid category_id', 400
     elif type(image_url)!=str:
         return 'Image_url must be a string', 400
-    elif float(avg_rating)>5 or float(avg_rating)<0:
-        return 'Invalid avg_rating', 400
     else:
         return 'Valid', 200

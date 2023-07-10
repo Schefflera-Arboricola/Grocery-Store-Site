@@ -5,6 +5,7 @@ from application.models import *
 from application.database import db
 from werkzeug.security import check_password_hash
 import requests
+from werkzeug.datastructures import ImmutableMultiDict
 
 viewsStoreMng = Blueprint('viewsStoreMng', __name__)
 
@@ -64,7 +65,10 @@ def Product(strmng_id):
 def addProduct(strmng_id):
     if request.method=='POST':
         base_url = request.host_url[:-1]
-        response = requests.post(f'{base_url}/products', json=request.form)
+        product_info=request.form
+        product_info=product_info.to_dict()
+        product_info['avg_rating']=None
+        response = requests.post(f'{base_url}/products', json=ImmutableMultiDict(product_info))
         products=response.json()
         if response.status_code==404:
             flash(products['message'], category='error')

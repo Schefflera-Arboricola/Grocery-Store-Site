@@ -7,35 +7,94 @@
 <body>
   <div class="container">
     <header>
+      <br>
       <h1 class="text-center">Product : {{ product['name'] }}</h1>
-      <a href="#">Back</a>
+      <a href="/customer/{{ c_id }}/searchProducts">Back to search</a> <br>
+      <a href="/customer/{{ c_id }}/dashboard">Back to Dashboard</a> 
+      <br>
     </header>
   <br>
     <div class="row">
-      <div class="col-md-4">
-         <img src="https://s1.picswalls.com/wallpapers/2017/12/11/nature-desktop-background_123026895_313.jpg" class="img-fluid">
-      </div>
+        <div class="col-md-4">
+            <img src="{{ product['image_url'] }}" alt="Product Image" class="img-fluid">
+        </div>
   
-      <div class="col-md-4">
-         Product details
-      </div>
+        <div class="col-md-4">
+            {% if product['quantity']==0 %}
+                <h3 style="color: red;">Out of Stock</h3>
+            {% endif %}
+            <h2>{{ product['name'] }}</h2>
+            <br>
+            <h6>
+            <p><strong>Average rating :</strong> {{ product['avg_rating'] }} &#9733;</p>
+            <br>
+            <p><strong>Price :</strong> {{ product['price'] }}</p>
+            <br>
+            <p><strong>Minimum quantity :</strong> {{ product['price'] / product['pricePerUnit'] }} {{ product['unit'] }}</p>
+            <br>
+            <p><strong>Price per unit : </strong>{{ product['pricePerUnit'] }} per {{ product['unit'] }}</p>
+            <br>
+            </h6>
+            <p><strong>Life : </strong>{{ product['manufacture_date'] }} to {{ product['expiry_date'] }}</p>
+            <br>
+            <p><strong>Description : </strong>{{ product['description'] }}</p>
+        </div>
   
-      <div class="col-md-4">
-        buy now<br>
-        add to cart
-      </div>
+        <div class="col-md-4">
+            <form action="/customer/{{ c_id }}/searchResults" method="POST">
+                <p><strong>Quantity :</strong> <select name="quantity" id="quantity" required>
+                    {% for number in range(1, 6) %}
+                        <option value="{{ number }}">{{ number }}</option>
+                    {% endfor %}
+                </select></p>
+                <h4>
+                {% if product['quantity']==0 %}
+                    <button type="submit" disabled>Add to cart</button>
+                {% else %}
+                    <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
+                    <input type="hidden" name="c_id" value="{{ c_id }}">
+                    <button type="submit">Add to cart</button>
+                {% endif %}
+                </h4>
+            </form>
+        </div>
     </div>
-  <br>
-  <br>
-  <hr>
-  <br>
+
+    <br>
+    <br>
+    <hr>
+    <form action="/customer/{{ c_id }}/productDetails/{{ product['product_id'] }}" method="POST">
+        <div class="card">
+            <div class="card-body">
+            <h3 class="card-title">Write a review </h3>
+            <p class="card-text">
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <br>
+                <input type="text" name="review_text" placeholder="Write the review" required>
+                <button type="submit">Submit</button>
+            </p>  
+        </div> 
+    </form>
 
     <section class="mt-4">
-      Comment section content 
+      {% for review in reviews %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ review.customer_name }}{% for _ in range(review.stars) %}&#9733;{% endfor %}</h5>
+            <h6 class="card-sub-text">{{ review.date }}</h6>
+            <p class="card-text">{{ review.review_text }}</p>
+          </div>
+        </div>
+      {% endfor %}
     </section>
   </div>
 
-  <!-- Include Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>

@@ -9,9 +9,9 @@ how to run the code :
 
 <br><br>
 
-<h2>Database schema </h2>
+<h2>Database : </h2>
 
-![db](/static/img/dbs.jpg)
+![db](/static/img/db.jpg)
 
 <br>
 

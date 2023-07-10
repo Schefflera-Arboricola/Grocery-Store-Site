@@ -100,6 +100,8 @@ def searchProducts(c_id):
         category_id=request.form.get('category')
         min_price=request.form.get('min_price')
         max_price=request.form.get('max_price')
+        min_avg_rating=request.form.get('min_avg_rating')
+        max_avg_rating=request.form.get('max_avg_rating')
         min_manufacture_date=request.form.get('min_manufacture_date')
         max_manufacture_date=request.form.get('max_manufacture_date')
         min_expiry_date=request.form.get('min_expiry_date')
@@ -115,6 +117,10 @@ def searchProducts(c_id):
             if min_price=='': min_price=0
             if max_price=='': max_price=100000000
             products=[product for product in products if float(product['price'])>=float(min_price) and float(product['price'])<=float(max_price)]
+        if (min_avg_rating!='' and max_avg_rating=='') or (min_avg_rating=='' and max_avg_rating!=''):
+            if min_avg_rating=='': min_avg_rating=0
+            if max_avg_rating=='': max_avg_rating=5
+            products=[product for product in products if float(product['avg_rating'])>=float(min_avg_rating) and float(product['avg_rating'])<=float(max_avg_rating)]
         if (min_manufacture_date!='' and max_manufacture_date=='') or (min_manufacture_date=='' and max_manufacture_date!=''):
             if min_manufacture_date=='': min_manufacture_date='01-01-0001'
             if max_manufacture_date=='': max_manufacture_date='31-12-9999'
@@ -143,7 +149,44 @@ def searchResults(c_id):
         return redirect(url_for("viewsCustomer.cart",c_id=c_id))
     return redirect(url_for("viewsCustomer.searchProducts",c_id=c_id))
 
+@viewsCustomer.route('/customer/<int:c_id>/productDetails/<int:product_id>', methods=['GET', 'POST'])
+def productDetails(c_id,product_id):
+    if request.method == 'GET':
+        reviews=Reviews.query.filter_by(product_id=product_id).all()  
+        #for review in reviews: review['customer_name'] = Customer.query.filter_by(customer_id=review['customer_id']).first().name
+        product=Products.query.filter_by(product_id=product_id).first()
+        return render_template("userviews/customer/productDetails.html",c_id=c_id,product=product,reviews=reviews)
+    if request.method == 'POST':
+        rating=request.form.get('rating')
+        review_text=request.form.get('review_text')
+        date=datetime.now().strftime("%d-%m-%Y")
+        isPurchased=False
+        for i in OrderDetails.query.filter_by(customer_id=c_id).all():
+            flag=False
+            for j in OrdersItems.query.filter_by(order_id=i.order_id).all():
+                if j.product_id==product_id:
+                    isPurchased,flag=True,True
+                    break
+            if flag: break
+        updateRating(product_id,rating)
+        review=Reviews(customer_id=c_id,product_id=product_id,stars=rating,review_text=review_text,date=date,isPurchased=isPurchased)
+        db.session.add(review)
+        db.session.commit()
+        return redirect(url_for('viewsCustomer.productDetails',c_id=c_id,product_id=product_id))
 
+def updateRating(product_id,rating):
+    base_url = request.host_url[:-1]
+    response = requests.get(f'{base_url}/products/{product_id}')
+    product_info=response.json()
+    if product_info['avg_rating'] is None: 
+        product_info['avg_rating']=int(rating)
+        response = requests.put(f'{base_url}/products/{product_id}',json=product_info)
+    else:
+        reviews=Reviews.query.filter_by(product_id=product_id).all()
+        count=len(reviews)
+        avg_rating=round((float(product_info['avg_rating'])*count+int(rating))/(count+1),2)
+        product_info['avg_rating']=avg_rating
+        response = requests.put(f'{base_url}/products/{product_id}',json=product_info)
 
 
 

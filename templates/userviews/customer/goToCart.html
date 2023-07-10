@@ -55,7 +55,7 @@
 			<div class="cart-item">
 				<img src="{{ product['image_url'] }}" alt="{{ product['name'] }}">
 				<div class="cart-item-details">
-					<h2 class="cart-item-name">{{ product['name'] }}</h2>
+					<h2 class="cart-item-name"><a href="/customer/{{ c_id }}/productDetails/{{ product['product_id'] }}">{{ product['name'] }}</a></h2>
 					<p class="cart-item-price"><strong>Price : </strong> {{ product['price'] }}</p>
 					{% if product['quantity'] != 0 %}
 						<p class="cart-item-quantity"><strong>Quantity : </strong>{{ product['cart_quantity'] }}</p>

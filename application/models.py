@@ -78,11 +78,17 @@ class Reviews(db.Model):
     review_id=db.Column(db.Integer, autoincrement=True,primary_key=True)
     customer_id=db.Column(db.Integer, db.ForeignKey("customer.customer_id"),nullable=False)
     product_id=db.Column(db.Integer, db.ForeignKey("products.product_id"),nullable=False)
-    stars=db.Column(db.Integer,nullable=False)
+    stars=db.Column(db.Integer)
     review_text=db.Column(db.String)
     date=db.Column(db.String,nullable=False)
     isPurchased=db.Column(db.String,nullable=False)
 
+    @property
+    def customer_name(self):
+        customer = Customer.query.filter_by(customer_id=self.customer_id).first()
+        if customer:
+            return customer.name
+        return None
 
 #once the order is placed, the items in cart are moved to this table, and cart is emptied, and product quantity is reduced in products table
 class Cart(db.Model):

@@ -1,0 +1,114 @@
+# Paste this code in https://dbdiagram.io/ to generate the ER diagram 
+
+Table customer {
+  customer_id int [pk]
+  name varchar [not null]
+  email varchar [not null, unique]
+  username varchar [not null, unique]
+  password varchar [not null]
+  phone_no varchar(10) [not null]
+  address varchar [not null]
+}
+
+Table store_manager {
+  store_manager_id int [pk]
+  branch_id int [ref: < branch.id]
+  name varchar [not null]
+  email varchar [not null, unique]
+  username varchar [not null, unique]
+  password varchar [not null]
+  phone_no varchar(10) [not null]
+}
+
+Table delivery_executive {
+  delivery_executive_id int [pk]
+  branch_id int [ref: < branch.id]
+  name varchar [not null]
+  email varchar [not null, unique]
+  username varchar [not null, unique]
+  password varchar [not null]
+  phone_no varchar(10) [not null]
+}
+
+Table store_manager_ids {
+  store_manager_id int [pk]
+  branch_id int [ref: < branch.id]
+}
+
+Table delivery_executive_ids {
+  delivery_executive_id int [pk]
+  branch_id int [ref: < branch.id]
+}
+
+Table branch {
+  id int [pk]
+  location varchar [not null]
+  phone_no varchar [not null]
+}
+
+Table category {
+  id int [pk]
+  name varchar [not null, unique]
+  description varchar
+}
+
+Table products {
+  id int [pk]
+  name varchar [not null]
+  description varchar [not null]
+  price float [not null]
+  quantity int [not null]
+  unit varchar [not null]
+  pricePerUnit float [not null]
+  category_id int [ref: < category.id]
+  manufacture_date varchar
+  expiry_date varchar
+  image_url varchar [not null]
+  avg_rating float
+}
+
+Table reviews {
+  id int [pk]
+  customer_id int [ref: < customer.customer_id]
+  product_id int [ref: < products.id]
+  stars int
+  review_text varchar
+  date varchar [not null]
+  isPurchased varchar [not null]
+}
+
+Table cart {
+  sno int [pk]
+  customer_id int [ref: < customer.customer_id]
+  product_id int [ref: < products.id]
+  quantity int
+}
+
+Table order_details {
+  order_id int [pk]
+  customer_id int [ref: < customer.customer_id]
+  branch_id int [ref: < branch.id]
+  delivery_executive_id int [ref: < delivery_executive.delivery_executive_id]
+  modeOfPayment varchar [not null]
+  delivery_status varchar
+  order_date varchar [not null]
+  total_price float [not null]
+}
+
+Table orders_items {
+  sno int [pk]
+  order_id int [ref: < order_details.order_id]
+  product_id int [ref: < products.id]
+  price varchar [not null]
+  quantity int [not null]
+}
+
+Table online_payments {
+  payment_id int [pk]
+  order_id int [ref: < order_details.order_id]
+  customer_id int [ref: < customer.customer_id]
+  payment_status varchar [not null]
+  payment_date varchar [not null]
+  payment_amount float [not null]
+  payment_intent_id varchar [not null, unique]
+}
