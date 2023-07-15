@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_user, login_required, logout_user, LoginManager
+from flask_login import login_user, login_required, logout_user,LoginManager
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -7,21 +7,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from application.config import client,sender_phone
 from application.views.viewsDelExe import generateOTP, sendOTP
 
-def LoginManagerfunc(app):
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.signin'
-    login_manager.init_app(app)
-    @login_manager.user_loader
-    def load_user(user_id):
-        if session['account_type'] == 'Customer':
-            return Customer.query.get(int(user_id))
-        elif session['account_type'] == 'StoreManager':
-            return StoreManager.query.get(int(user_id))
-        elif session['account_type'] == 'DeliveryExecutive':
-            return DeliveryExecutive.query.get(int(user_id))
-        else:
-            return None
-            
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    if session['account_type'] == 'Customer':
+        return Customer.query.get(int(user_id))
+    elif session['account_type'] == 'StoreManager':
+        return StoreManager.query.get(int(user_id))
+    elif session['account_type'] == 'DeliveryExecutive':
+        return DeliveryExecutive.query.get(int(user_id))
+    else:
+        return None
+   
 auth = Blueprint('auth', __name__)
 
 
@@ -58,27 +57,16 @@ def signin():
     return render_template("signinup/signin_base.html")
 
 
-# Signout routes
+# Signout route
 
-@auth.route('/signout_customer')
+@auth.route('/signout')
 @login_required
 def logout_customer():
     logout_user()
-    return redirect(url_for('auth.signin'))
-
-@auth.route('/signout_store_manager')
-@login_required
-def logout_store_manager():
-    logout_user()
-    return redirect(url_for('auth.signin'))
-
-@auth.route('/signout_delivery_executive')
-@login_required
-def logout_delivery_executive():
-    logout_user()
-    return redirect(url_for('auth.signin'))
-
-
+    session.clear()
+    response = redirect(url_for('auth.signin'))
+    response.delete_cookie('remember_token')
+    return response
 
 
 # Signup routes

@@ -22,6 +22,7 @@ how to run the code :
 3. OrdersItems has all the items ordered by all the customers.
 4. Once the order is placed a new entry is created in the OrderDetails table, and the items
 in the Cart table(for that customer) are transferred to the OrdersItems table and the quantities in the Products table are also decreased using the API.
+5. If payment fails, the order is automatically placed with Cash-on-delivery as the mode of payment.
 <br>
 
 <h2>Features :</h2>
@@ -36,3 +37,5 @@ in the Cart table(for that customer) are transferred to the OrdersItems table an
 
 <br>
 <br>
+
+Around 20 initial commits are not very well documented.

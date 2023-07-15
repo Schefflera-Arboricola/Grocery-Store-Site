@@ -11,3 +11,5 @@ itsdangerous
 requests
 twilio
 stripe
+scikit-learn
+numpy

@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_required
+from flask import Blueprint, render_template, request, flash, redirect, url_for,session
+from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -8,6 +8,7 @@ from application.views.auth import check_address
 import requests
 from datetime import datetime
 import stripe
+from ML_models import similarProducts
 
 viewsCustomer = Blueprint('viewsCustomer', __name__)
 
@@ -15,7 +16,10 @@ viewsCustomer = Blueprint('viewsCustomer', __name__)
 @viewsCustomer.before_request
 @login_required
 def require_login():
-    pass
+    customer_id = request.view_args.get('c_id')
+    if not isinstance(current_user, Customer) or current_user.customer_id != customer_id:
+        return render_template('error.html'), 401
+
 
 @viewsCustomer.route('/customer/<int:c_id>/dashboard')
 def dashboard(c_id):
@@ -135,7 +139,7 @@ def searchProducts(c_id):
 @viewsCustomer.route('/customer/<int:c_id>/searchResults', methods=['GET', 'POST'])
 def searchResults(c_id):
     if request.method=='POST':
-        quantity = request.form.get('quantity')
+        quantity = int(request.form.get('quantity'))
         product_id = request.form.get('product_id')
         c_id= request.form.get('c_id')
         if Cart.query.filter_by(customer_id=c_id,product_id=product_id).first():
@@ -153,9 +157,15 @@ def searchResults(c_id):
 def productDetails(c_id,product_id):
     if request.method == 'GET':
         reviews=Reviews.query.filter_by(product_id=product_id).all()  
-        #for review in reviews: review['customer_name'] = Customer.query.filter_by(customer_id=review['customer_id']).first().name
-        product=Products.query.filter_by(product_id=product_id).first()
-        return render_template("userviews/customer/productDetails.html",c_id=c_id,product=product,reviews=reviews)
+        base_url = request.host_url[:-1]
+        response = requests.get(f'{base_url}/categories')
+        categories=response.json()
+        response = requests.get(f'{base_url}/products')
+        all_products=response.json()
+        response = requests.get(f'{base_url}/products/{product_id}')
+        product=response.json()
+        similar_products=similarProducts.similarProducts(product, all_products,categories)
+        return render_template("userviews/customer/productDetails.html",c_id=c_id,product=product,reviews=reviews,similar_products=similar_products)
     if request.method == 'POST':
         rating=request.form.get('rating')
         review_text=request.form.get('review_text')

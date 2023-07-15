@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for,session
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -12,7 +12,10 @@ viewsDelExe = Blueprint('viewsDelExe', __name__)
 @viewsDelExe.before_request
 @login_required
 def require_login():
-    pass
+    delivery_executive_id = request.view_args.get('delexe_id')
+    if not isinstance(current_user, DeliveryExecutive) or current_user.delivery_executive_id != delivery_executive_id:
+        return render_template('error.html'), 401
+
 
 @viewsDelExe.route('/delexe/<int:delexe_id>/dashboard')
 def dashboard(delexe_id):

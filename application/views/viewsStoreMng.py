@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_required
+from flask import Blueprint, render_template, request, flash, redirect, url_for,session
+from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -12,7 +12,9 @@ viewsStoreMng = Blueprint('viewsStoreMng', __name__)
 @viewsStoreMng.before_request
 @login_required
 def require_login():
-    pass
+    store_manager_id = request.view_args.get('strmng_id')
+    if not isinstance(current_user, StoreManager) or current_user.store_manager_id != store_manager_id:
+        return render_template('error.html'), 401
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/dashboard')
 def dashboard(strmng_id):
