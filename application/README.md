@@ -1,15 +1,18 @@
 # Description
 
 1. `views` : 
-        - `auth.py` : contains all the routes for signin, signup,signout, forgot password
-        - `viewsCustomer.py` : contains all the routes for customer
-        - `viewsDelExe.py` : contains all the routes for delivery executive
-        - `viewsStoreMng.py` : contains all the routes for store manager
 
-2. `api.py` :
+        - `auth.py`: contains all the routes for sign in, signup, signout, forgot password
+        - `viewsCustomer.py`: contains all the routes for the customer
+        - `viewsDelExe.py`: contains all the routes for delivery executive
+        - `viewsStoreMng.py`: contains all the routes for the store manager
+
+3. `api.py` :
+   
         - Categories
+   
             - `GET` : 
-                - `/categories` : returns a list of all categories
+                - `/categories`: returns a list of all categories
                     ```
                     [{
                         'category_id': 1,
@@ -38,7 +41,9 @@
                 - `/categories/<category_id>` : updates the category with the given category_id `{'message': 'Category updated successfully'}, 201`
             - `DELETE` :
                 - `/categories/<category_id>` : deletes the category with the given category_id `{'message': 'Category deleted successfully.  Associated products don\'t have a category anymore!'}, 200`              
-        - Products
+
+
+       - Products
             - `GET` :
                 - `/products` : returns a list of all products
                     ```
