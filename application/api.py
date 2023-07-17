@@ -51,7 +51,7 @@ class CategoryAPI(Resource):
                 category.description=description
                 db.session.add(category)
                 db.session.commit()
-                return {'message': 'Category created successfully'}, 201
+                return {'message': 'Category updated successfully'}, 201
         else:
             return {'message': 'Category not found'}, 404
 
