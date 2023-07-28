@@ -12,6 +12,9 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    if 'account_type' not in session:
+        session['account_type'] = 'user'
+        return render_template("signinup/signin_base.html")
     if session['account_type'] == 'Customer':
         return Customer.query.get(int(user_id))
     elif session['account_type'] == 'StoreManager':

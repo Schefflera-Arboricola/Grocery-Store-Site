@@ -4,7 +4,6 @@ Flask-SQLAlchemy
 SQLAlchemy
 Jinja2
 flask-restful
-flask-cors
 flask
 Werkzeug
 itsdangerous

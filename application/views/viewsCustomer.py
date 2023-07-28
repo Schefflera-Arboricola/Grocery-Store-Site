@@ -8,7 +8,8 @@ from application.views.auth import check_address
 import requests
 from datetime import datetime
 import stripe
-from ML_models import similarProducts
+from ML_models import similarProducts,recommender
+from sqlalchemy import desc
 
 viewsCustomer = Blueprint('viewsCustomer', __name__)
 
@@ -25,13 +26,35 @@ def require_login():
 def dashboard(c_id):
     user=Customer.query.filter_by(customer_id=c_id).first()
     base_url = request.host_url[:-1]
+    response = requests.get(f'{base_url}/products')
+    products=response.json()
     response = requests.get(f'{base_url}/categories')
     categories=response.json()
-    cat_wise_products={}
-    for category in categories:
-        response = requests.get(f'{base_url}/products/1/{category["category_id"]}')
-        cat_wise_products[category["name"]]=response.json()
-    return render_template("dashboard/dashboard_customer.html", account_type='customer',id=c_id,name=user.name,address=user.address,phone=user.phone_no,username=user.username,email=user.email,cat_wise_products=cat_wise_products)
+    
+    total_orders = OrderDetails.query.filter_by(customer_id=c_id).count()
+    n=5 #number of past orders to be considered for recommendation
+    if total_orders >= n:
+        orders = OrderDetails.query.filter_by(customer_id=c_id).order_by(desc(OrderDetails.order_date)).limit(n).all()
+    else:
+        orders = OrderDetails.query.filter_by(customer_id=c_id).all()
+    orderItems=[]
+    for order in orders:
+        items=OrdersItems.query.filter_by(order_id=order.order_id).all()
+        for item in items:
+            item_dict={
+                       'order_id': order.order_id,
+                       'sno': item.sno,
+                       'product_id': item.product_id,
+                       'order_date': order.order_date,
+                       'price': item.price,
+                       'quantity': item.quantity
+                       }
+            orderItems.append(item_dict)
+    if orderItems==[]:
+        products=None
+    else: 
+        products=recommender.recommendProducts(products,categories,orderItems)
+    return render_template("dashboard/dashboard_customer.html", account_type='customer',id=c_id,name=user.name,address=user.address,phone=user.phone_no,username=user.username,email=user.email,products=products)
 
 @viewsCustomer.route('/customer/<int:c_id>/editProfile', methods=['GET', 'POST'])
 def editProfile(c_id):
@@ -207,8 +230,8 @@ def cart(c_id):
         products=[]
         cart=Cart.query.filter_by(customer_id=c_id).all()
         for product in cart:
-            id=product.product_id
-            response = requests.get(f'{base_url}/products/{id}')
+            prod_id=product.product_id
+            response = requests.get(f'{base_url}/products/{prod_id}')
             cart_item=response.json()
             cart_item['cart_quantity']=product.quantity
             products.append(cart_item)

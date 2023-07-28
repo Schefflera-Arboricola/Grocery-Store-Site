@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from flask_cors import CORS  #cross origin and resource sharing
 from application import config
 from application.config import LocalDevelopmentConfig
 from application.database import db
@@ -17,7 +16,6 @@ def create_app():
     app.config['STRIPE_PUBLIC_KEY']=''
     app.config['STRIPE_SECRET_KEY']=''
 
-    CORS(app)
     if os.getenv('ENV',"development")=="production": 
         raise Exception("Currently no production config is setup.")
     else:

@@ -84,7 +84,12 @@ def addProduct(strmng_id):
 def editProduct(strmng_id,prod_id):
     if request.method=='POST':
         base_url = request.host_url[:-1]
-        response = requests.put(f'{base_url}/products/{prod_id}', json=request.form)
+        product_info=request.form
+        product_info=product_info.to_dict()
+        response_ = requests.get(f'{base_url}/products/{prod_id}')
+        product=response_.json()
+        product_info['avg_rating']=product['avg_rating']    
+        response = requests.put(f'{base_url}/products/{prod_id}', json=ImmutableMultiDict(product_info))
         products=response.json()
         if response.status_code==404:
             flash(products['message'], category='error')
