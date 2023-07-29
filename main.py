@@ -1,37 +1,31 @@
 import os
 from flask import Flask
-from application import config
-from application.config import LocalDevelopmentConfig
 from application.database import db
-from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
-import stripe
 
 def create_app():
     app = Flask(__name__)
-    app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # 1 hour : session time(for OTPs)
-    app.config['SECRET_KEY'] = 'asdfghjklzxcvbnm'
-    app.secret_key = 'qwertyuiopasdfghjkl'
+    app.app_context().push()
+    from application.config import LocalDevelopmentConfig
+    import application.config
     
-    app.config['STRIPE_PUBLIC_KEY']=''
-    app.config['STRIPE_SECRET_KEY']=''
-
     if os.getenv('ENV',"development")=="production": 
         raise Exception("Currently no production config is setup.")
     else:
         print("Starting Local Development")
         app.config.from_object(LocalDevelopmentConfig)
     db.init_app(app)
-    app.app_context().push()
 
     from application.views.viewsCustomer import viewsCustomer
     from application.views.viewsDelExe import viewsDelExe 
     from application.views.viewsStoreMng import viewsStoreMng
+    from application.views.viewsDeveloper import viewsDeveloper
     from application.views.auth import auth
 
     app.register_blueprint(viewsCustomer, url_prefix='/')
     app.register_blueprint(viewsDelExe, url_prefix='/')
     app.register_blueprint(viewsStoreMng, url_prefix='/')
+    app.register_blueprint(viewsDeveloper, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
 

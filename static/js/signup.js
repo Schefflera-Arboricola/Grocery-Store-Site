@@ -2,6 +2,7 @@ function redirectToSignup() {
     var customerRadio = document.getElementById("customer");
     var storeManagerRadio = document.getElementById("store-manager");
     var deliveryExecutiveRadio = document.getElementById("delivery-executive");
+    var developerRadio = document.getElementById("developer");
     
     if (customerRadio.checked) {
       window.location.href = "/customer_signup";
@@ -12,7 +13,9 @@ function redirectToSignup() {
     else if (deliveryExecutiveRadio.checked) {
       window.location.href = "/delivery_executive_signup";
     } 
-    
+    else if (developerRadio.checked) {
+      window.location.href = "/developer_signup";
+    }
     else {
       alert("Please select a role before proceeding to sign up.");
     }
@@ -22,6 +25,7 @@ function redirectToForgotPswd(){
   var customerRadio = document.getElementById("customer");
     var storeManagerRadio = document.getElementById("store-manager");
     var deliveryExecutiveRadio = document.getElementById("delivery-executive");
+    var developerRadio = document.getElementById("developer");
     
     if (customerRadio.checked) {
       window.location.href = "/customer_forgot_password";
@@ -32,7 +36,10 @@ function redirectToForgotPswd(){
     else if (deliveryExecutiveRadio.checked) {
       window.location.href = "/delivery_executive_forgot_password";
     } 
-    else {
+    else if (developerRadio.checked) {
+      window.location.href = "/developer_forgot_password";
+    }
+      else {
       alert("Please select a role.");
     }
 }

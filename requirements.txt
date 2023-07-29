@@ -12,3 +12,5 @@ twilio
 stripe
 scikit-learn
 numpy
+Flask-JWT-Extended
+pytest

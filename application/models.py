@@ -2,6 +2,16 @@ from .database import db
 from flask_login import UserMixin
 
 
+class Developer(db.Model,UserMixin):
+    __tablename__='developer'
+    developer_id=db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String,nullable=False)
+    email=db.Column(db.String,unique=True,nullable=False)
+    username=db.Column(db.String,unique=True,nullable=False)
+    password=db.Column(db.String,nullable=False)
+    def get_id(self):
+        return str(self.developer_id)
+
 class User(db.Model,UserMixin):
     __abstract__=True
     name=db.Column(db.String,nullable=False)

@@ -2,6 +2,7 @@ from flask import request
 from flask_restful import Resource
 from application.database import db
 from application.models import Category, Products
+from flask_jwt_extended import jwt_required
 
 class CategoryAPI(Resource):
     def get(self, category_id=None):
@@ -54,7 +55,6 @@ class CategoryAPI(Resource):
                 return {'message': 'Category updated successfully'}, 201
         else:
             return {'message': 'Category not found'}, 404
-
 
     def delete(self, category_id):
         category = Category.query.get(category_id)
@@ -166,7 +166,6 @@ class ProductAPI(Resource):
         else:
             return {'message': 'Something went wrong!! Contact admin'}, 404
         
-
     def put(self, product_id):
         product = Products.query.get(product_id)
         if product:

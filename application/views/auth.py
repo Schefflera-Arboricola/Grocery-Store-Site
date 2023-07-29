@@ -21,6 +21,8 @@ def load_user(user_id):
         return StoreManager.query.get(int(user_id))
     elif session['account_type'] == 'DeliveryExecutive':
         return DeliveryExecutive.query.get(int(user_id))
+    elif session['account_type'] == 'developer':
+        return Developer.query.get(int(user_id))
     else:
         return None
    
@@ -38,6 +40,7 @@ def signin():
         if role=='customer': user = Customer.query.filter_by(username=username).first()
         elif role=='store-manager': user = StoreManager.query.filter_by(username=username).first()
         elif role=='delivery-executive': user = DeliveryExecutive.query.filter_by(username=username).first()
+        elif role=='developer': user = Developer.query.filter_by(username=username).first()
         else: flash("Please select a role before proceeding to sign in.", category='error')
         if user:
             if check_password_hash(user.password, password):
@@ -51,6 +54,9 @@ def signin():
                 elif role=='delivery-executive': 
                     session['account_type'] = 'DeliveryExecutive'
                     return redirect(url_for('viewsDelExe.dashboard', delexe_id=int(user.delivery_executive_id)))
+                elif role=='developer':
+                    session['account_type'] = 'developer'
+                    return redirect(url_for('viewsDeveloper.dashboard', dev_id=int(user.developer_id)))
                 else: flash("Can't get the correct role. Report admin.", category='error')
             else:
                 flash('Incorrect password, try again.', category='error')
@@ -142,7 +148,23 @@ def delivery_executive_signup():
             return redirect('/')
     return render_template('signinup/signup_delexe.html')
 
-
+@auth.route('/developer_signup', methods=['GET', 'POST'])
+def developer_signup():
+    if request.method=='POST':
+        name = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password') 
+        email = request.form.get('email')
+        phone='1234567890'
+        validate_features=check_user_features(Developer,name,username,phone,password,email)
+        if validate_features!=True: flash(validate_features, category='error')
+        else:
+            new = Developer(email=email, name=name, password=generate_password_hash(password), username=username)
+            db.session.add(new)
+            db.session.commit()
+            flash('Account created!', category='success')
+            return redirect('/')
+    return render_template('signinup/signup_developer.html')
 
 # Validation functions for sign up
 
@@ -341,3 +363,7 @@ def delivery_executive_reset_password(delexe_id):
             flash('Password changed successfully',category='success')
             return redirect('/')
     return render_template('signinup/set_new_pswd.html',id=delexe_id)
+
+@auth.route('/developer_forgot_password', methods=['GET', 'POST'])
+def developer_forgot_password():
+    return 'still in development'
