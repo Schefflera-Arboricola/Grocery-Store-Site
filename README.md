@@ -4,7 +4,7 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 
 <br>
 
-<h2>Features :</h2>
+## Features :
 
 1. 3 types of users: Customer, Store Manager, Delivery Executive 
 2. CRUD APIs for Product and Category management(flask restful)
@@ -19,28 +19,27 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 
 ## How to run the code : 
 
-### Before running the code:
-
-1. Have the following installed :
-    - Python 3.5 or later versions
-    - Git
-    - venv or virtualenv installed on the system to create and manage virtual environments
-    - DB Browser for SQLite
-    - C Compiler (For Some Python Libraries such as NumPy and sci-kit-learn)
-    - Internet access for external APIs
-2. Have accounts on [stripe](https://stripe.com/en-in) and [twilio](https://www.twilio.com/en-us) to generate API keys. If you will be using a trial account for OTP, then set the trial number as the customer's number to get the OTP.
-
-
 ### Running the code:
 
 1. `git clone https://github.com/Schefflera-Arboricola/Grocery-Store.git`
 2. `cd Grocery-Store`
-3. In `application/config.py` add your `account_sid` , `auth_token` and `sender_phone` for sending OTPs(generate an API key from [here](https://www.twilio.com/en-us)) 
-4. In `application/config.py` add your `app.config['STRIPE_PUBLIC_KEY']` and `app.config['STRIPE_SECRET_KEY']` for online payments(generate an API key from [here](https://stripe.com/en-in))
-5. `sh local_setup.sh`
-6. `sh local_run.sh`
-7. open `http://127.0.0.1:8080` in the browser to view the website
-(if it gives an account_type keyword error, go to inspect and delete cookie session data in Application in storage in the cookie in http://127.0.0.1:8080 then right-click and click on delete token and session)
+3. get API credentials for twilio from [here](https://www.twilio.com/en-us)) and for stripe from [here](https://stripe.com/en-in)
+
+#### using virtual environment :
+
+4. set up your API credentials in `sh local_run.sh` file
+5. In `application/config.py` file, in the `LocalDevelopmentConfig` class comment the `SQLITE_DB_DIR` initialisation for docker and uncomment for virtual environment
+6. `sh local_setup.sh`
+7. `sh local_run.sh`
+8. open `http://127.0.0.1:8080` in the browser to view the website
+
+#### using docker :
+
+4. set up your API credentials in `.env` file
+5. `docker-compose up --build`
+6. open `http://127.0.0.1:8080` in the browser to view the website
+
+*<i>if you get any keyword error, go to inspect and try deleting the cookie data</i>
 
 <br><br>
 <hr>
@@ -48,4 +47,4 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 <br>
 <br>
 
-Around 20 initial commits are not very well documented. Feel free to make any issues/PRs to better the project. 
+Feel free to make any issues/PRs to better the project. 
