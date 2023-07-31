@@ -6,6 +6,7 @@ from application.database import db
 from application.config import client,sender_phone
 from werkzeug.security import check_password_hash
 import requests
+from db_directory.accessDB import *
 
 viewsDelExe = Blueprint('viewsDelExe', __name__)
 
@@ -68,6 +69,7 @@ def completedDelieveries(delexe_id):
 @viewsDelExe.route('/delexe/<int:delexe_id>/delivery_details/<int:order_id>', methods=['GET', 'POST'])
 def delivery_details(delexe_id,order_id):
     order=OrderDetails.query.filter_by(order_id=order_id).first()
+    modeOfPayment=order.modeOfPayment
     customer=Customer.query.filter_by(customer_id=order.customer_id).first()
     customer={'name': customer.name ,'phone' : customer.phone_no,'address': customer.address}
     orderItems=OrdersItems.query.filter_by(order_id=order_id).all()
@@ -75,9 +77,7 @@ def delivery_details(delexe_id,order_id):
     flag=True
     for i in orderItems:
         d={'quantity': i.quantity,'price': i.price}
-        base_url = request.host_url[:-1]
-        response = requests.get(f'{base_url}/products/{i.product_id}')
-        product=response.json()
+        product,status_code=GetProduct(i.product_id)
         d['name']=product['name']
         products.append(d)
     total_price=order.total_price
@@ -88,7 +88,7 @@ def delivery_details(delexe_id,order_id):
             otp=generateOTP()
             session['otp'] = otp
             sendOTP(otp,customer['phone'])
-            return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag)
+            return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag,modeOfPayment=modeOfPayment)
         else:
             otp=request.form.get('otp')
             saved_otp = session.get('otp')
@@ -98,8 +98,8 @@ def delivery_details(delexe_id,order_id):
                 return redirect(url_for('viewsDelExe.dashboard',delexe_id=delexe_id))
             else:
                 flag = True
-                return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag)
-    return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag)
+                return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag,modeOfPayment=modeOfPayment)
+    return render_template("userviews/delivery_executive/delivery_details.html",delexe_id=delexe_id,order_id=order_id,customer=customer,products=products,total_price=total_price,delivery_status=order.delivery_status,flag=flag,modeOfPayment=modeOfPayment)
     
 def generateOTP():
     import random

@@ -15,6 +15,8 @@
         <br>
         <p><strong>Total price : {{ total_price }}</strong></p>
         <br>
+        <p><strong>Mode of Payment :</strong> {{ modeOfPayment }}</p>
+        <br>
       <div>
         <h2>Products to be Delivered : </h2>
         <table>
@@ -43,7 +45,11 @@
           {% if flag %}  
             <label for="delivery_confirmation">
               <input type="checkbox" id="delivery_confirmation" required>
-              'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
+              {% if modeOfPayment == 'Cash on Delivery' %}
+                'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
+              {% else %}
+                'I have delivered the above mentioned products to the given address.'
+              {% endif %}
               </label>
               <br>
               <input type="hidden" name="flag" value="True">

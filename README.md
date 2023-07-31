@@ -1,6 +1,6 @@
 # About 
 
-It's a 3-user (customer, store manager, delivery executive) e-commerce app to manage a grocery store made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and different categories by the store manager, and manage deliveries by the delivery executive. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all three customers. 
+It's a 3-user (customer, store manager, delivery executive) e-commerce app to manage a grocery store made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and different categories by the store manager, and manage deliveries by the delivery executive. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all three users. 
 
 <br>
 
@@ -10,7 +10,7 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 2. CRUD APIs for Product and Category management(flask restful)
 3. Proper authentication and authorization framework(flask-login)
 4. External APIs: Stripe for online payments, Twilio for OTPs
-5. Ability to search Products based on category and various other product features
+5. Ability to search Products based on category, ratings and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
 
 <hr>
@@ -23,7 +23,7 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 
 1. `git clone https://github.com/Schefflera-Arboricola/Grocery-Store.git`
 2. `cd Grocery-Store`
-3. get API credentials for twilio from [here](https://www.twilio.com/en-us)) and for stripe from [here](https://stripe.com/en-in)
+3. get API credentials for twilio from [here](https://www.twilio.com/en-us) and for stripe from [here](https://stripe.com/en-in)
 
 #### using virtual environment :
 
@@ -41,10 +41,14 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 
 *<i>if you get any keyword error, go to inspect and try deleting the cookie data</i>
 
+<br>
+
+Test users' login credentials for all types of users : 
+
+- `username` : `aditijuneja`
+- `password` : `123456789`
+
 <br><br>
 <hr>
-
-<br>
-<br>
 
 Feel free to make any issues/PRs to better the project. 

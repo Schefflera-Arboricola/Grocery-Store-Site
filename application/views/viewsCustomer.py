@@ -10,6 +10,7 @@ from datetime import datetime
 import stripe
 from ML_models import similarProducts,recommender
 from sqlalchemy import desc
+from db_directory.accessDB import *
 
 viewsCustomer = Blueprint('viewsCustomer', __name__)
 
@@ -25,11 +26,8 @@ def require_login():
 @viewsCustomer.route('/customer/<int:c_id>/dashboard')
 def dashboard(c_id):
     user=Customer.query.filter_by(customer_id=c_id).first()
-    base_url = request.host_url[:-1]
-    response = requests.get(f'{base_url}/products')
-    products=response.json()
-    response = requests.get(f'{base_url}/categories')
-    categories=response.json()
+    products,status_code=GetProduct()
+    categories,status_code=GetCategory()
     
     total_orders = OrderDetails.query.filter_by(customer_id=c_id).count()
     n=5 #number of past orders to be considered for recommendation
@@ -107,9 +105,7 @@ def order_details(c_id,order_id):
     total_price=order.total_price
     products=[]
     for item in orderItems:
-        base_url = request.host_url[:-1]
-        response = requests.get(f'{base_url}/products/{item.product_id}')
-        product=response.json()
+        product,status_code=GetProduct(item.product_id)
         pname=product['name']
         products.append({'cart_quantity':item.quantity,'price':item.price,'name':pname})
     return render_template("userviews/customer/orderDetails.html", c_id=c_id,products=products,total_price=total_price,delivery_status=order.delivery_status,order_id=order_id,modeOfPayment=order.modeOfPayment,order_date=order.order_date)
@@ -119,9 +115,7 @@ def order_details(c_id,order_id):
 
 @viewsCustomer.route('/customer/<int:c_id>/searchProducts', methods=['GET', 'POST'])
 def searchProducts(c_id):
-    base_url = request.host_url[:-1]
-    response = requests.get(f'{base_url}/categories')
-    categories=response.json()
+    categories,status_code=GetCategory()
     if request.method == 'POST':
         name=request.form.get('name')
         category_id=request.form.get('category')
@@ -134,10 +128,9 @@ def searchProducts(c_id):
         min_expiry_date=request.form.get('min_expiry_date')
         max_expiry_date=request.form.get('max_expiry_date')
         if category_id=='all':
-            response = requests.get(f'{base_url}/products')
+            products,status_code = GetProduct()
         else:
-            response = requests.get(f'{base_url}/products/1/{category_id}')
-        products=response.json()
+            products,status_code = GetProduct(flag=1,category_id=category_id)
         if name!='':
             products=[product for product in products if name.lower() in product['name'].lower()]
         if (min_price!='' and max_price=='') or (min_price=='' and max_price!=''):
@@ -147,7 +140,7 @@ def searchProducts(c_id):
         if (min_avg_rating!='' and max_avg_rating=='') or (min_avg_rating=='' and max_avg_rating!=''):
             if min_avg_rating=='': min_avg_rating=0
             if max_avg_rating=='': max_avg_rating=5
-            products=[product for product in products if float(product['avg_rating'])>=float(min_avg_rating) and float(product['avg_rating'])<=float(max_avg_rating)]
+            products=[product for product in products if product['avg_rating']!=None and float(product['avg_rating'])>=float(min_avg_rating) and float(product['avg_rating'])<=float(max_avg_rating)]
         if (min_manufacture_date!='' and max_manufacture_date=='') or (min_manufacture_date=='' and max_manufacture_date!=''):
             if min_manufacture_date=='': min_manufacture_date='01-01-0001'
             if max_manufacture_date=='': max_manufacture_date='31-12-9999'
@@ -180,13 +173,9 @@ def searchResults(c_id):
 def productDetails(c_id,product_id):
     if request.method == 'GET':
         reviews=Reviews.query.filter_by(product_id=product_id).all()  
-        base_url = request.host_url[:-1]
-        response = requests.get(f'{base_url}/categories')
-        categories=response.json()
-        response = requests.get(f'{base_url}/products')
-        all_products=response.json()
-        response = requests.get(f'{base_url}/products/{product_id}')
-        product=response.json()
+        categories,status_code=GetCategory()
+        all_products,status_code=GetProduct()
+        product,status_code=GetProduct(product_id)
         similar_products=similarProducts.similarProducts(product, all_products,categories)
         return render_template("userviews/customer/productDetails.html",c_id=c_id,product=product,reviews=reviews,similar_products=similar_products)
     if request.method == 'POST':
@@ -208,31 +197,25 @@ def productDetails(c_id,product_id):
         return redirect(url_for('viewsCustomer.productDetails',c_id=c_id,product_id=product_id))
 
 def updateRating(product_id,rating):
-    base_url = request.host_url[:-1]
-    response = requests.get(f'{base_url}/products/{product_id}')
-    product_info=response.json()
+    product_info,status_code=GetProduct(product_id)
     if product_info['avg_rating'] is None: 
         product_info['avg_rating']=int(rating)
-        response = requests.put(f'{base_url}/products/{product_id}',json=product_info)
     else:
         reviews=Reviews.query.filter_by(product_id=product_id).all()
         count=len(reviews)
         avg_rating=round((float(product_info['avg_rating'])*count+int(rating))/(count+1),2)
         product_info['avg_rating']=avg_rating
-        response = requests.put(f'{base_url}/products/{product_id}',json=product_info)
-
+    response,status_code = UpdateProduct(product_id,data=product_info)
 
 
 @viewsCustomer.route('/customer/<int:c_id>/cart', methods=['GET', 'POST'])
 def cart(c_id):
     if request.method == 'GET':
-        base_url = request.host_url[:-1]
         products=[]
         cart=Cart.query.filter_by(customer_id=c_id).all()
         for product in cart:
             prod_id=product.product_id
-            response = requests.get(f'{base_url}/products/{prod_id}')
-            cart_item=response.json()
+            cart_item,status_code=GetProduct(prod_id)
             cart_item['cart_quantity']=product.quantity
             products.append(cart_item)
         total_price=getTotalPrice(products)
@@ -352,16 +335,14 @@ def placeorder(c_id,total_price,payment_mode):
     for cart_item in cart_items:
         product_id=cart_item.product_id
         quantity=cart_item.quantity
-        base_url = request.host_url[:-1]
-        response = requests.get(f'{base_url}/products/{product_id}')
-        product=response.json()
+        product,status_code=GetProduct(product_id)
         new_order_item=OrdersItems(order_id=order_id,product_id=product_id,quantity=quantity,price=product['price']) 
         db.session.add(new_order_item)
         db.session.commit()
         #reducing stock quantity
         new_quantity=product['quantity']-(quantity*(product['price']/product['pricePerUnit']))
         product['quantity']=new_quantity
-        response=requests.put(f'{base_url}/products/{product_id}',json=product)
+        response,status_code=UpdateProduct(product_id,data=product)
             
     #emptying the cart
     for cart_item in cart_items:

@@ -6,6 +6,7 @@ from application.database import db
 from werkzeug.security import check_password_hash
 import requests
 from werkzeug.datastructures import ImmutableMultiDict
+from db_directory.accessDB import *
 
 viewsStoreMng = Blueprint('viewsStoreMng', __name__)
 
@@ -58,23 +59,19 @@ def check_user_features(name,phone):
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/Product', methods=['GET', 'POST'])
 def Product(strmng_id):
-    base_url = request.host_url[:-1]
-    response = requests.get(f'{base_url}/products')
-    products=response.json()
+    products,status_code=GetProduct()
     return render_template("userviews/store_manager/viewProducts.html",products=products, strmng_id=strmng_id)
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/addProduct', methods=['GET', 'POST'])
 def addProduct(strmng_id):
     if request.method=='POST':
-        base_url = request.host_url[:-1]
         product_info=request.form
         product_info=product_info.to_dict()
         product_info['avg_rating']=None
-        response = requests.post(f'{base_url}/products', json=ImmutableMultiDict(product_info))
-        products=response.json()
-        if response.status_code==404:
+        products,status_code=AddProduct(ImmutableMultiDict(product_info))
+        if status_code==404:
             flash(products['message'], category='error')
-        elif response.status_code==201:
+        elif status_code==200:
             return redirect(url_for('viewsStoreMng.Product',strmng_id=strmng_id))
         else:
             flash('Something went wrong. Contact Admin', category='error')
@@ -83,17 +80,14 @@ def addProduct(strmng_id):
 @viewsStoreMng.route('/storemng/<int:strmng_id>/editProduct/<int:prod_id>', methods=['GET', 'POST'])
 def editProduct(strmng_id,prod_id):
     if request.method=='POST':
-        base_url = request.host_url[:-1]
         product_info=request.form
         product_info=product_info.to_dict()
-        response_ = requests.get(f'{base_url}/products/{prod_id}')
-        product=response_.json()
+        product,status_code=GetProduct(prod_id)
         product_info['avg_rating']=product['avg_rating']    
-        response = requests.put(f'{base_url}/products/{prod_id}', json=ImmutableMultiDict(product_info))
-        products=response.json()
-        if response.status_code==404:
+        products,status_code=UpdateProduct(prod_id,ImmutableMultiDict(product_info))
+        if status_code==404:
             flash(products['message'], category='error')
-        elif response.status_code==201:
+        elif status_code==200:
             return redirect(url_for('viewsStoreMng.Product',strmng_id=strmng_id))
         else:
             flash('Something went wrong. Contact Admin', category='error')
@@ -102,12 +96,10 @@ def editProduct(strmng_id,prod_id):
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/deleteProduct/<int:prod_id>', methods=['GET', 'POST'])
 def deleteProduct(strmng_id,prod_id):
-    base_url = request.host_url[:-1]
-    response = requests.delete(f'{base_url}/products/{prod_id}')
-    products=response.json()
-    if response.status_code==404:
+    products,status_code=DeleteProduct(prod_id)
+    if status_code==404:
         print(products['message'])
-    elif response.status_code==201:
+    elif status_code==200:
         return redirect(url_for('viewsStoreMng.Product',strmng_id=strmng_id))
     else:
         print('Something went wrong. Contact Admin')
@@ -120,20 +112,16 @@ def deleteProduct(strmng_id,prod_id):
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/Category', methods=['GET', 'POST'])
 def Categories(strmng_id):
-    base_url = request.host_url[:-1]
-    response = requests.get(f'{base_url}/categories')
-    categories=response.json()
+    categories,status_code=GetCategory()
     return render_template("userviews/store_manager/viewCategories.html",categories=categories, strmng_id=strmng_id)
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/addCategory', methods=['GET', 'POST'])
 def addCategory(strmng_id):
     if request.method=='POST':
-        base_url = request.host_url[:-1]
-        response = requests.post(f'{base_url}/categories', json=request.form)
-        categories=response.json()
-        if response.status_code==404:
+        categories,status_code=AddCategory(request.form)
+        if status_code==404:
             flash(categories['message'], category='error')
-        elif response.status_code==201:
+        elif status_code==200:
             return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
         else:
             flash('Something went wrong. Contact Admin', category='error')
@@ -143,12 +131,10 @@ def addCategory(strmng_id):
 def editCategory(strmng_id,cat_id):
     category=Category.query.filter_by(category_id=cat_id).first()
     if request.method=='POST':
-        base_url = request.host_url[:-1]
-        response = requests.put(f'{base_url}/categories/{cat_id}', json=request.form)
-        categories=response.json()
-        if response.status_code==404:
+        categories,status_code=UpdateCategory(cat_id,request.form)
+        if status_code==404:
             flash(categories['message'], category='error')
-        elif response.status_code==201:
+        elif status_code==200:
             return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
         else:
             flash('Something went wrong. Contact Admin', category='error')
@@ -156,12 +142,10 @@ def editCategory(strmng_id,cat_id):
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/deleteCategory/<int:cat_id>', methods=['GET', 'POST'])
 def deleteCategory(strmng_id,cat_id):
-    base_url = request.host_url[:-1]
-    response = requests.delete(f'{base_url}/categories/{cat_id}')
-    categories=response.json()
-    if response.status_code==404:
+    categories,status_code=DeleteCategory(cat_id)
+    if status_code==404:
         print(categories['message'])
-    elif response.status_code==201:
+    elif status_code==200:
         return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
     else:
         print('Something went wrong. Contact Admin')
