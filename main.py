@@ -1,19 +1,18 @@
 import os
 from flask import Flask
-from application.database import db
 from flask_restful import Api
 
 def create_app():
     app = Flask(__name__)
     app.app_context().push()
     from application.config import LocalDevelopmentConfig
-    import application.config
     
     if os.getenv('ENV',"development")=="production": 
         raise Exception("Currently no production config is setup.")
     else:
         print("Starting Local Development")
         app.config.from_object(LocalDevelopmentConfig)
+    from application.database import db
     db.init_app(app)
 
     from application.views.viewsCustomer import viewsCustomer

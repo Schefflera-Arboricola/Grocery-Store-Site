@@ -3,8 +3,15 @@ from flask_restful import Resource
 from application.database import db
 from application.models import Category, Products
 from flask_jwt_extended import jwt_required
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask import current_app as app
+
+limiter = Limiter(key_func=get_remote_address)
 
 class CategoryAPI(Resource):
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def get(self, category_id=None):
         if category_id:
             category = Category.query.get(category_id)
@@ -28,6 +35,8 @@ class CategoryAPI(Resource):
             ]
             return results, 200
 
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def post(self):
         data = request.get_json()
         name = data.get('name')
@@ -40,6 +49,8 @@ class CategoryAPI(Resource):
             db.session.commit()
             return {'message': 'Category created successfully'}, 201
 
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def put(self, category_id):
         category = Category.query.get(category_id)
         if category:
@@ -56,6 +67,8 @@ class CategoryAPI(Resource):
         else:
             return {'message': 'Category not found'}, 404
 
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def delete(self, category_id):
         category = Category.query.get(category_id)
         if category:
@@ -73,6 +86,8 @@ class CategoryAPI(Resource):
 
 
 class ProductAPI(Resource):
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def get(self, product_id=None,flag=0,category_id=None):
         if flag==0:
             if product_id:
@@ -141,6 +156,8 @@ class ProductAPI(Resource):
         else:
             return {'message': 'flag=0'}, 404
 
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def post(self):
         data = request.get_json()
         name = data.get('name')
@@ -166,6 +183,8 @@ class ProductAPI(Resource):
         else:
             return {'message': 'Something went wrong!! Contact admin'}, 404
         
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def put(self, product_id):
         product = Products.query.get(product_id)
         if product:
@@ -204,6 +223,8 @@ class ProductAPI(Resource):
         else:
             return {'message': 'Product not found'}, 404
 
+    @jwt_required()
+    @limiter.limit("100 per hour")
     def delete(self, product_id):
         product = Products.query.get(product_id)
         if product:

@@ -1,7 +1,6 @@
 import os
 from twilio.rest import Client
 from flask import current_app as app
-import stripe
 from flask_jwt_extended import JWTManager
 
 account_sid = os.environ.get('TWILIO_ACCOUNT_SID')

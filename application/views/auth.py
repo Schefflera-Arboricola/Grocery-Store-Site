@@ -6,6 +6,7 @@ from application.database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from application.config import client,sender_phone
 from application.views.viewsDelExe import generateOTP, sendOTP
+from flask_jwt_extended import create_access_token
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -56,6 +57,9 @@ def signin():
                     return redirect(url_for('viewsDelExe.dashboard', delexe_id=int(user.delivery_executive_id)))
                 elif role=='developer':
                     session['account_type'] = 'developer'
+                    access_token = create_access_token(identity=user.username)
+                    Developer.query.filter_by(username=username).update(dict(APIkey=access_token))
+                    db.session.commit()
                     return redirect(url_for('viewsDeveloper.dashboard', dev_id=int(user.developer_id)))
                 else: flash("Can't get the correct role. Report admin.", category='error')
             else:

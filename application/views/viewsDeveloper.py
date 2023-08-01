@@ -3,9 +3,6 @@ from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
 from application.database import db
-from application.config import client,sender_phone
-from werkzeug.security import check_password_hash
-import requests
 
 viewsDeveloper = Blueprint('viewsDeveloper', __name__)
 
@@ -16,7 +13,6 @@ def require_login():
     if not isinstance(current_user, Developer) or current_user.developer_id != developer_id:
         return render_template('error.html'), 401
 
-
 @viewsDeveloper.route('/developer/<int:dev_id>/dashboard')
 def dashboard(dev_id):
     user=Developer.query.filter_by(developer_id=dev_id).first()
@@ -25,3 +21,9 @@ def dashboard(dev_id):
 @viewsDeveloper.route('/developer/<int:dev_id>/editProfile', methods=['GET', 'POST'])
 def editProfile(dev_id):
     return 'still in development'
+
+@viewsDeveloper.route('/developer/<int:dev_id>/getAPI', methods=['GET', 'POST'])
+def getAPI(dev_id):
+    user=Developer.query.filter_by(developer_id=dev_id).first()
+    APIkey=user.APIkey
+    return render_template("userviews/developer/getAPIcredentials.html", dev_id=dev_id,APIkey=APIkey)

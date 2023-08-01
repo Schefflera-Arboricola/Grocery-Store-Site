@@ -5,7 +5,6 @@ from application.models import *
 from application.database import db
 from werkzeug.security import check_password_hash
 from application.views.auth import check_address
-import requests
 from datetime import datetime
 import stripe
 from ML_models import similarProducts,recommender

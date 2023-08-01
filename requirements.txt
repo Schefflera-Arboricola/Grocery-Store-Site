@@ -15,3 +15,5 @@ numpy
 Flask-JWT-Extended
 pytest
 virtualenv
+Flask-Limiter
+Flask-Migrate

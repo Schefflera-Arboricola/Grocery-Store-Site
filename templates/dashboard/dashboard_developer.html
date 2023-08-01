@@ -3,5 +3,32 @@
 {% block title %}Developer Dashboard{% endblock %}
 
 {% block buttons %}
+    <button onclick="window.location.href='/developer/{{ id }}/getAPI'">Get Access Token</button> 
     <button onclick="window.location.href='/signout'">Sign-out</button> 
+{% endblock %}
+
+{% block products %} 
+<h1>How to use API?</h1>
+<ol>
+    <li>get the API credentials from above</li>
+    <li>run this in a new terminal window :
+        <pre style="background-color: rgb(236, 223, 252);">
+curl -X GET 'http://127.0.0.1:8080/{endpoint}' -H 'Authorization: Bearer YOUR_API_KEY'
+        </pre>
+        or
+        <pre>
+curl -X POST 'http://127.0.0.1:8080/{endpoint}' \
+-H 'Authorization: Bearer YOUR_API_KEY' \
+-H 'Content-Type: application/json' \
+-d '{
+    "field1": "value1",
+    "field2": "value2"
+}'
+</pre>
+
+</li>
+</ol>
+
+The API key updates everytime you log in. And you can make only 100 requests per hour.
+
 {% endblock %}

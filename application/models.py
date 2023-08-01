@@ -9,6 +9,7 @@ class Developer(db.Model,UserMixin):
     email=db.Column(db.String,unique=True,nullable=False)
     username=db.Column(db.String,unique=True,nullable=False)
     password=db.Column(db.String,nullable=False)
+    APIkey=db.Column(db.String,unique=True, nullable=True)
     def get_id(self):
         return str(self.developer_id)
 

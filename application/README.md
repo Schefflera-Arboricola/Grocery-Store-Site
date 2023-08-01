@@ -6,9 +6,31 @@
         - `viewsCustomer.py`: contains all the routes for the customer
         - `viewsDelExe.py`: contains all the routes for delivery executive
         - `viewsStoreMng.py`: contains all the routes for the store manager
+        - `viewsDeveloper.py`: contains all the routes for the developer
 
-3. `api.py` :
-   
+2. How to use API? (for developers only) :
+
+<ol>
+    <li>get the API credentials from the dashboard</li>
+    <li>run this in a new terminal window :
+
+`curl -X GET 'http://127.0.0.1:8080/{endpoint}' -H 'Authorization: Bearer YOUR_API_KEY'` <br>
+or
+```
+curl -X POST 'http://127.0.0.1:8080/{endpoint}' \
+-H 'Authorization: Bearer YOUR_API_KEY' \
+-H 'Content-Type: application/json' \
+-d '{
+    "field1": "value1",
+    "field2": "value2"
+}'
+```
+</li>
+</ol>
+</div>
+
+3. `api.py` endpoints :
+
         - Categories
    
             - `GET` : 
