@@ -8,9 +8,9 @@
         - `viewsStoreMng.py`: contains all the routes for the store manager
         - `viewsDeveloper.py`: contains all the routes for the developer
 
-2. How to use API? (for developers only) :
+2. How to use API? (for 'developer' account_type only) :
 
-   - get the API credentials from the dashboard</li>
+   - get the API credentials from the developer dashboard
    - run this in a new terminal window :
    
         `curl -X GET 'http://127.0.0.1:8080/{endpoint}' -H 'Authorization: Bearer YOUR_API_KEY'` <br>

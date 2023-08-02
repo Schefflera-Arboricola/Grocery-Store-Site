@@ -246,5 +246,11 @@ def check_product(name, description, price, quantity, unit, pricePerUnit, catego
         return 'Invalid category_id', 400
     elif type(image_url)!=str:
         return 'Image_url must be a string', 400
+    elif float(price)<0:
+        return 'Price cannot be negative', 400
+    elif float(quantity)<0:
+        return 'Quantity cannot be negative', 400
+    elif float(pricePerUnit)<0:
+        return 'PricePerUnit cannot be negative', 400
     else:
         return 'Valid', 200

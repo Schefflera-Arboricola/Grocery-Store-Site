@@ -4,6 +4,8 @@
 
 ![db](/static/img/db.jpg)
 
+Run the code in `database.dbd` [here](https://dbdiagram.io/) to get the updated diagram
+
 <br>
 
 ## Data flow :

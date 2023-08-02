@@ -7,14 +7,13 @@ It's a 3-user (customer, store manager, delivery executive) e-commerce app to ma
 ## Features :
 
 1. 3 types of users: Customer, Store Manager, Delivery Executive 
-2. CRUD APIs for Product and Category management(flask restful)
+2. CRUD APIs for Product and Category management(flask restful) - can only be used by the 'developer' account_type
 3. Proper authentication and authorization framework(flask-login)
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
 
 <hr>
-<br>
 <br>
 
 ## How to run the code : 

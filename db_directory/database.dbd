@@ -1,5 +1,14 @@
 # Paste this code in https://dbdiagram.io/ to generate the ER diagram 
 
+Table developer {
+  developer_id int [pk]
+  name varchar [not null]
+  email varchar [not null, unique]
+  username varchar [not null, unique]
+  password varchar [not null]
+  APIkey varchar [unique]
+}
+
 Table customer {
   customer_id int [pk]
   name varchar [not null]
