@@ -75,11 +75,11 @@ class CategoryAPI(Resource):
             # Update products associated with the category
             products = Products.query.filter_by(category_id=category_id).all()
             for product in products:
-                product.category_id = None  # Set category_id to NULL
+                product.category_id = 0  # Set category_id to 0
                 db.session.add(product)
             db.session.delete(category)
             db.session.commit()
-            return {'message': 'Category deleted successfully.  Associated products don\'t have a category anymore!'}, 200
+            return {'message': 'Category deleted successfully.  Associated products have category 0 now'}, 200
         else:
             return {'message': 'Category not found'}, 404
         
@@ -93,20 +93,23 @@ class ProductAPI(Resource):
             if product_id:
                 product = Products.query.get(product_id)
                 if product:
-                    return {
-                        'product_id': product.product_id,
-                        'name': product.name,
-                        'description': product.description,
-                        'price': product.price,
-                        'quantity': product.quantity,
-                        'unit': product.unit,
-                        'pricePerUnit': product.pricePerUnit,
-                        'category_id': product.category_id,
-                        'manufacture_date': product.manufacture_date,
-                        'expiry_date': product.expiry_date,
-                        'image_url': product.image_url,
-                        'avg_rating': product.avg_rating
-                    }, 200
+                    if product.isDeleted!='True':
+                        return {
+                            'product_id': product.product_id,
+                            'name': product.name,
+                            'description': product.description,
+                            'price': product.price,
+                            'quantity': product.quantity,
+                            'unit': product.unit,
+                            'pricePerUnit': product.pricePerUnit,
+                            'category_id': product.category_id,
+                            'manufacture_date': product.manufacture_date,
+                            'expiry_date': product.expiry_date,
+                            'image_url': product.image_url,
+                            'avg_rating': product.avg_rating
+                        }, 200
+                    else:
+                        return {'message': 'Product was deleted'}, 404
                 else:
                     return {'message': 'Product not found'}, 404
             else:
@@ -126,7 +129,7 @@ class ProductAPI(Resource):
                         'image_url': product.image_url,
                         'avg_rating': product.avg_rating
                     }
-                    for product in products
+                    for product in products if product.isDeleted!='True'
                 ]
                 return results, 200
         if flag==1:
@@ -148,7 +151,7 @@ class ProductAPI(Resource):
                         'image_url': product.image_url,
                         'avg_rating': product.avg_rating
                     }
-                    for product in products
+                    for product in products if product.isDeleted!='True'
                 ]
                 return results, 200
             else:
@@ -171,10 +174,11 @@ class ProductAPI(Resource):
         expiry_date = data.get('expiry_date')
         image_url = data.get('image_url')
         avg_rating= data.get('avg_rating')
+        isDeleted = 'False'
         
         product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)
         if status==200:
-            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=avg_rating)
+            product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=avg_rating,isDeleted=isDeleted)
             db.session.add(product)
             db.session.commit()
             return {'message': 'Product created successfully'}, 201
@@ -200,6 +204,7 @@ class ProductAPI(Resource):
             expiry_date = data.get('expiry_date')
             image_url = data.get('image_url')
             avg_rating= data.get('avg_rating')
+            isDeleted = 'False'
 
             product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)
             if status==200:
@@ -214,6 +219,7 @@ class ProductAPI(Resource):
                 product.expiry_date = expiry_date
                 product.image_url = image_url
                 product.avg_rating=avg_rating
+                product.isDeleted = isDeleted
                 db.session.commit()
                 return {'message': 'Product updated successfully'}, 201
             elif status==400:
@@ -228,7 +234,7 @@ class ProductAPI(Resource):
     def delete(self, product_id):
         product = Products.query.get(product_id)
         if product:
-            db.session.delete(product)
+            product.isDeleted = 'True'
             db.session.commit()
             return {'message': 'Product deleted successfully'}, 200
         else:

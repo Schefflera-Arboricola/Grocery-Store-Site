@@ -74,6 +74,7 @@ Table products {
   expiry_date varchar
   image_url varchar [not null]
   avg_rating float
+  isDeleted varchar 
 }
 
 Table reviews {

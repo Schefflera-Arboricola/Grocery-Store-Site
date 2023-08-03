@@ -17,3 +17,4 @@ pytest
 virtualenv
 Flask-Limiter
 Flask-Migrate
+python-dotenv

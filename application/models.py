@@ -83,6 +83,7 @@ class Products(db.Model):
     expiry_date=db.Column(db.String)
     image_url=db.Column(db.String,nullable=False)
     avg_rating=db.Column(db.Float) 
+    isDeleted=db.Column(db.String,default='False') 
 
 class Reviews(db.Model):
     __tablename__='reviews'
@@ -162,6 +163,10 @@ if (
         delivery_executive = DeliveryExecutiveids(delivery_executive_id=_,branch_id=1)
         db.session.add(delivery_executive)
 
+    # Adding category 0
+    category = Category(category_id=0,name='Others',description='Products not in any category')
+    db.session.add(category)
+    
     db.session.commit()
     print("Database initialized successfully.")
 else:

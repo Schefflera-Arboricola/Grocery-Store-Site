@@ -4,7 +4,6 @@ from flask import current_app as app
 from application.models import *
 from application.database import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from application.config import client,sender_phone
 from application.views.viewsDelExe import generateOTP, sendOTP
 from flask_jwt_extended import create_access_token
 

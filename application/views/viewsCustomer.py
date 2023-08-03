@@ -38,15 +38,16 @@ def dashboard(c_id):
     for order in orders:
         items=OrdersItems.query.filter_by(order_id=order.order_id).all()
         for item in items:
-            item_dict={
-                       'order_id': order.order_id,
-                       'sno': item.sno,
-                       'product_id': item.product_id,
-                       'order_date': order.order_date,
-                       'price': item.price,
-                       'quantity': item.quantity
-                       }
-            orderItems.append(item_dict)
+            if Products.query.get(item.product_id).isDeleted!='True':
+                item_dict={
+                        'order_id': order.order_id,
+                        'sno': item.sno,
+                        'product_id': item.product_id,
+                        'order_date': order.order_date,
+                        'price': item.price,
+                        'quantity': item.quantity
+                        }
+                orderItems.append(item_dict)
     if orderItems==[]:
         products=None
     else: 
@@ -104,8 +105,8 @@ def order_details(c_id,order_id):
     total_price=order.total_price
     products=[]
     for item in orderItems:
-        product,status_code=GetProduct(item.product_id)
-        pname=product['name']
+        product=Products.query.get(item.product_id)
+        pname=product.name
         products.append({'cart_quantity':item.quantity,'price':item.price,'name':pname})
     return render_template("userviews/customer/orderDetails.html", c_id=c_id,products=products,total_price=total_price,delivery_status=order.delivery_status,order_id=order_id,modeOfPayment=order.modeOfPayment,order_date=order.order_date)
 
@@ -215,8 +216,14 @@ def cart(c_id):
         for product in cart:
             prod_id=product.product_id
             cart_item,status_code=GetProduct(prod_id)
-            cart_item['cart_quantity']=product.quantity
-            products.append(cart_item)
+            if status_code==200:
+                cart_item['cart_quantity']=product.quantity
+                products.append(cart_item)
+            elif status_code==404 and cart_item['message']=='Product was deleted':
+                prod_name=Products.query.get(prod_id).name
+                db.session.delete(product)
+                db.session.commit()
+                flash(f'{prod_name} is not available anymore.', category='error')
         total_price=getTotalPrice(products)
         return render_template("userviews/customer/goToCart.html", c_id=c_id, products=products,total_price=total_price)
     

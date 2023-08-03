@@ -5,7 +5,6 @@ from application.models import *
 from application.database import db
 from application.config import client,sender_phone
 from werkzeug.security import check_password_hash
-import requests
 from db_directory.accessDB import *
 
 viewsDelExe = Blueprint('viewsDelExe', __name__)
@@ -77,8 +76,8 @@ def delivery_details(delexe_id,order_id):
     flag=True
     for i in orderItems:
         d={'quantity': i.quantity,'price': i.price}
-        product,status_code=GetProduct(i.product_id)
-        d['name']=product['name']
+        product=Products.query.get(i.product_id)
+        d['name']=product.name
         products.append(d)
     total_price=order.total_price
     if request.method == 'POST':

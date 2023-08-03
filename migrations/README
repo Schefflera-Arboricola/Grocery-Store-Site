@@ -1,0 +1,10 @@
+Single-database configuration for Flask.
+
+[
+    NOTE : This directory was auto generated when the db structure was modified, using the following shell commands(in the virtual environment):
+
+    1. `flask db init`
+    2. `flask db migrate -m "Add isDeleted column to Products table"`
+    3. `flask db upgrade`
+
+]

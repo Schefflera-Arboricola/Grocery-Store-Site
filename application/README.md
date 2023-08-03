@@ -58,12 +58,12 @@
             - `PUT` :
                 - `/categories/<category_id>` : updates the category with the given category_id `{'message': 'Category updated successfully'}, 201`
             - `DELETE` :
-                - `/categories/<category_id>` : deletes the category with the given category_id `{'message': 'Category deleted successfully.  Associated products don\'t have a category anymore!'}, 200`              
+                - `/categories/<category_id>` : deletes the category with the given category_id `{'message': 'Category deleted successfully.  Associated products have category 0 now'}, 200`              
 
 
        - Products
             - `GET` :
-                - `/products` : returns a list of all products
+                - `/products` : returns a list of all products with isDeleted = 'False'
                     ```
                     [
                         {
@@ -82,7 +82,7 @@
                         },...
                     ], 200
                     ```
-                - `/products/<product_id>` : returns all the attributes of the product with the given product_id
+                - `/products/<product_id>` : returns all the attributes of the product with the given product_id, if isDeleted = 'False'
                     ```
                     {
                         'product_id': product.product_id,
@@ -99,7 +99,7 @@
                         'avg_rating': product.avg_rating
                     }, 200
                     ```
-                - `/products/<flag>/<category_id>` : returns a list of all products with the given category_id
+                - `/products/<flag>/<category_id>` : returns a list of all products with the given category_id with isDeleted = 'False'
                     ```
                     [
                         {

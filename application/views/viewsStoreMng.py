@@ -4,7 +4,6 @@ from flask import current_app as app
 from application.models import *
 from application.database import db
 from werkzeug.security import check_password_hash
-import requests
 from werkzeug.datastructures import ImmutableMultiDict
 from db_directory.accessDB import *
 
@@ -129,24 +128,30 @@ def addCategory(strmng_id):
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/editCategory/<int:cat_id>', methods=['GET', 'POST'])
 def editCategory(strmng_id,cat_id):
-    category=Category.query.filter_by(category_id=cat_id).first()
-    if request.method=='POST':
-        categories,status_code=UpdateCategory(cat_id,request.form)
-        if status_code==404:
-            flash(categories['message'], category='error')
-        elif status_code==200:
-            return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
-        else:
-            flash('Something went wrong. Contact Admin', category='error')
-    return render_template("userviews/store_manager/editCategory.html", category=category)
+    if cat_id!=0:
+        category=Category.query.filter_by(category_id=cat_id).first()
+        if request.method=='POST':
+            categories,status_code=UpdateCategory(cat_id,request.form)
+            if status_code==404:
+                flash(categories['message'], category='error')
+            elif status_code==200:
+                return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
+            else:
+                flash('Something went wrong. Contact Admin', category='error')
+        return render_template("userviews/store_manager/editCategory.html", category=category)
+    else:
+        return render_template('error.html')
 
 @viewsStoreMng.route('/storemng/<int:strmng_id>/deleteCategory/<int:cat_id>', methods=['GET', 'POST'])
 def deleteCategory(strmng_id,cat_id):
-    categories,status_code=DeleteCategory(cat_id)
-    if status_code==404:
-        print(categories['message'])
-    elif status_code==200:
+    if cat_id!=0:
+        categories,status_code=DeleteCategory(cat_id)
+        if status_code==404:
+            print(categories['message'])
+        elif status_code==200:
+            return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
+        else:
+            print('Something went wrong. Contact Admin')
         return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
     else:
-        print('Something went wrong. Contact Admin')
-    return redirect(url_for('viewsStoreMng.Categories',strmng_id=strmng_id))
+        return render_template('error.html')
