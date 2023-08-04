@@ -1,6 +1,7 @@
 import os
 from flask import Flask
-from flask_restful import Api
+from flask_restx import Api
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
@@ -27,14 +28,18 @@ def create_app():
     app.register_blueprint(viewsDeveloper, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+    from flask import Blueprint
     from application.api import CategoryAPI, ProductAPI
 
-    api=Api(app)
-    api.init_app(app)
+    api_bp = Blueprint('api', __name__)
+    api = Api(api_bp, version='1.0', title='API', description='API documentation')
 
     api.add_resource(CategoryAPI, '/categories', '/categories/<int:category_id>')
-    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>', '/products/<int:flag>/<int:category_id>/') #flag tells if the entered id is category_id or product_id
+    api.add_resource(ProductAPI, '/products', '/products/<int:product_id>', '/products/<int:flag>/<int:category_id>')
+
+    app.register_blueprint(api_bp, url_prefix='/api')
 
     return app,api
 

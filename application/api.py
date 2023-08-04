@@ -1,5 +1,5 @@
 from flask import request
-from flask_restful import Resource
+from flask_restx import Resource
 from application.database import db
 from application.models import Category, Products
 from flask_jwt_extended import jwt_required
@@ -173,7 +173,7 @@ class ProductAPI(Resource):
         manufacture_date = data.get('manufacture_date')
         expiry_date = data.get('expiry_date')
         image_url = data.get('image_url')
-        avg_rating= data.get('avg_rating')
+        avg_rating= None
         isDeleted = 'False'
         
         product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)

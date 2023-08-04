@@ -7,7 +7,7 @@ It's a multi-user (customer, store manager, delivery executive, developer) e-com
 ## Features :
 
 1. 4 types of users: Customer, Store Manager, Delivery Executive, Developer
-2. CRUD APIs for Product and Category management(flask restful) - can only be used by the 'developer' account_type
+2. CRUD APIs for Product and Category management(flask_restx) - You can play around with the API endpoints by pasting the contents of `application/APIdoc.yaml` file in [Swagger Editor](https://editor.swagger.io/)
 3. Proper authentication and authorization framework(flask-login)
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings, and various other product features

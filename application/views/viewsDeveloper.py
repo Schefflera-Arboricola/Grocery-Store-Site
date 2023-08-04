@@ -16,7 +16,13 @@ def require_login():
 @viewsDeveloper.route('/developer/<int:dev_id>/dashboard')
 def dashboard(dev_id):
     user=Developer.query.filter_by(developer_id=dev_id).first()
-    return render_template("dashboard/dashboard_developer.html",id=dev_id,name=user.name,username=user.username,email=user.email,account_type='developer')
+    content = read_apidoc_content()
+    return render_template("dashboard/dashboard_developer.html",id=dev_id,name=user.name,username=user.username,email=user.email,account_type='developer',swagger_content=content)
+
+def read_apidoc_content():
+    with open('application/APIdoc.yaml', 'r') as file:
+        content = file.read()
+    return content
 
 @viewsDeveloper.route('/developer/<int:dev_id>/editProfile', methods=['GET', 'POST'])
 def editProfile(dev_id):

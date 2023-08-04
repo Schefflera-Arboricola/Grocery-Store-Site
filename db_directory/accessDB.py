@@ -147,7 +147,7 @@ def AddProduct(data):
     manufacture_date = data['manufacture_date']
     expiry_date = data['expiry_date']
     image_url = data['image_url']
-    avg_rating= data['avg_rating']
+    avg_rating= None
     isDeleted = 'False'
         
     product_msg, status = check_product(name, description, price, quantity, unit, pricePerUnit, category_id, manufacture_date, expiry_date, image_url,avg_rating)

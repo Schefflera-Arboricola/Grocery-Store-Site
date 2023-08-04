@@ -65,9 +65,7 @@ def Product(strmng_id):
 def addProduct(strmng_id):
     if request.method=='POST':
         product_info=request.form
-        product_info=product_info.to_dict()
-        product_info['avg_rating']=None
-        products,status_code=AddProduct(ImmutableMultiDict(product_info))
+        products,status_code=AddProduct(product_info)
         if status_code==404:
             flash(products['message'], category='error')
         elif status_code==200:

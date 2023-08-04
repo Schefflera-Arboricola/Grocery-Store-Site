@@ -1,0 +1,330 @@
+openapi: 3.0.1
+info:
+  title: CRUD API Documentation
+  version: 1.0.0
+  description: |
+    <br>
+    
+    ## How to use the APIs?
+      1. Login as developer
+      2. Get the API credentials from the developer dashboard
+      3. Paste the API key in the 'Authorize' on right
+    
+    
+    ## Notes : 
+      1. Make sure that the app is running on http://127.0.0.1:8080 while you are trying out these endpoints. 
+      2. If you are running the app in a virtual environment then the database will be changed permanently by your POST, PUT and DELETE requests. So it's better to run the app using docker instead. 
+    
+servers:
+- url: http://127.0.0.1:8080
+tags:
+- name: Category
+  description: Operations related to categories
+- name: Product
+  description: Operations related to products
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+paths:
+  /api/categories:
+    get:
+      tags:
+      - Category
+      summary: Get all categories
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    post:
+      tags:
+      - Category
+      summary: Create a new category
+      requestBody:
+        content:
+          application/json:     
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Category name
+                description:
+                  type: string
+                  description: Category description
+              example:
+                name: test
+                description: test
+        required: true
+      responses:
+        201:
+          description: Category created successfully
+          content: {}
+  /api/categories/{category_id}:
+    get:
+      tags:
+      - Category
+      summary: Get a category by ID
+      parameters:
+      - name: category_id
+        in: path
+        description: Category ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    put:
+      tags:
+      - Category
+      summary: Update an existing category
+      parameters:
+      - name: category_id
+        in: path
+        description: Category ID
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:     
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Category name
+                description:
+                  type: string
+                  description: Category description
+              example:
+                name: test
+                description: test
+        required: true
+      responses:
+        201:
+          description: Category updated successfully
+          content: {}
+    delete:
+      tags:
+      - Category
+      summary: Delete a category
+      parameters:
+      - name: category_id
+        in: path
+        description: Category ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Category deleted successfully
+          content: {}
+  /api/products:
+    get:
+      tags:
+      - Product
+      summary: Get all products
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    post:
+      tags:
+      - Product
+      summary: Create a new product
+      requestBody:
+        content:
+          application/json:     
+            schema:
+              required:
+              - category_id
+              - expiry_date
+              - image_url
+              - manufacture_date
+              - name
+              - price
+              - pricePerUnit
+              - quantity
+              properties:
+                name:
+                  type: string
+                  description: Product name
+                description:
+                  type: string
+                  description: Product description
+                price:
+                  type: number
+                  description: Product price
+                quantity:
+                  type: number
+                  description: Product quantity
+                unit:
+                  type: string
+                  description: Product unit
+                pricePerUnit:
+                  type: number
+                  description: Product price per unit
+                category_id:
+                  type: integer
+                  description: Category ID for the product
+                manufacture_date:
+                  type: string
+                  format: date
+                  description: manufacture_date
+                expiry_date:
+                  type: string
+                  format: date
+                  description: expiry_date
+                image_url:
+                  type: string
+                  description: image_url
+              example:
+                name: test
+                description: test
+                price: 0
+                quantity: 0
+                unit: test
+                pricePerUnit: 0
+                category_id: 0
+                manufacture_date: "01-01-0001"
+                expiry_date: "01-01-0001"
+                image_url: test
+        required: true
+      responses:
+        201:
+          description: Product created successfully
+          content: {}
+  /api/products/{product_id}:
+    get:
+      tags:
+      - Product
+      summary: Get a product by ID
+      parameters:
+      - name: product_id
+        in: path
+        description: Product ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    put:
+      tags:
+      - Product
+      summary: Update an existing product
+      parameters:
+      - name: product_id
+        in: path
+        description: Product ID
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:     
+            schema:
+              required:
+              - name
+              - description
+              - category_id
+              - expiry_date
+              - image_url
+              - manufacture_date
+              - price
+              - pricePerUnit
+              - quantity
+              - avg_rating
+              - unit
+              properties:
+                name:
+                  type: string
+                  description: Product name
+                description:
+                  type: string
+                  description: Product description
+                price:
+                  type: number
+                  description: Product price
+                quantity:
+                  type: integer
+                  description: Product quantity
+                unit:
+                  type: string
+                  description: Product unit
+                pricePerUnit:
+                  type: number
+                  description: Product price per unit
+                category_id:
+                  type: integer
+                  description: Category ID for the product
+                manufacture_date:
+                  type: string
+                  format: date
+                  description: manufacture_date
+                expiry_date:
+                  type: string
+                  format: date
+                  description: expiry_date
+                image_url:
+                  type: string
+                  description: image_url
+                avg_rating:
+                  type: integer
+                  description: avg_rating
+              example:
+                name: test
+                description: test
+                price: 0
+                quantity: 0
+                unit: test
+                pricePerUnit: 0
+                category_id: 0
+                manufacture_date: "01-01-0001"
+                expiry_date: "01-01-0001"
+                image_url: test
+                avg_rating: 0
+        required: true
+      responses:
+        201:
+          description: Product updated successfully
+          content: {}
+    delete:
+      tags:
+      - Product
+      summary: Delete a product
+      parameters:
+      - name: product_id
+        in: path
+        description: Product ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Product deleted successfully
+          content: {}
+  /api/products/1/{category_id}:
+    get:
+      tags:
+      - Product
+      summary: Get a products in a category_id
+      parameters:
+      - name: category_id
+        in: path
+        description: Category ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          content: {}
