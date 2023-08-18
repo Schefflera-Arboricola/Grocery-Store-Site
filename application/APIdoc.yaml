@@ -194,7 +194,7 @@ paths:
                 pricePerUnit: 0
                 category_id: 0
                 manufacture_date: "01-01-0001"
-                expiry_date: "01-01-0001"
+                expiry_date: "01-01-0002"
                 image_url: test
         required: true
       responses:
@@ -289,7 +289,7 @@ paths:
                 pricePerUnit: 0
                 category_id: 0
                 manufacture_date: "01-01-0001"
-                expiry_date: "01-01-0001"
+                expiry_date: "01-01-0002"
                 image_url: test
                 avg_rating: 0
         required: true

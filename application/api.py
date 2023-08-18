@@ -6,6 +6,7 @@ from flask_jwt_extended import jwt_required
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask import current_app as app
+from datetime import datetime
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -41,13 +42,14 @@ class CategoryAPI(Resource):
         data = request.get_json()
         name = data.get('name')
         description = data.get('description')
-        if type(name)!=str  :return {'message': 'Name must be a string'}, 404
+        if type(name)!=str  :return {'message': 'Name must be a string'}, 400
         elif Category.query.filter_by(name=name).first(): return {'message': f'{name} already exists'}, 404
         else:
             category = Category(name=name, description=description)
             db.session.add(category)
             db.session.commit()
-            return {'message': 'Category created successfully'}, 201
+            category_id=category.category_id
+            return {'message': 'Category created successfully','category_id' : category_id}, 201
 
     @jwt_required()
     @limiter.limit("100 per hour")
@@ -57,7 +59,7 @@ class CategoryAPI(Resource):
             data = request.get_json()
             name = data.get('name')
             description = data.get('description')
-            if type(name)!=str  :return {'message': 'Name must be a string'}, 404
+            if type(name)!=str  :return {'message': 'Name must be a string'}, 400
             else:
                 category.name=name
                 category.description=description
@@ -109,7 +111,7 @@ class ProductAPI(Resource):
                             'avg_rating': product.avg_rating
                         }, 200
                     else:
-                        return {'message': 'Product was deleted'}, 404
+                        return {'message': 'Product was deleted'}, 400
                 else:
                     return {'message': 'Product not found'}, 404
             else:
@@ -157,7 +159,7 @@ class ProductAPI(Resource):
             else:
                 return {'message': 'Category not found'}, 404
         else:
-            return {'message': 'flag=0'}, 404
+            return {'message': 'flag=0'}, 400
 
     @jwt_required()
     @limiter.limit("100 per hour")
@@ -181,11 +183,12 @@ class ProductAPI(Resource):
             product = Products(name=name,description=description,price=float(price),quantity=int(quantity),unit=unit,pricePerUnit=float(pricePerUnit),category_id=int(category_id),manufacture_date=manufacture_date,expiry_date=expiry_date,image_url=image_url,avg_rating=avg_rating,isDeleted=isDeleted)
             db.session.add(product)
             db.session.commit()
-            return {'message': 'Product created successfully'}, 201
+            product_id = product.product_id
+            return {'message': 'Product created successfully','product_id': product_id}, 201
         elif status==400:
-            return {'message': product_msg}, 404
+            return {'message': product_msg}, 400
         else:
-            return {'message': 'Something went wrong!! Contact admin'}, 404
+            return {'message': 'Something went wrong!! Contact admin'}, 500
         
     @jwt_required()
     @limiter.limit("100 per hour")
@@ -223,9 +226,9 @@ class ProductAPI(Resource):
                 db.session.commit()
                 return {'message': 'Product updated successfully'}, 201
             elif status==400:
-                return {'message': product_msg}, 404
+                return {'message': product_msg}, 400
             else:
-                return {'message': 'Error!! Contact Admin'}, 404
+                return {'message': 'Error!! Contact Admin'}, 500
         else:
             return {'message': 'Product not found'}, 404
 
@@ -258,5 +261,20 @@ def check_product(name, description, price, quantity, unit, pricePerUnit, catego
         return 'Quantity cannot be negative', 400
     elif float(pricePerUnit)<0:
         return 'PricePerUnit cannot be negative', 400
+    elif avg_rating!=None and (float(avg_rating)<0 or float(avg_rating)>5):
+        return 'Avg_rating must be between 0 and 5', 400
+    elif not is_valid_date(manufacture_date):
+        return 'manufacture_date is not a valid date.', 400
+    elif not is_valid_date(expiry_date):
+        return 'expiry_date is not a valid date.', 400
+    elif datetime.strptime(manufacture_date, '%d-%m-%Y')>datetime.strptime(expiry_date, '%d-%m-%Y'):
+        return 'Manufacture_date cannot be greater than expiry_date', 400
     else:
         return 'Valid', 200
+
+def is_valid_date(date_str):
+    try:
+        datetime.strptime(date_str, '%d-%m-%Y')
+        return True
+    except ValueError:
+        return False

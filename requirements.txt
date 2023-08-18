@@ -20,3 +20,4 @@ Flask-Migrate
 python-dotenv
 flask-cors
 flask_restx
+beautifulsoup4
