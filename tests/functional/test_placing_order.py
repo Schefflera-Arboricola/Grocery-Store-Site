@@ -18,6 +18,13 @@
 
 #from application.models import *
 from bs4 import BeautifulSoup
+import pytest
+from main import create_app
+
+@pytest.fixture
+def app():
+    app, api = create_app()
+    return app
 
 def get_test_store_manager_info():
     store_manager_id=1

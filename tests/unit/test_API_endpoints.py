@@ -6,7 +6,13 @@ Test flow :
 '''
 
 from bs4 import BeautifulSoup
+import pytest
+from main import create_app
 
+@pytest.fixture
+def app():
+    app, api = create_app()
+    return app
 
 def get_test_developer_info():
     developer_id=1
