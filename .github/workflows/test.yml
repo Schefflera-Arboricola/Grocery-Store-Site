@@ -31,6 +31,9 @@ jobs:
     
     - name: Set Python path
       run: export PYTHONPATH=$PYTHONPATH:/home/runner/work/Grocery-Store/Grocery-Store
+    
+    - name: structure
+      run: tree
       
     - name: Run tests
       run: pytest
