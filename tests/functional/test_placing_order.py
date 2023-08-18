@@ -16,7 +16,7 @@
 - delete the test product 
 '''
 
-from application.models import *
+#from application.models import *
 from bs4 import BeautifulSoup
 
 def get_test_store_manager_info():
