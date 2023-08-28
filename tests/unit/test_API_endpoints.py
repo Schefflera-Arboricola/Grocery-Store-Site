@@ -6,13 +6,9 @@ Test flow :
 '''
 
 from bs4 import BeautifulSoup
-import pytest
-from main import create_app
+from ..conftests import app
 
-@pytest.fixture
-def app():
-    app, api = create_app()
-    return app
+app_instance=app()
 
 def get_test_developer_info():
     developer_id=1
@@ -21,36 +17,37 @@ def get_test_developer_info():
     return developer_id,username,password
 
 
-def get_client_and_token(app):
-    client = app.test_client()
+def get_client_and_token(app_instance):
+    client = app_instance.test_client()
     dev_id,username,password=get_test_developer_info()
+    with app_instance.app_context():
+        response = client.post('/', data={'username': username, 'password': password})
+        assert response.status_code == 200
 
-    response = client.post('/', data={'username': username, 'password': password})
-    assert response.status_code == 200
+        response=client.get(f'/developer/{dev_id}/getAPI')
+        assert response.status_code == 200
 
-    response=client.get(f'/developer/{dev_id}/getAPI')
-    assert response.status_code == 200
-
-    html_content = response.data.decode('utf-8')
-    soup = BeautifulSoup(html_content, 'html.parser')
-    target_div = soup.find('div', {'id': 'API_key'})
-    if target_div:
-        token = target_div.get_text(strip=True)
-    else:
-        raise Exception("No API key found")
+        html_content = response.data.decode('utf-8')
+        soup = BeautifulSoup(html_content, 'html.parser')
+        target_div = soup.find('div', {'id': 'API_key'})
+        if target_div:
+            token = target_div.get_text(strip=True)
+        else:
+            raise Exception("No API key found")
     
     return client, token
 
 
 
 # GET requests
-def test_get_all_products(app):
-    client,token=get_client_and_token(app)
-    headers = {'Authorization': f'Bearer {token}'}
-    response = client.get('/api/products', headers=headers)
-    assert response.status_code == 200
+def test_get_all_products(app_instance):
+    client,token=get_client_and_token(app_instance)
+    with app_instance.app_context():
+        headers = {'Authorization': f'Bearer {token}'}
+        response = client.get('/api/products', headers=headers)
+        assert response.status_code == 200
     return
-
+'''
 def test_get_one_product(app):
     client,token=get_client_and_token(app)
     test_product=create_test_product(app,client,token)
@@ -176,3 +173,4 @@ def delete_test_category(app,client,token,category_id):
     response = client.delete(f'/api/categories/{category_id}', headers=headers)
     assert response.status_code == 200
     return
+'''

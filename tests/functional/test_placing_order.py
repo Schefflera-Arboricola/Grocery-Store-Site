@@ -16,15 +16,12 @@
 - delete the test product 
 '''
 
-#from application.models import *
+from application.models import *
 from bs4 import BeautifulSoup
-import pytest
-from main import create_app
+from application.models import *
+from ..conftests import app
 
-@pytest.fixture
-def app():
-    app, api = create_app()
-    return app
+app_instance=app()
 
 def get_test_store_manager_info():
     store_manager_id=1
@@ -44,25 +41,26 @@ def get_test_delivery_executive_info():
     password='123456789'
     return delivery_executive_id,username,password
 
-def test_place_order(app):
-    client = app.test_client()
-    store_manager_id,username,password=get_test_store_manager_info()
-    response = client.post('/', data={'username': username, 'password': password})
-    assert response.status_code == 200
-    
-    data={
-        "name": "test",
-        "description": "test",
-        "price": 0,
-        "quantity": 0,
-        "unit": "test",
-        "pricePerUnit": 0,
-        "category_id": 0,
-        "manufacture_date": "01-01-0001",
-        "expiry_date": "01-01-0002",
-        "image_url": "test"
-    }
-    #response=client.get(f'/storemng/{store_manager_id}/addProducts',data=data)
-    #assert response.status_code == 201
-    return 
+def test_place_order(app_instance):
+    client = app_instance.test_client()
+    with app_instance.app_context():
+        store_manager_id,username,password=get_test_store_manager_info()
+        response = client.post('/', data={'username': username, 'password': password})
+        assert response.status_code == 200
+        
+        data={
+            "name": "test",
+            "description": "test",
+            "price": 0,
+            "quantity": 0,
+            "unit": "test",
+            "pricePerUnit": 0,
+            "category_id": 0,
+            "manufacture_date": "01-01-0001",
+            "expiry_date": "01-01-0002",
+            "image_url": "test"
+        }
+        #response=client.get(f'/storemng/{store_manager_id}/addProducts',data=data)
+        #assert response.status_code == 201
+    return True
 
