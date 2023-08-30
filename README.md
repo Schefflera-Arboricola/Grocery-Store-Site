@@ -1,4 +1,6 @@
-# About 
+# [Parent Repository](https://github.com/Schefflera-Arboricola/Grocery-Store)
+
+## About 
 
 It's a multi-user (customer, store manager, delivery executive, developer) e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and different categories by the store manager, and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
 
