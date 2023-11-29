@@ -19,5 +19,5 @@ Flask-Limiter
 Flask-Migrate
 python-dotenv
 flask-cors
-flask_restx
+flask-restx==1.2.0
 beautifulsoup4
