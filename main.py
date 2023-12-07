@@ -19,12 +19,14 @@ def create_app():
 
     db.init_app(app)
 
+    from application.views.viewsAdmin import viewsAdmin
     from application.views.viewsCustomer import viewsCustomer
     from application.views.viewsDelExe import viewsDelExe
     from application.views.viewsStoreMng import viewsStoreMng
     from application.views.viewsDeveloper import viewsDeveloper
     from application.views.auth import auth
 
+    app.register_blueprint(viewsAdmin, url_prefix="/")
     app.register_blueprint(viewsCustomer, url_prefix="/")
     app.register_blueprint(viewsDelExe, url_prefix="/")
     app.register_blueprint(viewsStoreMng, url_prefix="/")

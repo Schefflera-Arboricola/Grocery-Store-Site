@@ -18,6 +18,8 @@ def load_user(user_id):
         return render_template("signinup/signin_base.html")
     if session["account_type"] == "Customer":
         return Customer.query.get(int(user_id))
+    elif session["account_type"] == "Admin":
+        return Admin.query.get(int(user_id))
     elif session["account_type"] == "StoreManager":
         return StoreManager.query.get(int(user_id))
     elif session["account_type"] == "DeliveryExecutive":
@@ -42,6 +44,8 @@ def signin():
         role = request.form.get("role")
         if role == "customer":
             user = Customer.query.filter_by(username=username).first()
+        elif role == "admin":
+            user = Admin.query.filter_by(username=username).first()
         elif role == "store-manager":
             user = StoreManager.query.filter_by(username=username).first()
         elif role == "delivery-executive":
@@ -59,6 +63,11 @@ def signin():
                     session["account_type"] = "Customer"
                     return redirect(
                         url_for("viewsCustomer.dashboard", c_id=int(user.customer_id))
+                    )
+                elif role == "admin":
+                    session["account_type"] = "Admin"
+                    return redirect(
+                        url_for("viewsAdmin.dashboard", admin_id=int(user.admin_id))
                     )
                 elif role == "store-manager":
                     session["account_type"] = "StoreManager"
@@ -367,6 +376,10 @@ def customer_reset_password(c_id):
             return redirect("/")
     return render_template("signinup/set_new_pswd.html", id=c_id)
 
+# No forgot password and reset password routes for admin : 
+# it wouldn't make much sense since admin only have username and password
+# but there should be some provision to update the passsword(outside the control of the developer) for security purposes
+# maybe admin can have a phone no to update the password?
 
 @auth.route("/store_manager_forgot_password", methods=["GET", "POST"])
 def store_manager_forgot_password():

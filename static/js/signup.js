@@ -1,5 +1,6 @@
 function redirectToSignup() {
     var customerRadio = document.getElementById("customer");
+    var adminRadio = document.getElementById("admin");
     var storeManagerRadio = document.getElementById("store-manager");
     var deliveryExecutiveRadio = document.getElementById("delivery-executive");
     var developerRadio = document.getElementById("developer");
@@ -7,6 +8,9 @@ function redirectToSignup() {
     if (customerRadio.checked) {
       window.location.href = "/customer_signup";
     } 
+    else if (adminRadio.checked) {
+      alert("Admin signup is not allowed. Please contact the developer to get access to the admin's username and password.")
+    }
     else if (storeManagerRadio.checked) {
       window.location.href = "/store_manager_signup";
     } 
@@ -30,6 +34,9 @@ function redirectToForgotPswd(){
     if (customerRadio.checked) {
       window.location.href = "/customer_forgot_password";
     } 
+    else if (adminRadio.checked) {
+      alert("Admin forgot password is not allowed. Please contact the developer to get the admin password.")  
+    }
     else if (storeManagerRadio.checked) {
       window.location.href = "/store_manager_forgot_password";
     } 

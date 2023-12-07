@@ -1,7 +1,16 @@
 from .database import db
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash
 
 
+class Admin(db.Model, UserMixin):
+    __tablename__ = "admin"
+    admin_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    def get_id(self):
+        return str(self.admin_id)
+    
 class Developer(db.Model, UserMixin):
     __tablename__ = "developer"
     developer_id = db.Column(db.Integer, primary_key=True)
@@ -177,13 +186,18 @@ class onlinePayments(db.Model):
 db.create_all()
 
 
-# Initializing 1 store branch, 1 store manager and 3 delivery executives
+# Initializing 1 admin, 1 store branch, 1 store manager and 3 delivery executives
 
 if (
-    db.session.query(Branch).count() == 0
+    db.session.query(Admin).count() == 0
+    and db.session.query(Branch).count() == 0
     and db.session.query(StoreManagerids).count() == 0
     and db.session.query(DeliveryExecutiveids).count() == 0
 ):
+    # Create and add the admin
+    admin = Admin(admin_id=1,username="aditijuneja",password=generate_password_hash("123456789"))
+    db.session.add(admin)
+
     # Create and add the branch
     branch = Branch(branch_id=1, location="New Delhi", phone_no="1800180045")
     db.session.add(branch)
