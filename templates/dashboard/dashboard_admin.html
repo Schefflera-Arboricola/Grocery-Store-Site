@@ -1,1 +1,56 @@
-{% extends "dashboard/dashboard_base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            td {
+              padding: 10px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+        </style>
+        <title>Admin Dashboard</title>
+    </head>
+    <body>
+        <h1>Admin Dashboard</h1>
+        <h3>Pending Store Managers : </h3>
+        <form action="/admin/{{ admin_id }}/dashboard" method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Store Manager IDs</td>
+                        <td>Branch IDs</td>
+                        <td>Email</td>
+                        <td>Current Status</td>
+                        <td>Updated Status</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pending %}
+                        <tr>
+                            <td>{{ i["name"] }}</td>
+                            <td>{{ i["store_manager_id"] }}</td>
+                            <td>{{ i["branch_id"] }}</td>
+                            <td>{{ i["email"] }}</td>
+                            <td>{{ i["isApproved"] }}</td>
+                            <td>
+                                <select name="status_{{ i['store_manager_id'] }}">
+                                    <option value="Approved">Approve</option>
+                                    <option value="Rejected">Reject</option>
+                                    <option value="Pending" selected>Pending</option>
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Update Changes</button>
+        </form>
+        <button onclick="window.location.href='/signout'">Sign-out</button> 
+    </body>
+</html>

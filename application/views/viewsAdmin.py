@@ -17,6 +17,25 @@ def require_login():
         return render_template("error.html"), 401
 
 
-@viewsAdmin.route("/admin/<int:admin_id>/dashboard")
+@viewsAdmin.route("/admin/<int:admin_id>/dashboard", methods=["GET", "POST"])
 def dashboard(admin_id):
-    return render_template("dashboard/dashboard_admin.html", admin_id=admin_id)
+    if request.method == "POST":
+        for key, value in request.form.items():
+            if key.startswith("status_"):
+                store_manager_id = int(key.replace("status_", ""))
+                update_status_in_database(store_manager_id, value)
+
+    pending_sm = StoreManager.query.filter_by(isApproved="Pending").all()
+    return render_template("dashboard/dashboard_admin.html", admin_id=admin_id, pending=pending_sm)
+
+def update_status_in_database(store_manager_id, new_status):
+    store_manager = StoreManager.query.get(store_manager_id)
+    if store_manager:
+        if new_status == "Approved":
+            store_manager.isApproved = "Approved"
+        elif new_status == "Pending":
+            store_manager.isApproved = "Pending"
+        elif new_status == "Rejected":
+            db.session.delete(store_manager)
+            # todo : notify that their signup has been rejected
+        db.session.commit()
