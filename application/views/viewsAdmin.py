@@ -19,4 +19,4 @@ def require_login():
 
 @viewsAdmin.route("/admin/<int:admin_id>/dashboard")
 def dashboard(admin_id):
-    return render_template("dashboard/admin_dashboard.html", admin_id=admin_id)
+    return render_template("dashboard/dashboard_admin.html", admin_id=admin_id)

@@ -26,7 +26,8 @@ function redirectToSignup() {
 }
 
 function redirectToForgotPswd(){
-  var customerRadio = document.getElementById("customer");
+    var customerRadio = document.getElementById("customer");
+    var adminRadio = document.getElementById("admin");
     var storeManagerRadio = document.getElementById("store-manager");
     var deliveryExecutiveRadio = document.getElementById("delivery-executive");
     var developerRadio = document.getElementById("developer");
