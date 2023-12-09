@@ -46,6 +46,7 @@ class StoreManager(User):
     __tablename__ = "store_manager"
     store_manager_id = db.Column(db.Integer, primary_key=True)
     branch_id = db.Column(db.Integer, db.ForeignKey("branch.branch_id"), nullable=False)
+    isApproved = db.Column(db.String, default="Pending", nullable=False)
 
     def get_id(self):
         return str(self.store_manager_id)

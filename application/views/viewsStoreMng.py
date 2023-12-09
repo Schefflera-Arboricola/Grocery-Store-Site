@@ -19,7 +19,12 @@ def require_login():
         or current_user.store_manager_id != store_manager_id
     ):
         return render_template("error.html"), 401
-
+    elif current_user.isApproved == "Pending" :
+        return render_template("userviews/store_manager/pending.html"), 403
+    elif current_user.isApproved == "Rejected" :
+        return render_template("userviews/store_manager/rejected.html"), 403
+    else :
+        return "Error!! Please contact the developer.", 404
 
 @viewsStoreMng.route("/storemng/<int:strmng_id>/dashboard")
 def dashboard(strmng_id):

@@ -262,6 +262,8 @@ def developer_signup():
 def check_user_features(dbClass, name, username, phone, password, email):
     if dbClass.query.filter_by(username=username).first():
         return "Username already exists"
+    elif dbClass.query.filter_by(phone_no=phone).first():
+        return "Phone number already exists"
     elif len(username) < 8:
         return "Username must have atleast 8 characters"
     elif dbClass.query.filter_by(email=email).first():
@@ -291,7 +293,10 @@ def check_strmng_ids(strmng_id, branch_id):
     strmng_entry = StoreManagerids.query.filter_by(
         store_manager_id=strmng_id, branch_id=branch_id
     ).first()
-    if strmng_entry:
+    strmng = StoreManager.query.filter_by(store_manager_id=strmng_id).first()
+    if strmng:
+        return "Store Manager ID already exists"
+    elif strmng_entry:
         return True
     elif not StoreManagerids.query.filter_by(store_manager_id=strmng_id).first():
         return "Enter correct Store Manager ID"
@@ -305,7 +310,10 @@ def check_delexe_ids(delexe_id, branch_id):
     delexe_entry = DeliveryExecutiveids.query.filter_by(
         delivery_executive_id=delexe_id, branch_id=branch_id
     ).first()
-    if delexe_entry:
+    delexe = DeliveryExecutive.query.filter_by(delivery_executive_id=delexe_id).first()
+    if delexe:
+        return "Delivery Executive ID already exists"
+    elif delexe_entry:
         return True
     elif not DeliveryExecutiveids.query.filter_by(
         delivery_executive_id=delexe_id
