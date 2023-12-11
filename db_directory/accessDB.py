@@ -71,7 +71,7 @@ def DeleteCategory(category_id):
         db.session.commit()
         return (
             {
-                "message": "Category deleted successfully.  Associated products don't have a category anymore!"
+                "message": "Category deleted successfully.  Associated products are in category 0 now."
             },
             200,
         )

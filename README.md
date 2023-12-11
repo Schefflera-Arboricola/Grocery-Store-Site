@@ -2,18 +2,50 @@
 
 ## About 
 
-It's a multi-user (customer, store manager, delivery executive, developer) e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and different categories by the store manager, and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
+It's a multi-user (customer, store manager, delivery executive, developer) e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
 
 <br>
 
 ## Features :
 
-1. 4 types of users: Customer, Store Manager, Delivery Executive, Developer
+1. 5 types of users: Customer, Admin, Store Manager, Delivery Executive, Developer
 2. CRUD APIs for Product and Category management(flask_restx) - You can play around with the API endpoints by pasting the contents of `application/APIdoc.yaml` file in [Swagger Editor](https://editor.swagger.io/)
 3. Proper authentication and authorization framework(flask-login)
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings, and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
+
+<hr>
+<br>
+
+## Functionalities of all user types :
+
+### Customer :
+1. Can search products based on category, ratings, and various other product features
+2. Can add products to cart and place orders
+3. Can view their order history and track their orders
+4. Can view their profile and edit their details
+5. Can view their recommendations based on their previous orders
+6. Can view similar products of a given product based on product description
+7. Can give ratings and reviews to products
+8. Can make online payments and receive OTPs for confirmation of delivery
+
+### Admin :
+1. Can view all the store managers' requests for sign up and approve/reject them
+2. Approve/reject requests from store managers to add new categories, edit or delete existing categories
+
+### Store Manager :
+1. Can add/edit/delete products and categories
+2. Can view their profile and edit their details
+
+### Delivery Executive :
+1. Can view all the orders assigned to them.
+2. Can update the status of the orders(pending/delivered) by entring the OTP received by the customer.
+3. Can view their profile and edit their details.
+
+### Developer :
+1. Can use the CRUD APIs for products and categories using their private API keys.
+2. Can view their profile and edit their details.
 
 <hr>
 <br>
@@ -49,7 +81,7 @@ Test users' login credentials for all types of users :
 - `username` : `aditijuneja`
 - `password` : `123456789`
 
-(Change the customer's phone number to the number you want to receive the OTP on, using the 'Edit Profile' option on the dashboard)
+(Change the user's phone number to the number you want to receive the OTP on, using the 'Edit Profile' option on the dashboard)
 
 <br>
 

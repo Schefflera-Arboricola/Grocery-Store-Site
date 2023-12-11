@@ -19,12 +19,9 @@ def require_login():
         or current_user.store_manager_id != store_manager_id
     ):
         return render_template("error.html"), 401
-    elif current_user.isApproved == "Pending" :
+    elif current_user.isApproved == "Pending":
         return render_template("userviews/store_manager/pending.html"), 403
-    # elif current_user.isApproved == "Rejected" :
-        # return render_template("userviews/store_manager/rejected.html"), 403
-    else :
-        return "Error!! Please contact the developer.", 404
+
 
 @viewsStoreMng.route("/storemng/<int:strmng_id>/dashboard")
 def dashboard(strmng_id):
@@ -82,6 +79,51 @@ def check_user_features(name, phone):
         return "Name must be a string"
     else:
         return True
+
+
+@viewsStoreMng.route("/storemng/<int:strmng_id>/pastRequests")
+def pastRequests(strmng_id):
+    past_requests = CategoryUpdateRequest.query.filter(
+        CategoryUpdateRequest.isApproved.in_(["Approved", "Rejected"])
+    ).all()
+    past_requests = [
+        update for update in past_requests if update.store_manager_id == strmng_id
+    ]
+    return render_template(
+        "userviews/store_manager/pastRequests.html",
+        strmng_id=strmng_id,
+        past_requests=past_requests,
+    )
+
+
+@viewsStoreMng.route("/storemng/<int:strmng_id>/pendingRequests")
+def pendingRequests(strmng_id):
+    pending_requests = CategoryUpdateRequest.query.filter_by(
+        isApproved="No Action"
+    ).all()
+    pending_requests = [
+        update for update in pending_requests if update.store_manager_id == strmng_id
+    ]
+    return render_template(
+        "userviews/store_manager/pendingRequests.html",
+        strmng_id=strmng_id,
+        pending_requests=pending_requests,
+    )
+
+
+@viewsStoreMng.route(
+    "/storemng/<int:strmng_id>/requestDetails/<int:update_id>", methods=["GET", "POST"]
+)
+def requestDetails(strmng_id, update_id):
+    update = CategoryUpdateRequest.query.filter_by(update_id=update_id).first()
+    if update.category_id:
+        category = Category.query.filter_by(category_id=update.category_id).first()
+    return render_template(
+        "userviews/store_manager/requestDetails.html",
+        strmng_id=strmng_id,
+        update=update,
+        category=category,
+    )
 
 
 # Product Management
@@ -158,54 +200,27 @@ def Categories(strmng_id):
     )
 
 
-@viewsStoreMng.route("/storemng/<int:strmng_id>/addCategory", methods=["GET", "POST"])
-def addCategory(strmng_id):
+@viewsStoreMng.route("/storemng/<int:strmng_id>/createRequest", methods=["GET", "POST"])
+def createRequest(strmng_id):
+    categories = Category.query.all()
     if request.method == "POST":
-        categories, status_code = AddCategory(request.form)
-        if status_code == 404:
-            flash(categories["message"], category="error")
-        elif status_code == 200:
-            return redirect(url_for("viewsStoreMng.Categories", strmng_id=strmng_id))
-        else:
-            flash("Something went wrong. Contact Admin", category="error")
-    return render_template("userviews/store_manager/addCategory.html")
-
-
-@viewsStoreMng.route(
-    "/storemng/<int:strmng_id>/editCategory/<int:cat_id>", methods=["GET", "POST"]
-)
-def editCategory(strmng_id, cat_id):
-    if cat_id != 0:
-        category = Category.query.filter_by(category_id=cat_id).first()
-        if request.method == "POST":
-            categories, status_code = UpdateCategory(cat_id, request.form)
-            if status_code == 404:
-                flash(categories["message"], category="error")
-            elif status_code == 200:
-                return redirect(
-                    url_for("viewsStoreMng.Categories", strmng_id=strmng_id)
-                )
-            else:
-                flash("Something went wrong. Contact Admin", category="error")
-        return render_template(
-            "userviews/store_manager/editCategory.html", category=category
+        request_info = request.form
+        update_type = request_info["update_type"]
+        if request_info["update_type"] in ["UPDATE", "DELETE"]:
+            category_id = request_info["category_id"]
+        elif request_info["update_type"] == "ADD":
+            category_id = None
+        new_update = CategoryUpdateRequest(
+            store_manager_id=strmng_id,
+            category_id=category_id,
+            update_type=update_type,
+            update_heading=request_info["update_heading"],
+            update_description1=request_info["update_description1"],
+            update_description2=request_info["update_description2"],
         )
-    else:
-        return render_template("error.html")
-
-
-@viewsStoreMng.route(
-    "/storemng/<int:strmng_id>/deleteCategory/<int:cat_id>", methods=["GET", "POST"]
-)
-def deleteCategory(strmng_id, cat_id):
-    if cat_id != 0:
-        categories, status_code = DeleteCategory(cat_id)
-        if status_code == 404:
-            print(categories["message"])
-        elif status_code == 200:
-            return redirect(url_for("viewsStoreMng.Categories", strmng_id=strmng_id))
-        else:
-            print("Something went wrong. Contact Admin")
-        return redirect(url_for("viewsStoreMng.Categories", strmng_id=strmng_id))
-    else:
-        return render_template("error.html")
+        db.session.add(new_update)
+        db.session.commit()
+        return redirect(url_for("viewsStoreMng.pendingRequests", strmng_id=strmng_id))
+    return render_template(
+        "userviews/store_manager/createRequest.html", categories=categories
+    )

@@ -1,6 +1,7 @@
 from .database import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
+from sqlalchemy import CheckConstraint
 
 
 class Admin(db.Model, UserMixin):
@@ -8,9 +9,11 @@ class Admin(db.Model, UserMixin):
     admin_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+
     def get_id(self):
         return str(self.admin_id)
-    
+
+
 class Developer(db.Model, UserMixin):
     __tablename__ = "developer"
     developer_id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +50,12 @@ class StoreManager(User):
     store_manager_id = db.Column(db.Integer, primary_key=True)
     branch_id = db.Column(db.Integer, db.ForeignKey("branch.branch_id"), nullable=False)
     isApproved = db.Column(db.String, default="Pending", nullable=False)
+
+    __table_args__ = (
+        CheckConstraint(
+            isApproved.in_(["Pending", "Approved"]), name="valid_isApproved"
+        ),
+    )
 
     def get_id(self):
         return str(self.store_manager_id)
@@ -129,6 +138,33 @@ class Reviews(db.Model):
         return None
 
 
+class CategoryUpdateRequest(db.Model):
+    __tablename__ = "category_update_request"
+    update_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    store_manager_id = db.Column(
+        db.Integer, db.ForeignKey("store_manager.store_manager_id"), nullable=False
+    )
+    category_id = db.Column(
+        db.Integer, db.ForeignKey("category.category_id")
+    )  # initially None, if new category added, assigned the new category id after approval
+    update_type = db.Column(db.String, nullable=False)
+    update_heading = db.Column(db.String, nullable=False)
+    update_description1 = db.Column(db.String, nullable=False)
+    update_description2 = db.Column(db.String, nullable=False)
+    isApproved = db.Column(db.String, default="No Action", nullable=False)
+    feedback = db.Column(db.String, default=None)  # feedback given by admin
+
+    __table_args__ = (
+        CheckConstraint(
+            update_type.in_(["ADD", "DELETE", "UPDATE"]), name="valid_update_type"
+        ),
+        CheckConstraint(
+            isApproved.in_(["No Action", "Approved", "Rejected"]),
+            name="correct_isApproved",
+        ),
+    )
+
+
 # once the order is placed, the items in cart are moved to this table, and cart is emptied, and product quantity is reduced in products table
 class Cart(db.Model):
     __tablename__ = "cart"
@@ -196,7 +232,9 @@ if (
     and db.session.query(DeliveryExecutiveids).count() == 0
 ):
     # Create and add the admin
-    admin = Admin(admin_id=1,username="aditijuneja",password=generate_password_hash("123456789"))
+    admin = Admin(
+        admin_id=1, username="aditijuneja", password=generate_password_hash("123456789")
+    )
     db.session.add(admin)
 
     # Create and add the branch

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            td {
+              padding: 10px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+            .button-container {
+                position: absolute;
+                top: 35px; 
+                right: 40px; 
+                display: flex;
+                gap: 15px;
+            }
+        </style>
+        <title>Pending updates</title>
+    </head>
+    <body>
+        <h1>Pending updates</h1>
+
+        <div class="button-container">
+            <button onclick="window.location.href='/admin/{{ admin_id }}/dashboard'">Back to Dashboard</button> 
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Store Manager ID</td>
+                    <td>Update Summary</td>
+                    <td>Update details page</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in pending_updates %}
+                    <tr>
+                        <td>{{ i["store_manager_id"] }}</td>
+                        <td>{{ i["update_heading"] }}</td>
+                        <td><a href='/admin/{{ admin_id }}/updateDetails/{{ i["update_id"] }}'>View Details</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </body>
+</html>

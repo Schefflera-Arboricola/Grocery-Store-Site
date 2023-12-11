@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Update Details</title>  
+    </head>
+    <body>      
+        <h1>Update Details</h1>
+
+        Status : {{ update["isApproved"] }} <br>
+        Update Summary : {{ update["update_heading"] }} <br>
+
+        <br>
+
+        {% if update["update_type"] == "ADD" %}
+
+            <h3>New category Info</h3>
+            Category Name : {{ update["update_description1"] }} <br>
+            Category Description : <br>
+            {{ update["update_description2"] }} <br>
+
+        {% elif update["update_type"] == "UPDATE" %}
+
+            <h3>Updated Category Info</h3>
+            Category ID : {{ update["category_id"] }} <br>
+            Old Category Name : {{ category["name"] }} <br>
+            Updated Category Name : {{ update["update_description1"] }} <br>
+            Old Category Description : <br>
+            {{ category["description"] }} <br>
+            Updated Category Description : <br>
+            {{ update["update_description2"] }} <br>
+
+        {% elif update["update_type"] == "DELETE" %}
+            Category ID : {{ update["category_id"] }} <br>
+            Category Name : {{ category["name"] }} <br>
+            Category Description : <br>
+            {{ category["description"] }} <br>
+            Reason for Deletion : <br>
+            {{ update["update_description1"] }} <br>
+            Any products in category {{ update["category_id"] }}? : {{ update["update_description2"] }} <br>
+
+        {% endif %}
+
+        <br>
+        <br>
+
+        {% if update["isApproved"] == "No Action" %}
+            Sorry! No feedback, no action by admin yet.
+        {% else %}
+            Admin's feedback : {{ update["feedback"] }}
+        {% endif %}
+    </body>
+</html>

@@ -384,10 +384,12 @@ def customer_reset_password(c_id):
             return redirect("/")
     return render_template("signinup/set_new_pswd.html", id=c_id)
 
-# No forgot password and reset password routes for admin : 
+
+# No forgot password and reset password routes for admin :
 # it wouldn't make much sense since admin only have username and password
 # but there should be some provision to update the passsword(outside the control of the developer) for security purposes
 # maybe admin can have a phone no to update the password?
+
 
 @auth.route("/store_manager_forgot_password", methods=["GET", "POST"])
 def store_manager_forgot_password():

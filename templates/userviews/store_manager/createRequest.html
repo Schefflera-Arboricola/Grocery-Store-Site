@@ -1,0 +1,48 @@
+{% extends "form.html" %}
+{% block title %} Category Update Form {% endblock %}
+{% block jsCSSlinks %}{% endblock %}
+{% block heading %}<h1 class="heading">Grocery Store</h1><br>{% endblock %}
+
+<!--TODO : add checks and conditions-->
+
+{% block roleSelection %}
+<br>
+<div class="role-selection">
+    <label>Update Type:</label>
+    <label><input type="radio" name="update_type" value="ADD" required> ADD</label>
+    <label><input type="radio" name="update_type" value="DELETE" required> DELETE</label>
+    <label><input type="radio" name="update_type" value="UPDATE" required> UPDATE</label>
+</div>
+<br>
+{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Category Update Form</h1>{% endblock %}
+
+{% block inputs %} 
+Category :
+<div id="category_dropdown">
+    <select name="category_id" class="form-control">
+        <option value="">None</option>
+        {% for category in categories %}
+            {% if category['category_id'] != 0 %}
+                <option value="{{ category['category_id'] }}"  class="form-control">{{ category["name"] }}</option> 
+            {% endif %}
+        {% endfor %}
+    </select>
+    
+</div>
+<br>
+    <input type="text"  class="form-control" placeholder="Update Heading" name="update_heading" required>
+    <br>
+
+    <h3><label id="description_label1" for="update_description1">New/Updated category's name or Reason of Deletion:</label></h3>
+    <input type="text"  class="form-control" name="update_description1" required>
+    <br>
+
+    <h3><label id="description_label2" for="update_description2">New/Updated category's description or If any products in the above category:</label></h3>
+    <input type="text"  class="form-control" name="update_description2" required>
+    
+<br>
+{% endblock %}
+
+{% block submitButtons %}<button class="btn" type="submit" name="action">Submit Request</button>{% endblock %}

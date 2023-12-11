@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Update Message</title>
+</head>
+
+<body>
+    {% if status_code == 200 %}
+    Successfully Updated <br>
+    Message : {{ msg }}
+    {% else %}
+    Failed to update <br>
+    Error Message : {{ msg }}
+    {% endif %}
+</body>
+
+</html>
