@@ -21,6 +21,7 @@ def require_login():
 
 @viewsAdmin.route("/admin/<int:admin_id>/dashboard", methods=["GET", "POST"])
 def dashboard(admin_id):
+    username = Admin.query.filter_by(admin_id=admin_id).first().username
     if request.method == "POST":
         for key, value in request.form.items():
             if key.startswith("status_"):
@@ -29,7 +30,10 @@ def dashboard(admin_id):
 
     pending_sm = StoreManager.query.filter_by(isApproved="Pending").all()
     return render_template(
-        "dashboard/dashboard_admin.html", admin_id=admin_id, pending=pending_sm
+        "dashboard/dashboard_admin.html",
+        admin_id=admin_id,
+        username=username,
+        pending=pending_sm,
     )
 
 
@@ -203,9 +207,7 @@ def deleteCategory(admin_id, cat_id):
 def Product(admin_id):
     products, status_code = GetProduct()
     return render_template(
-        "userviews/store_manager/viewProducts.html",
-        products=products,
-        strmng_id=admin_id,
+        "userviews/admin/viewProducts.html", products=products, admin_id=admin_id,
     )
 
 
@@ -220,7 +222,7 @@ def addProduct(admin_id):
             return redirect(url_for("viewsAdmin.Product", admin_id=admin_id))
         else:
             flash("Something went wrong. Contact Developer", category="error")
-    return render_template("userviews/store_manager/addProduct.html")
+    return render_template("userviews/admin/addProduct.html", admin_id=admin_id)
 
 
 @viewsAdmin.route(
@@ -240,7 +242,7 @@ def editProduct(admin_id, prod_id):
         else:
             flash("Something went wrong. Contact Developer", category="error")
     product = Products.query.filter_by(product_id=prod_id).first()
-    return render_template("userviews/store_manager/editProduct.html", product=product)
+    return render_template("userviews/admin/editProduct.html", product=product)
 
 
 @viewsAdmin.route(

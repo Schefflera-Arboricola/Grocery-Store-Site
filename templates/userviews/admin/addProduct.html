@@ -1,0 +1,23 @@
+{% extends "form.html" %}
+{% block title %}Add Product{% endblock %}
+{% block heading %}<h1 class="heading">Grocery Store</h1>{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Add Product</h1>{% endblock %}
+
+{% block inputs %} 
+<input type="text" class="form-control" placeholder="Name" name="name" required autofocus><br>
+<input type="text" class="form-control" placeholder="Description" name="description" required><br>
+<input type="number" step="0.01"  class="form-control" placeholder="Price" name="price" required><br>
+<input type="number" step="0.01"  class="form-control" placeholder="Quantity" name="quantity" required><br>
+<input type="text" class="form-control" placeholder="Unit" name="unit" required><br>
+<input type="number" step="0.01"  class="form-control" placeholder="Price Per Unit" name="pricePerUnit" required><br>
+<input type="number" class="form-control" placeholder="Category_id" name="category_id" required><br>
+<label for="manufacture-date">Manufacture date :</label> <input type="date" class="form-control" placeholder="Manufacture date" name="manufacture_date" required><br>
+<label for="expiry-date">Expiry date :</label> <input type="date" class="form-control" placeholder="Expiry date" name="expiry_date" required><br>
+<input type="text" class="form-control" placeholder="Image URL" name="image_url" required><br>
+<br>
+{% endblock %}
+
+{% block submitButtons %}
+<button class="btn" type="submit">Add Product</button>
+{% endblock %}

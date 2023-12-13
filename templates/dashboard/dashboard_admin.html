@@ -1,39 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <style>
-            table {
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .left-column {
+            width: 66%;
+            background-color: #f2db80;
+            padding: 20px; 
+            border-radius: 10px;
+        }
+        .right-column {
+            width: 34%;
+            align-items: center;
+            text-align: center;
+            background-color: #f2db80;
+            padding: 20px; 
+            border-radius: 10px;
+            margin-left: 20px;
+        }
+        table {
               border-collapse: collapse;
               width: 100%;
-            }
-            td {
-              padding: 10px;
-              text-align: left;
-              border-bottom: 1px solid #ddd;
-            }
-            .button-container {
-                position: absolute;
-                top: 35px; 
-                right: 40px; 
-                display: flex;
-                gap: 15px;
-            }
-        </style>
-        <title>Admin Dashboard</title>
-    </head>
-    <body>
-        <h1>Admin Dashboard</h1>
-        
-        <div class="button-container">
-            <button onclick="window.location.href='/admin/{{ admin_id }}/categoryUpdateRequests'">Pending updates</button>
-            <button onclick="window.location.href='/admin/{{ admin_id }}/updateHistory'">Update history</button>
-            <button onclick="window.location.href='/signout'">Sign-out</button> 
+        }
+        td {
+          padding: 10px;
+            text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center">Welcome to the Admin Dashboard</h1>
+    <div class="container">
+        <div class="left-column">
+            <strong>Username:</strong> {{ username }} <br>
+            <strong>You are the only Admin of this app. Following are the Sign up requests from different Store Managers. Please confirm the details and approve/reject the requests accordingly.</strong>
+            <br>
         </div>
 
-        <hr>
-        
-        {% if pending %}
+        <div class="right-column">
+            <button onclick="window.location.href='/admin/{{ admin_id }}/categoryUpdateRequests'">Pending updates</button> <br><br>
+            <button onclick="window.location.href='/admin/{{ admin_id }}/updateHistory'">Update history</button> <br><br>
+            <button onclick="window.location.href='/admin/{{ admin_id }}/Category'">Go to Categories</button> <br><br>
+            <button onclick="window.location.href='/admin/{{ admin_id }}/Product'">Go to Products</button> <br><br>
+            <button onclick="window.location.href='/signout'">Sign-out</button>  
+        </div>
+    </div>
+    
+    {% if pending %}
             <h3>Pending Store Managers : </h3>
             <form action="/admin/{{ admin_id }}/dashboard" method="post">
                 <table>
@@ -71,6 +92,10 @@
         {% else %}
             <h3>No pending Store Managers!</h3>
         {% endif %}
-        
-    </body>
+</body>
 </html>
+
+
+
+        
+        
