@@ -1,0 +1,15 @@
+{% extends "form.html" %}
+{% block title %}Add Category{% endblock %}
+{% block heading %}<h1 class="heading">Grocery Store</h1>{% endblock %}
+
+{% block formHeading %}<h1 class="form-heading">Add Category</h1>{% endblock %}
+
+{% block inputs %} 
+<input type="text" class="form-control" placeholder="Name" name="name" required autofocus><br>
+<input type="text" class="form-control" placeholder="Description" name="description" required><br>
+<br>
+{% endblock %}
+
+{% block submitButtons %}
+<button class="btn" type="submit">Add Category</button>
+{% endblock %}

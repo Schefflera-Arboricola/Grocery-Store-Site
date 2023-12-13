@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+</style>
+</head>
+<body>
+    <div>
+        <h1 style="text-align: center;">Categories</h1>
+        <h3><a href="/admin/{{ admin_id }}/addCategory">Add a Category</a></h3>
+        <h5><a href='/admin/{{ admin_id }}/dashboard'>Dashboard</a></h5>
+        <table>
+          <thead>
+            <tr>
+              <th>Category ID</th>
+              <th>Category Name</th>
+              <th>Description</th>
+              <th>Edit/Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for category in categories %}
+              <tr>
+                <td>{{ category['category_id'] }}</td>
+                <td>{{ category['name'] }}</td>
+                <td>{{ category['description'] }}</td>
+                {% if category['category_id']!=0 %}
+                  <td><a href="/admin/{{ admin_id }}/editCategory/{{ category['category_id'] }}">Edit</a> / 
+                    <a href="/admin/{{ admin_id }}/deleteCategory/{{ category['category_id'] }}" 
+                    onclick="return confirm('Are you sure you want to delete this category? All the products with this category will be transfered to category 0.')">Delete</a></td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      </body>
+      </html>
+      

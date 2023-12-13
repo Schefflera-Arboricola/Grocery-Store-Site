@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from application.models import *
 from db_directory.accessDB import *
+from werkzeug.datastructures import ImmutableMultiDict
 
 viewsAdmin = Blueprint("viewsAdmin", __name__)
 
@@ -133,3 +134,124 @@ def updateDetails(admin_id, update_id):
         category=category,
         store_manager=store_manager_details,
     )
+
+
+# Category Management
+
+
+@viewsAdmin.route("/admin/<int:admin_id>/Category", methods=["GET", "POST"])
+def Categories(admin_id):
+    categories, status_code = GetCategory()
+    return render_template(
+        "userviews/admin/viewCategories.html", categories=categories, admin_id=admin_id,
+    )
+
+
+@viewsAdmin.route("/admin/<int:admin_id>/addCategory", methods=["GET", "POST"])
+def addCategory(admin_id):
+    if request.method == "POST":
+        categories, status_code = AddCategory(request.form)
+        if status_code == 404:
+            flash(categories["message"], category="error")
+        elif status_code == 200:
+            return redirect(url_for("viewsAdmin.Categories", admin_id=admin_id))
+        else:
+            flash("Something went wrong. Contact Developer", category="error")
+    return render_template("userviews/admin/addCategory.html")
+
+
+@viewsAdmin.route(
+    "/admin/<int:admin_id>/editCategory/<int:cat_id>", methods=["GET", "POST"]
+)
+def editCategory(admin_id, cat_id):
+    if cat_id != 0:
+        category = Category.query.filter_by(category_id=cat_id).first()
+        if request.method == "POST":
+            categories, status_code = UpdateCategory(cat_id, request.form)
+            if status_code == 404:
+                flash(categories["message"], category="error")
+            elif status_code == 200:
+                return redirect(url_for("viewsAdmin.Categories", admin_id=admin_id))
+            else:
+                flash("Something went wrong. Contact Developer", category="error")
+        return render_template("userviews/admin/editCategory.html", category=category)
+    else:
+        return render_template("error.html")
+
+
+@viewsAdmin.route(
+    "/admin/<int:admin_id>/deleteCategory/<int:cat_id>", methods=["GET", "POST"]
+)
+def deleteCategory(admin_id, cat_id):
+    if cat_id != 0:
+        categories, status_code = DeleteCategory(cat_id)
+        if status_code == 404:
+            print(categories["message"])
+        elif status_code == 200:
+            return redirect(url_for("viewsAdmin.Categories", admin_id=admin_id))
+        else:
+            print("Something went wrong. Contact Developer")
+        return redirect(url_for("viewsAdmin.Categories", admin_id=admin_id))
+    else:
+        return render_template("error.html")
+
+
+# Product Management
+
+
+@viewsAdmin.route("/admin/<int:admin_id>/Product", methods=["GET", "POST"])
+def Product(admin_id):
+    products, status_code = GetProduct()
+    return render_template(
+        "userviews/store_manager/viewProducts.html",
+        products=products,
+        strmng_id=admin_id,
+    )
+
+
+@viewsAdmin.route("/admin/<int:admin_id>/addProduct", methods=["GET", "POST"])
+def addProduct(admin_id):
+    if request.method == "POST":
+        product_info = request.form
+        products, status_code = AddProduct(product_info)
+        if status_code == 404:
+            flash(products["message"], category="error")
+        elif status_code == 200:
+            return redirect(url_for("viewsAdmin.Product", admin_id=admin_id))
+        else:
+            flash("Something went wrong. Contact Developer", category="error")
+    return render_template("userviews/store_manager/addProduct.html")
+
+
+@viewsAdmin.route(
+    "/admin/<int:admin_id>/editProduct/<int:prod_id>", methods=["GET", "POST"]
+)
+def editProduct(admin_id, prod_id):
+    if request.method == "POST":
+        product_info = request.form
+        product_info = product_info.to_dict()
+        product, status_code = GetProduct(prod_id)
+        product_info["avg_rating"] = product["avg_rating"]
+        products, status_code = UpdateProduct(prod_id, ImmutableMultiDict(product_info))
+        if status_code == 404:
+            flash(products["message"], category="error")
+        elif status_code == 200:
+            return redirect(url_for("viewsAdmin.Product", admin_id=admin_id))
+        else:
+            flash("Something went wrong. Contact Developer", category="error")
+    product = Products.query.filter_by(product_id=prod_id).first()
+    return render_template("userviews/store_manager/editProduct.html", product=product)
+
+
+@viewsAdmin.route(
+    "/admin/<int:admin_id>/deleteProduct/<int:prod_id>", methods=["GET", "POST"]
+)
+def deleteProduct(admin_id, prod_id):
+    products, status_code = DeleteProduct(prod_id)
+    if status_code == 404:
+        print(products["message"])
+    elif status_code == 200:
+        return redirect(url_for("viewsAdmin.Product", admin_id=admin_id))
+    else:
+        print("Something went wrong. Contact Developer")
+    return redirect(url_for("viewsAdmin.Product", admin_id=admin_id))
