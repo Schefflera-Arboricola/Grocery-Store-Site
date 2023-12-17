@@ -1,10 +1,9 @@
-#! /bin/sh
+#!/bin/sh
 echo "============================================================================="
 echo "Welcome to the setup. This will setup the local virtual env."
 echo "And then it will install all the required python libraries."
 echo "You can rerun this without any issues."
 echo "-----------------------------------------------------------------------------"
-
 
 # Check if running within Docker
 if [ -z "$ENV" ]; then
@@ -18,15 +17,12 @@ if [ -z "$ENV" ]; then
 
   # Activate virtual env
   . .environ/bin/activate
-fi
 
-# Upgrade pip
-pip install --upgrade pip
+  pip install --upgrade pip
 
-# Install requirements
-pip install -r requirements.txt
+  # Install requirements
+  pip install -r requirements.txt
 
-# Deactivate virtual env if running locally
-if [ -z "$ENV" ]; then
+  # Deactivate virtual env
   deactivate
 fi

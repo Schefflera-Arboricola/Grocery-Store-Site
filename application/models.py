@@ -21,7 +21,7 @@ class Developer(db.Model, UserMixin):
     email = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    jwt_id = db.Column(db.String, default=None) 
+    jwt_id = db.Column(db.String, default=None)
 
     def get_id(self):
         return str(self.developer_id)
@@ -40,6 +40,7 @@ class Customer(User):
     __tablename__ = "customer"
     customer_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     address = db.Column(db.String, nullable=False)
+    last_login = db.Column(db.String, default=None)
 
     def get_id(self):
         return str(self.customer_id)

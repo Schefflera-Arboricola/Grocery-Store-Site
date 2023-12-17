@@ -1,5 +1,11 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from flask_login import login_user, login_required, logout_user, LoginManager
+from flask_login import (
+    login_user,
+    login_required,
+    logout_user,
+    LoginManager,
+    current_user,
+)
 from flask import current_app as app
 from application.models import *
 from application.database import db
@@ -112,7 +118,7 @@ def signin():
 
 @auth.route("/signout")
 @login_required
-def logout_customer():
+def logout():
     logout_user()
     session.clear()
     response = redirect(url_for("auth.signin"))

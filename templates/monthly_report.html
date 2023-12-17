@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Report</title>
+</head>
+<body>
+    <h1>Monthly Report for {{ customer.name }}</h1>
+
+    <h2>Customer Information:</h2>
+    <p><strong>Name:</strong> {{ customer.name }}</p>
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+    <p><strong>Phone Number:</strong> {{ customer.phone_no }}</p>
+    <p><strong>Address:</strong> {{ customer.address }}</p>
+
+    <h2>Orders:</h2>
+    {% for order in orders %}
+        <div>
+            <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+            <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+            <p><strong>Total Price:</strong> {{ order.total_price }}</p>
+
+            <h3>Order Items:</h3>
+            <ul>
+                {% for item in order.order_items %}
+                    <li>
+                        <p><strong>Product:</strong> {{ item.product.name }}</p>
+                        <p><strong>Price:</strong> {{ item.price }}</p>
+                        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+    {% endfor %}
+
+    <h2>Total Amount Spent: {{ total_amount }}</h2>
+
+    <p>This is a monthly report generated for {{ customer.name }}.</p>
+</body>
+</html>

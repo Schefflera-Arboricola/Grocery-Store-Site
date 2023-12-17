@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
@@ -6,6 +6,8 @@ from application.database import db
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import ImmutableMultiDict
 from db_directory.accessDB import *
+import pandas as pd
+from application.config import cache
 
 viewsStoreMng = Blueprint("viewsStoreMng", __name__)
 
@@ -24,6 +26,7 @@ def require_login():
 
 
 @viewsStoreMng.route("/storemng/<int:strmng_id>/dashboard")
+@cache.cached(timeout=20)
 def dashboard(strmng_id):
     user = StoreManager.query.filter_by(store_manager_id=strmng_id).first()
     return render_template(
@@ -35,6 +38,23 @@ def dashboard(strmng_id):
         email=user.email,
         account_type="storemng",
     )
+
+@viewsStoreMng.route('/storemng/<int:strmng_id>/export-products', methods=['POST'])
+def trigger_export_products(strmng_id):
+    if request.method == 'POST':
+        try:
+            products = Products.query.all()
+            columns = Products.__table__.columns.keys()
+            data = [{column: getattr(product, column) for column in columns} for product in products]
+
+            print(data)
+            df = pd.DataFrame(data)
+            csv_filename = "all_products.csv"
+            df.to_csv(csv_filename, index=False)
+
+            return jsonify(message='Exporting products task completed successfully.', status='success')
+        except Exception as e:
+            return jsonify(message='Error exporting products: {}'.format(str(e)), status='error')
 
 
 @viewsStoreMng.route("/storemng/<int:strmng_id>/editProfile", methods=["GET", "POST"])

@@ -19,5 +19,8 @@ EXPOSE 8080
 # Set the environment variable to run the app in development mode
 ENV ENV=development
 
+# Run Redis server in the background
+# CMD ["redis-server", "--daemonize yes"]
+
 # Run the Flask app when the container starts
 CMD ["python", "main.py"]

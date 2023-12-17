@@ -1,3 +1,6 @@
+# Needs to be updated
+## docker image : WIP
+
 ## About 
 
 It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
@@ -73,6 +76,14 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 *<i> If you get any keyword error, go to inspect and try deleting the cookie data</i>
 
+<hr>
+To install Redis on Mac OS :
+1. Install Homebrew (if not already installed):
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+2. Install Redis: `brew install redis`
+3. Start the Redis service: `brew services start redis`
+
+<hr>
 <br>
 
 Test users' login credentials for all types of users : 

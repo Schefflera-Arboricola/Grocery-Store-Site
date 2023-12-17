@@ -10,6 +10,7 @@ import stripe
 from ML_models import similarProducts, recommender
 from sqlalchemy import desc
 from db_directory.accessDB import *
+from application.config import cache
 
 viewsCustomer = Blueprint("viewsCustomer", __name__)
 
@@ -23,9 +24,14 @@ def require_login():
         or current_user.customer_id != customer_id
     ):
         return render_template("error.html"), 401
+    else:
+        if request.method in "GET":
+            current_user.last_login = datetime.now()
+            db.session.commit()
 
 
 @viewsCustomer.route("/customer/<int:c_id>/dashboard")
+@cache.cached(timeout=20)
 def dashboard(c_id):
     user = Customer.query.filter_by(customer_id=c_id).first()
     products, status_code = GetProduct()
