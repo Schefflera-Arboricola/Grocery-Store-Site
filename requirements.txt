@@ -1,5 +1,6 @@
 Flask
 Flask-Login
+Flask-Security
 Flask-SQLAlchemy
 SQLAlchemy
 Jinja2

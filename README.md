@@ -1,8 +1,6 @@
-# [Parent Repository](https://github.com/Schefflera-Arboricola/Grocery-Store)
-
 ## About 
 
-It's a multi-user (customer, store manager, delivery executive, developer) e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
+It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
 
 <br>
 
@@ -33,9 +31,10 @@ It's a multi-user (customer, store manager, delivery executive, developer) e-com
 ### Admin :
 1. Can view all the store managers' requests for sign up and approve/reject them
 2. Approve/reject requests from store managers to add new categories, edit or delete existing categories
+3. Can add/edit/delete products and categories
 
 ### Store Manager :
-1. Can add/edit/delete products and categories
+1. Can add/edit/delete products(independently) and categories(needs approval from the Admin)
 2. Can view their profile and edit their details
 
 ### Delivery Executive :
@@ -86,3 +85,6 @@ Test users' login credentials for all types of users :
 <br>
 
 Feel free to make any issues/PRs to better the project. 
+
+
+[Old Repository](https://github.com/Schefflera-Arboricola/Grocery-Store)

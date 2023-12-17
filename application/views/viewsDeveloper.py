@@ -46,8 +46,8 @@ def editProfile(dev_id):
 
 @viewsDeveloper.route("/developer/<int:dev_id>/getAPI", methods=["GET", "POST"])
 def getAPI(dev_id):
-    user = Developer.query.filter_by(developer_id=dev_id).first()
-    APIkey = user.APIkey
+    dev = Developer.query.filter_by(developer_id=dev_id).first()
+    APIkey = dev.jwt_id
     return render_template(
         "userviews/developer/getAPIcredentials.html", dev_id=dev_id, APIkey=APIkey
     )

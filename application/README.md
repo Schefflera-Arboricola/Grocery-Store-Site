@@ -4,6 +4,7 @@
 
         - `auth.py`: contains all the routes for sign in, signup, signout, forgot password
         - `viewsCustomer.py`: contains all the routes for the customer
+        - `viewsAdmin.py`: contains all the routes for the admin
         - `viewsDelExe.py`: contains all the routes for delivery executive
         - `viewsStoreMng.py`: contains all the routes for the store manager
         - `viewsDeveloper.py`: contains all the routes for the developer

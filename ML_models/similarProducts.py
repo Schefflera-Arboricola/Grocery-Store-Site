@@ -5,6 +5,7 @@ from application.models import *
 
 # based on product and category description, category desc given more importance
 
+# todo : caching
 
 def similarProducts(given_product, products, categories, N=6):
     # N : maximum number of similar products to be returned

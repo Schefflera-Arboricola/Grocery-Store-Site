@@ -16,12 +16,12 @@ class Admin(db.Model, UserMixin):
 
 class Developer(db.Model, UserMixin):
     __tablename__ = "developer"
-    developer_id = db.Column(db.Integer, primary_key=True)
+    developer_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    APIkey = db.Column(db.String, unique=True, nullable=True)
+    jwt_id = db.Column(db.String, default=None) 
 
     def get_id(self):
         return str(self.developer_id)
@@ -222,8 +222,7 @@ class onlinePayments(db.Model):
 
 db.create_all()
 
-
-# Initializing 1 admin, 1 store branch, 1 store manager and 3 delivery executives
+# Initializing 1 admin, 1 store branch, 5 store manager and 10 delivery executives
 
 if (
     db.session.query(Admin).count() == 0
@@ -241,12 +240,13 @@ if (
     branch = Branch(branch_id=1, location="New Delhi", phone_no="1800180045")
     db.session.add(branch)
 
-    # Create and add the store manager
-    store_manager = StoreManagerids(branch_id=1, store_manager_id=1)
-    db.session.add(store_manager)
+    # Create and add the store managers
+    for _ in range(1, 6):
+        store_manager = StoreManagerids(branch_id=1, store_manager_id=_)
+        db.session.add(store_manager)
 
     # Create and add the delivery executives
-    for _ in range(1, 4):
+    for _ in range(1, 11):
         delivery_executive = DeliveryExecutiveids(delivery_executive_id=_, branch_id=1)
         db.session.add(delivery_executive)
 
