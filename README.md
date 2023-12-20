@@ -81,7 +81,9 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 *<i> If you get any keyword error, go to inspect and try deleting the cookie data</i>
 
 <hr>
-To install Redis on Mac OS :
+
+#### To install Redis on Mac OS :
+
 1. Install Homebrew (if not already installed):
 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2. Install Redis: `brew install redis`
