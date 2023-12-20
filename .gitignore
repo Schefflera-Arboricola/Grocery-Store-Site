@@ -1,3 +1,4 @@
 .DS_Store
 .environ/
 __pycache__/
+celerybeat-schedule
