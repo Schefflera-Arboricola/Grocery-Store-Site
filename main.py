@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from flask_cors import CORS
+from celery import Celery
 
 
 def create_app():
@@ -15,9 +16,16 @@ def create_app():
     else:
         print("Starting Local Development")
         app.config.from_object(LocalDevelopmentConfig)
+
     from application.database import db
+    from application.config import cache
 
     db.init_app(app)
+    cache.init_app(app)
+
+    from application.models import init_db
+
+    init_db(app)
 
     from application.views.viewsAdmin import viewsAdmin
     from application.views.viewsCustomer import viewsCustomer
@@ -50,10 +58,39 @@ def create_app():
     )
 
     app.register_blueprint(api_bp, url_prefix="/api")
-
     return app, api
 
 
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config["CELERY_RESULT_BACKEND"],
+        broker=app.config["CELERY_BROKER_URL"],
+    )
+
+    celery.conf.update(app.config)
+    celery.conf.beat_schedule = app.config["CELERYBEAT_SCHEDULE"]
+    return celery
+
+
+app, api = create_app()
+celery = make_celery(app)
+
+from application.tasks import *
+from flask_mail import Mail
+
+mail = Mail(app)
+
+
+@celery.task
+def send_daily_reminders():
+    return daily_email(mail)
+
+
+@celery.task
+def send_monthly_report():
+    return monthly_report(mail)
+
+
 if __name__ == "__main__":
-    app, api = create_app()
     app.run(host="0.0.0.0", debug=True, port=8080)

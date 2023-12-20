@@ -43,6 +43,7 @@
 <body>
 	<h1 style="text-align: center;">Products</h1>
 	<h2><a href="/storemng/{{ strmng_id }}/addProduct">Add a Product</a></h2>
+	<button onclick="exportProducts()">Download products.csv</button> <br><br>
 	<h5><a href='/storemng/{{ strmng_id }}/dashboard'>Dashboard</a></h5>
 	{% for product in products %}
 		<div class="product">
@@ -67,5 +68,23 @@
 			</div>
 		</div>
 	{% endfor %}
+	<script>
+		async function exportProducts() {
+            try {
+				console.log("exporting products");
+                const response = await fetch('/storemng/{{ strmng_id }}/export-products', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    alert('Exporting products task completed successfully');
+                } else {
+                    alert('Error exporting products: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error exporting products:', error);
+                alert('An error occurred while exporting products');
+            }
+        }
+	</script>
 </body>
 </html>

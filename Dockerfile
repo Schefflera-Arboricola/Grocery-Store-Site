@@ -13,6 +13,9 @@ RUN pip install -r requirements.txt
 # Copy the entire app directory to the container
 COPY . /app
 
+# Run setup commands (local_setup.sh) inside the container
+RUN sh local_setup.sh
+
 # Expose the port that your Flask app listens on
 EXPOSE 8080
 
@@ -20,4 +23,4 @@ EXPOSE 8080
 ENV ENV=development
 
 # Run the Flask app when the container starts
-CMD ["python", "main.py"]
+CMD ["sh", "local_run.sh"]

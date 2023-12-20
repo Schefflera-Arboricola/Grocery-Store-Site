@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Monthly report format</title>    
+    </head>
+    <body>
+        <div>
+            <h1>Monthly report format</h1>
+            <h3><a href="/customer/{{ c_id }}/dashboard">Back to dashboard</a></h3>
+            <h2>Current format : {{ curr_format }}</h2>
+            <h3>Formats : </h3>
+            <form method="POST" action="/customer/{{ c_id }}/monthly_report_format">
+                <input type="radio" name="format" value="html" required>
+                <label for="html">html : Get report as an email</label><br>
+                <input type="radio" name="format" value="pdf" required>
+                <label for="pdf">pdf : Get report as PDF via email</label>
+                <br><br>
+                <button type="submit">Update Format</button>
+            </form>
+        </div>
+    </body>
+</html>

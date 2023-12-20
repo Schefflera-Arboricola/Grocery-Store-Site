@@ -21,7 +21,7 @@ class Developer(db.Model, UserMixin):
     email = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    jwt_id = db.Column(db.String, default=None) 
+    jwt_id = db.Column(db.String, default=None)
 
     def get_id(self):
         return str(self.developer_id)
@@ -40,6 +40,12 @@ class Customer(User):
     __tablename__ = "customer"
     customer_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     address = db.Column(db.String, nullable=False)
+    last_login = db.Column(db.String, default=None)
+    report_format = db.Column(db.String, default="html")
+
+    __table_args__ = (
+        CheckConstraint(report_format.in_(["html", "pdf"]), name="valid_report_format"),
+    )
 
     def get_id(self):
         return str(self.customer_id)
@@ -220,43 +226,49 @@ class onlinePayments(db.Model):
     payment_intent_id = db.Column(db.String, nullable=False, unique=True)
 
 
-db.create_all()
+def init_db(app):
+    with app.app_context():
+        db.create_all()
 
-# Initializing 1 admin, 1 store branch, 5 store manager and 10 delivery executives
+        # Initializing 1 admin, 1 store branch, 5 store manager and 10 delivery executives
 
-if (
-    db.session.query(Admin).count() == 0
-    and db.session.query(Branch).count() == 0
-    and db.session.query(StoreManagerids).count() == 0
-    and db.session.query(DeliveryExecutiveids).count() == 0
-):
-    # Create and add the admin
-    admin = Admin(
-        admin_id=1, username="aditijuneja", password=generate_password_hash("123456789")
-    )
-    db.session.add(admin)
+        if (
+            db.session.query(Admin).count() == 0
+            and db.session.query(Branch).count() == 0
+            and db.session.query(StoreManagerids).count() == 0
+            and db.session.query(DeliveryExecutiveids).count() == 0
+        ):
+            # Create and add the admin
+            admin = Admin(
+                admin_id=1,
+                username="aditijuneja",
+                password=generate_password_hash("123456789"),
+            )
+            db.session.add(admin)
 
-    # Create and add the branch
-    branch = Branch(branch_id=1, location="New Delhi", phone_no="1800180045")
-    db.session.add(branch)
+            # Create and add the branch
+            branch = Branch(branch_id=1, location="New Delhi", phone_no="1800180045")
+            db.session.add(branch)
 
-    # Create and add the store managers
-    for _ in range(1, 6):
-        store_manager = StoreManagerids(branch_id=1, store_manager_id=_)
-        db.session.add(store_manager)
+            # Create and add the store managers
+            for _ in range(1, 6):
+                store_manager = StoreManagerids(branch_id=1, store_manager_id=_)
+                db.session.add(store_manager)
 
-    # Create and add the delivery executives
-    for _ in range(1, 11):
-        delivery_executive = DeliveryExecutiveids(delivery_executive_id=_, branch_id=1)
-        db.session.add(delivery_executive)
+            # Create and add the delivery executives
+            for _ in range(1, 11):
+                delivery_executive = DeliveryExecutiveids(
+                    delivery_executive_id=_, branch_id=1
+                )
+                db.session.add(delivery_executive)
 
-    # Adding category 0
-    category = Category(
-        category_id=0, name="Others", description="Products not in any category"
-    )
-    db.session.add(category)
+            # Adding category 0
+            category = Category(
+                category_id=0, name="Others", description="Products not in any category"
+            )
+            db.session.add(category)
 
-    db.session.commit()
-    print("Database initialized successfully.")
-else:
-    print("Database already contains data. Skipping initialization.")
+            db.session.commit()
+            print("Database initialized successfully.")
+        else:
+            print("Database already contains data. Skipping initialization.")

@@ -1,104 +1,115 @@
 # Paste this code in https://dbdiagram.io/ to generate the ER diagram 
 
+Table admin {
+  admin_id int [pk]
+  username varchar [not null, unique]
+  password varchar [not null]
+}
+
 Table developer {
-  developer_id int [pk]
+  developer_id int [pk, increment]
   name varchar [not null]
   email varchar [not null, unique]
   username varchar [not null, unique]
   password varchar [not null]
-  APIkey varchar [unique]
+  jwt_id varchar [default: null]
 }
 
 Table customer {
-  customer_id int [pk]
+  customer_id int [pk, increment]
   name varchar [not null]
   email varchar [not null, unique]
   username varchar [not null, unique]
   password varchar [not null]
   phone_no varchar(10) [not null]
   address varchar [not null]
+  last_login varchar [default: null]
+  report_format varchar [default: 'html']
 }
 
 Table store_manager {
   store_manager_id int [pk]
-  branch_id int [ref: < branch.id]
-  name varchar [not null]
-  email varchar [not null, unique]
-  username varchar [not null, unique]
-  password varchar [not null]
-  phone_no varchar(10) [not null]
+  branch_id int [ref: > branch.branch_id]
+  isApproved varchar [not null, default: 'Pending']
 }
 
 Table delivery_executive {
   delivery_executive_id int [pk]
-  branch_id int [ref: < branch.id]
-  name varchar [not null]
-  email varchar [not null, unique]
-  username varchar [not null, unique]
-  password varchar [not null]
-  phone_no varchar(10) [not null]
+  branch_id int [ref: > branch.branch_id]
 }
 
 Table store_manager_ids {
   store_manager_id int [pk]
-  branch_id int [ref: < branch.id]
+  branch_id int [ref: > branch.branch_id]
 }
 
 Table delivery_executive_ids {
   delivery_executive_id int [pk]
-  branch_id int [ref: < branch.id]
+  branch_id int [ref: > branch.branch_id]
 }
 
 Table branch {
-  id int [pk]
+  branch_id int [pk]
   location varchar [not null]
   phone_no varchar [not null]
 }
 
 Table category {
-  id int [pk]
+  category_id int [pk, increment]
   name varchar [not null, unique]
   description varchar
 }
 
 Table products {
-  id int [pk]
+  product_id int [pk, increment]
   name varchar [not null]
   description varchar [not null]
   price float [not null]
   quantity int [not null]
   unit varchar [not null]
   pricePerUnit float [not null]
-  category_id int [ref: < category.id]
+  category_id int [ref: > category.category_id]
   manufacture_date varchar
   expiry_date varchar
   image_url varchar [not null]
   avg_rating float
-  isDeleted varchar 
+  isDeleted varchar [default: 'False']
 }
 
 Table reviews {
-  id int [pk]
-  customer_id int [ref: < customer.customer_id]
-  product_id int [ref: < products.id]
+  review_id int [pk, increment]
+  customer_id int [ref: > customer.customer_id]
+  product_id int [ref: > products.product_id]
   stars int
   review_text varchar
   date varchar [not null]
   isPurchased varchar [not null]
 }
 
+Table category_update_request {
+  update_id int [pk, increment]
+  store_manager_id int [ref: > store_manager.store_manager_id]
+  category_id int [ref: > category.category_id]
+  update_type varchar [not null]
+  update_heading varchar [not null]
+  update_description1 varchar [not null]
+  update_description2 varchar [not null]
+  isApproved varchar [not null, default: 'No Action']
+  feedback varchar [default: null]
+}
+
 Table cart {
-  sno int [pk]
-  customer_id int [ref: < customer.customer_id]
-  product_id int [ref: < products.id]
+  sno int [pk, increment]
+  customer_id int [ref: > customer.customer_id]
+  product_id int [ref: > products.product_id]
   quantity int
 }
 
 Table order_details {
-  order_id int [pk]
-  customer_id int [ref: < customer.customer_id]
-  branch_id int [ref: < branch.id]
-  delivery_executive_id int [ref: < delivery_executive.delivery_executive_id]
+  order_id int [pk, increment]
+  customer_id int [ref: > customer.customer_id]
+  branch_id int [ref: > branch.branch_id]
+  delivery_executive_id int [ref: > delivery_executive.delivery_executive_id]
   modeOfPayment varchar [not null]
   delivery_status varchar
   order_date varchar [not null]
@@ -106,17 +117,17 @@ Table order_details {
 }
 
 Table orders_items {
-  sno int [pk]
-  order_id int [ref: < order_details.order_id]
-  product_id int [ref: < products.id]
+  sno int [pk, increment]
+  order_id int [ref: > order_details.order_id]
+  product_id int [ref: > products.product_id]
   price varchar [not null]
   quantity int [not null]
 }
 
 Table online_payments {
-  payment_id int [pk]
-  order_id int [ref: < order_details.order_id]
-  customer_id int [ref: < customer.customer_id]
+  payment_id int [pk, increment]
+  order_id int [ref: > order_details.order_id]
+  customer_id int [ref: > customer.customer_id]
   payment_status varchar [not null]
   payment_date varchar [not null]
   payment_amount float [not null]

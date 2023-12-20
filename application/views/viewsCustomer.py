@@ -10,6 +10,7 @@ import stripe
 from ML_models import similarProducts, recommender
 from sqlalchemy import desc
 from db_directory.accessDB import *
+from application.config import cache
 
 viewsCustomer = Blueprint("viewsCustomer", __name__)
 
@@ -23,9 +24,14 @@ def require_login():
         or current_user.customer_id != customer_id
     ):
         return render_template("error.html"), 401
+    else:
+        if request.method in "GET":
+            current_user.last_login = datetime.now()
+            db.session.commit()
 
 
 @viewsCustomer.route("/customer/<int:c_id>/dashboard")
+@cache.cached(timeout=20)
 def dashboard(c_id):
     user = Customer.query.filter_by(customer_id=c_id).first()
     products, status_code = GetProduct()
@@ -131,6 +137,28 @@ def check_user_features(name, phone):
         return "Name must be a string"
     else:
         return True
+
+
+@viewsCustomer.route(
+    "/customer/<int:c_id>/monthly_report_format", methods=["GET", "POST"]
+)
+def monthly_report_format(c_id):
+    curr_format = Customer.query.get(c_id).report_format
+    if request.method == "POST":
+        format = request.form.get("format")
+        if format == "html":
+            Customer.query.get(c_id).report_format = "html"
+            db.session.commit()
+            return redirect(url_for("viewsCustomer.monthly_report_format", c_id=c_id))
+        elif format == "pdf":
+            Customer.query.get(c_id).report_format = "pdf"
+            db.session.commit()
+            return redirect(url_for("viewsCustomer.monthly_report_format", c_id=c_id))
+    return render_template(
+        "userviews/customer/monthly_report_format.html",
+        c_id=c_id,
+        curr_format=curr_format,
+    )
 
 
 @viewsCustomer.route("/customer/<int:c_id>/past_orders")

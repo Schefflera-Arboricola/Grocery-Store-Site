@@ -26,3 +26,5 @@
             "field2": "value2"
         }'
         ```
+
+3. `tasks.py` : contains functions for all the scheduled tasks for sending daily email reminders and monthly reports using flask-mail and Celery.

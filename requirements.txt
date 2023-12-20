@@ -22,3 +22,9 @@ python-dotenv
 flask-cors
 flask-restx==1.2.0
 beautifulsoup4
+celery 
+Flask-Mail
+pandas
+flask_caching
+redis
+pdfkit
