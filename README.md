@@ -33,6 +33,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 7. Can give ratings and reviews to products
 8. Can make online payments and receive OTPs for confirmation of delivery
 9. Receives daily email reminders and monthly reports
+10. Can choose whether to receive pdf or text monthly reports via email
 
 ### Admin :
 1. Can view all the store managers' requests for sign up and approve/reject them

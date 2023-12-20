@@ -27,6 +27,17 @@ export MAIL_USERNAME=''
 export MAIL_PASSWORD=''
 export MAIL_DEFAULT_SENDER=''
 
+# Check if wkhtmltopdf is installed
+if ! command -v wkhtmltopdf &> /dev/null; then
+    echo "Installing wkhtmltopdf..."
+    # Install wkhtmltopdf using Homebrew (macOS)
+    brew install Caskroom/cask/wkhtmltopdf
+fi
+
+# Set the path to wkhtmltopdf for pdfkit
+export WKHTMLTOPDF_PATH=$(which wkhtmltopdf)
+
+
 redis-server --daemonize yes
 
 celery -A main.celery beat --loglevel=info &

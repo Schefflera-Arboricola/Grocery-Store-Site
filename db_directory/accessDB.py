@@ -23,14 +23,11 @@ def GetDailyMailCustomers():
     return c
 
 def GetMonthlyMailCustomers(month):
-    """Returns a list of dictionary having customer details 
-    for customers who ordered in the given month."""
-        
     conn = sqlite3.connect('db_directory/gs.sqlite3')
     cursor = conn.cursor()
 
     query = f"""
-        SELECT od.customer_id, c.customer_id, c.name, c.email, c.username
+        SELECT od.customer_id, c.customer_id, c.name, c.email, c.username, c.report_format
         FROM order_details od
         JOIN Customer c ON od.customer_id = c.customer_id
         WHERE strftime('%m', od.order_date) = '{month:02}'
@@ -49,6 +46,7 @@ def GetMonthlyMailCustomers(month):
                 "name": row[2],
                 "email": row[3],
                 "username": row[4],
+                "report_format": row[5]
             }
             unique_customers.append(customer)
             customer_ids.add(row[0])

@@ -2,6 +2,7 @@ from flask_mail import Message
 from flask import render_template
 from db_directory.accessDB import GetDailyMailCustomers, GetMonthlyMailCustomers, GetMonthlyReport
 from datetime import datetime
+import pdfkit
 
 
 def get_previous_month():
@@ -27,13 +28,25 @@ def monthly_report(mail):
         def send_email_html(mail,to, subject, template, **kwargs):
             msg = Message(subject=subject, recipients=[to], html=render_template(template, **kwargs))
             mail.send(msg)
-        month= get_previous_month()
+
+        def send_email_pdf(mail,to, subject,body, template, **kwargs):
+            pdf = pdfkit.from_string(render_template(template, **kwargs), False)
+            msg = Message(subject=subject, recipients=[to], body=body)
+            msg.attach("monthly_report.pdf", "application/pdf", pdf)
+            mail.send(msg)
+
+
+        month= get_previous_month()+1
         customers = GetMonthlyMailCustomers(month)
         if customers:
             for customer in customers:
                 cid=customer["customer_id"]
                 orders, total_amount = GetMonthlyReport(cid,month)
-                send_email_html(mail,str(customer["email"]), 'Monthly Report', 'monthly_report.html', customer=customer, orders=orders, total_amount=total_amount)
+                format=customer["report_format"]
+                if format == 'pdf':
+                    send_email_pdf(mail=mail,to=str(customer["email"]),subject= 'Monthly Report',body="Please find the attached monthly report.", template='monthly_report.html', customer=customer, orders=orders, total_amount=total_amount)
+                else :
+                    send_email_html(mail,str(customer["email"]), 'Monthly Report', 'monthly_report.html', customer=customer, orders=orders, total_amount=total_amount)
             return "Monthly reports sent successfully."
         else:
             return 'No customers found to send monthly reports.'

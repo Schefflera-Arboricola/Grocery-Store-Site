@@ -71,7 +71,7 @@ class LocalDevelopmentConfig(Config):
         },
         'send-monthly-report': {
             'task': 'main.send_monthly_report',
-            'schedule': crontab(day_of_month=1, hour=6, minute=30),
+            'schedule': crontab(day_of_month=1, hour=8, minute=30),
         },
     }
     CELERY_MAX_INTERVAL = 120

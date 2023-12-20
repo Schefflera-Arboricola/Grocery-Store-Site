@@ -24,6 +24,7 @@ Table customer {
   phone_no varchar(10) [not null]
   address varchar [not null]
   last_login varchar [default: null]
+  report_format varchar [default: 'html']
 }
 
 Table store_manager {

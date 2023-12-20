@@ -27,3 +27,4 @@ Flask-Mail
 pandas
 flask_caching
 redis
+pdfkit

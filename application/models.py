@@ -41,6 +41,13 @@ class Customer(User):
     customer_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     address = db.Column(db.String, nullable=False)
     last_login = db.Column(db.String, default=None)
+    report_format = db.Column(db.String, default="html")
+
+    __table_args__ = (
+        CheckConstraint(
+            report_format.in_(["html", "pdf"]), name="valid_report_format"
+        ),
+    )
 
     def get_id(self):
         return str(self.customer_id)
