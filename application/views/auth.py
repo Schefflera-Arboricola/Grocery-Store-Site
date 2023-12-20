@@ -267,7 +267,7 @@ def developer_signup():
 def check_user_features(dbClass, name, username, phone, password, email):
     if dbClass.query.filter_by(username=username).first():
         return "Username already exists"
-    elif dbClass!=Developer and dbClass.query.filter_by(phone_no=phone).first():
+    elif dbClass != Developer and dbClass.query.filter_by(phone_no=phone).first():
         return "Phone number already exists"
     elif len(username) < 8:
         return "Username must have atleast 8 characters"

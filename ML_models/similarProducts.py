@@ -7,6 +7,7 @@ from application.models import *
 
 # todo : caching
 
+
 def similarProducts(given_product, products, categories, N=6):
     # N : maximum number of similar products to be returned
 

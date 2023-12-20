@@ -1,5 +1,3 @@
-## docker image : WIP
-
 ## About 
 
 It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders. The ScreenFlow folder has screenshots of the website and shows the flow for all users(except developer). 
@@ -93,6 +91,8 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 <hr>
 <br>
 
+## No DB on this branch :
+
 Test users' login credentials for all types of users : 
 
 - `username` : `aditijuneja`
@@ -106,3 +106,9 @@ Feel free to make any issues/PRs to better the project.
 
 
 [Old Repository](https://github.com/Schefflera-Arboricola/Grocery-Store)
+
+## ToDos :
+
+1. fix Docker image of this branch
+2. Configure tests properly
+3. issues in workflow

@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    redirect,
+    url_for,
+    session,
+    jsonify,
+)
 from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
@@ -39,22 +48,30 @@ def dashboard(strmng_id):
         account_type="storemng",
     )
 
-@viewsStoreMng.route('/storemng/<int:strmng_id>/export-products', methods=['POST'])
+
+@viewsStoreMng.route("/storemng/<int:strmng_id>/export-products", methods=["POST"])
 def trigger_export_products(strmng_id):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             products = Products.query.all()
             columns = Products.__table__.columns.keys()
-            data = [{column: getattr(product, column) for column in columns} for product in products]
+            data = [
+                {column: getattr(product, column) for column in columns}
+                for product in products
+            ]
 
-            print(data)
             df = pd.DataFrame(data)
             csv_filename = "all_products.csv"
             df.to_csv(csv_filename, index=False)
 
-            return jsonify(message='Exporting products task completed successfully.', status='success')
+            return jsonify(
+                message="Exporting products task completed successfully.",
+                status="success",
+            )
         except Exception as e:
-            return jsonify(message='Error exporting products: {}'.format(str(e)), status='error')
+            return jsonify(
+                message="Error exporting products: {}".format(str(e)), status="error"
+            )
 
 
 @viewsStoreMng.route("/storemng/<int:strmng_id>/editProfile", methods=["GET", "POST"])

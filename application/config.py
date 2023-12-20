@@ -58,24 +58,24 @@ class LocalDevelopmentConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(SQLITE_DB_DIR, "gs.sqlite3")
     DEBUG = True
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'  
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  
-    CELERY_ACCEPT_CONTENT = ['json']
-    CELERY_TASK_SERIALIZER = 'json'
-    CELERY_RESULT_SERIALIZER = 'json'
-    CELERY_TIMEZONE = 'UTC'
+    CELERY_BROKER_URL = "redis://localhost:6379/0"
+    CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+    CELERY_ACCEPT_CONTENT = ["json"]
+    CELERY_TASK_SERIALIZER = "json"
+    CELERY_RESULT_SERIALIZER = "json"
+    CELERY_TIMEZONE = "UTC"
     CELERYBEAT_SCHEDULE = {
-        'send-daily-reminders': {
-            'task': 'main.send_daily_reminders',
-            'schedule': crontab(hour=6, minute=30),
+        "send-daily-reminders": {
+            "task": "main.send_daily_reminders",
+            "schedule": crontab(hour=6, minute=30),
         },
-        'send-monthly-report': {
-            'task': 'main.send_monthly_report',
-            'schedule': crontab(day_of_month=1, hour=8, minute=30),
+        "send-monthly-report": {
+            "task": "main.send_monthly_report",
+            "schedule": crontab(day_of_month=1, hour=8, minute=30),
         },
     }
     CELERY_MAX_INTERVAL = 120
-    CELERYD_LOG_LEVEL = 'debug'
+    CELERYD_LOG_LEVEL = "debug"
 
     CACHE_TYPE = "RedisCache"
     CACHE_REDIS_HOST = "localhost"
@@ -85,7 +85,7 @@ class LocalDevelopmentConfig(Config):
     MAIL_DEBUG = True
     MAIL_SUPPRESS_SEND = False
 
-    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False

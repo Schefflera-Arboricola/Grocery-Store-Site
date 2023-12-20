@@ -139,7 +139,9 @@ def check_user_features(name, phone):
         return True
 
 
-@viewsCustomer.route("/customer/<int:c_id>/monthly_report_format", methods=["GET","POST"])
+@viewsCustomer.route(
+    "/customer/<int:c_id>/monthly_report_format", methods=["GET", "POST"]
+)
 def monthly_report_format(c_id):
     curr_format = Customer.query.get(c_id).report_format
     if request.method == "POST":
@@ -152,7 +154,11 @@ def monthly_report_format(c_id):
             Customer.query.get(c_id).report_format = "pdf"
             db.session.commit()
             return redirect(url_for("viewsCustomer.monthly_report_format", c_id=c_id))
-    return render_template("userviews/customer/monthly_report_format.html", c_id=c_id, curr_format=curr_format)
+    return render_template(
+        "userviews/customer/monthly_report_format.html",
+        c_id=c_id,
+        curr_format=curr_format,
+    )
 
 
 @viewsCustomer.route("/customer/<int:c_id>/past_orders")

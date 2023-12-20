@@ -44,9 +44,7 @@ class Customer(User):
     report_format = db.Column(db.String, default="html")
 
     __table_args__ = (
-        CheckConstraint(
-            report_format.in_(["html", "pdf"]), name="valid_report_format"
-        ),
+        CheckConstraint(report_format.in_(["html", "pdf"]), name="valid_report_format"),
     )
 
     def get_id(self):
@@ -242,7 +240,9 @@ def init_db(app):
         ):
             # Create and add the admin
             admin = Admin(
-                admin_id=1, username="aditijuneja", password=generate_password_hash("123456789")
+                admin_id=1,
+                username="aditijuneja",
+                password=generate_password_hash("123456789"),
             )
             db.session.add(admin)
 
@@ -257,7 +257,9 @@ def init_db(app):
 
             # Create and add the delivery executives
             for _ in range(1, 11):
-                delivery_executive = DeliveryExecutiveids(delivery_executive_id=_, branch_id=1)
+                delivery_executive = DeliveryExecutiveids(
+                    delivery_executive_id=_, branch_id=1
+                )
                 db.session.add(delivery_executive)
 
             # Adding category 0

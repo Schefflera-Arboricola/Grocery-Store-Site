@@ -4,7 +4,8 @@ from ML_models.similarProducts import *
 # based on past orders : most recent orders and more frequently bought orders are given more importance
 
 # todo : caching
-# todo : recommendation with some weight to avg_rating 
+# todo : recommendation with some weight to avg_rating
+
 
 def recommendProducts(products, categories, orderItems):
     rprod = []

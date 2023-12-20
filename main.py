@@ -4,6 +4,7 @@ from flask_restx import Api
 from flask_cors import CORS
 from celery import Celery
 
+
 def create_app():
     app = Flask(__name__)
     app.config["TESTING"] = True
@@ -23,6 +24,7 @@ def create_app():
     cache.init_app(app)
 
     from application.models import init_db
+
     init_db(app)
 
     from application.views.viewsAdmin import viewsAdmin
@@ -49,25 +51,27 @@ def create_app():
 
     api.add_resource(CategoryAPI, "/categories", "/categories/<int:category_id>")
     api.add_resource(
-            ProductAPI,
-            "/products",
-            "/products/<int:product_id>",
-            "/products/<int:flag>/<int:category_id>",
-        )
+        ProductAPI,
+        "/products",
+        "/products/<int:product_id>",
+        "/products/<int:flag>/<int:category_id>",
+    )
 
     app.register_blueprint(api_bp, url_prefix="/api")
-    return app,api 
+    return app, api
+
 
 def make_celery(app):
     celery = Celery(
         app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL'],
+        backend=app.config["CELERY_RESULT_BACKEND"],
+        broker=app.config["CELERY_BROKER_URL"],
     )
 
     celery.conf.update(app.config)
-    celery.conf.beat_schedule = app.config['CELERYBEAT_SCHEDULE']
+    celery.conf.beat_schedule = app.config["CELERYBEAT_SCHEDULE"]
     return celery
+
 
 app, api = create_app()
 celery = make_celery(app)
@@ -77,13 +81,16 @@ from flask_mail import Mail
 
 mail = Mail(app)
 
+
 @celery.task
 def send_daily_reminders():
     return daily_email(mail)
 
+
 @celery.task
 def send_monthly_report():
     return monthly_report(mail)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8080)
