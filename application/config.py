@@ -74,12 +74,16 @@ class LocalDevelopmentConfig(Config):
             'schedule': crontab(day_of_month=1, hour=6, minute=30),
         },
     }
-
+    CELERY_MAX_INTERVAL = 120
+    CELERYD_LOG_LEVEL = 'debug'
 
     CACHE_TYPE = "RedisCache"
     CACHE_REDIS_HOST = "localhost"
     CACHE_REDIS_PORT = 6379
     CACHE_REDIS_DB = 0
+
+    MAIL_DEBUG = True
+    MAIL_SUPPRESS_SEND = False
 
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587

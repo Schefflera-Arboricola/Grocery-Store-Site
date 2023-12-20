@@ -1,4 +1,3 @@
-# Needs to be updated
 ## docker image : WIP
 
 ## About 
@@ -15,6 +14,9 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings, and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
+7. Scheduled tasks for sending daily email reminders and monthly reports using flask-mail and Celery. 
+8. using flask_caching for caching.
+
 
 <hr>
 <br>
@@ -30,6 +32,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 6. Can view similar products of a given product based on product description
 7. Can give ratings and reviews to products
 8. Can make online payments and receive OTPs for confirmation of delivery
+9. Receives daily email reminders and monthly reports
 
 ### Admin :
 1. Can view all the store managers' requests for sign up and approve/reject them
@@ -39,6 +42,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 ### Store Manager :
 1. Can add/edit/delete products(independently) and categories(needs approval from the Admin)
 2. Can view their profile and edit their details
+3. Can export all products as a csv file
 
 ### Delivery Executive :
 1. Can view all the orders assigned to them.
@@ -62,7 +66,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 #### using virtual environment :
 
-4. set up your API credentials in `sh local_run.sh` file
+4. set up your API and mail credentials in `sh local_run.sh` file.(for mailing credentials you might need to generate App password for your Gmail account)
 5. In `application/config.py` file, in the `LocalDevelopmentConfig` class comment the `SQLITE_DB_DIR` initialization for docker and uncomment for the virtual environment
 6. `sh local_setup.sh`
 7. `sh local_run.sh`

@@ -1,8 +1,8 @@
 # Description
 
-## "OLD" Database : 
+## Database : 
 
-![db](/static/img/db.jpg)
+![db](/static/img/dbdiagram.jpg)
 
 Run the code in `database.dbd` [here](https://dbdiagram.io/) to get the db diagram
 

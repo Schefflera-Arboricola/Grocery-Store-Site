@@ -23,17 +23,27 @@ export STRIPE_PUBLIC_KEY=
 export STRIPE_SECRET_KEY=
 
 # Initialize mail credentials
-export MAIL_USERNAME=""
-export MAIL_PASSWORD="L"
-export MAIL_DEFAULT_SENDER=""
+export MAIL_USERNAME=''
+export MAIL_PASSWORD=''
+export MAIL_DEFAULT_SENDER=''
 
 redis-server --daemonize yes
 
 celery -A main.celery beat --loglevel=info &
 
 # Run Celery Worker in the background
-celery -A main.celery worker --loglevel=info &
+celery -A main.celery worker -n worker1 --loglevel=info &
 
 # Run the Flask app
 python main.py
+
+# To stop Redis
+redis-cli shutdown
+
+# To stop Celery worker
+pkill -f 'celery worker'
+
+# To stop Celery beat
+pkill -f 'celery beat'
+
 deactivate

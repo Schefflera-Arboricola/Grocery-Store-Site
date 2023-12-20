@@ -138,6 +138,8 @@ def requestDetails(strmng_id, update_id):
     update = CategoryUpdateRequest.query.filter_by(update_id=update_id).first()
     if update.category_id:
         category = Category.query.filter_by(category_id=update.category_id).first()
+    else:
+        category = None
     return render_template(
         "userviews/store_manager/requestDetails.html",
         strmng_id=strmng_id,

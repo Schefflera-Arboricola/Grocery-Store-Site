@@ -4,7 +4,6 @@ from flask_login import (
     login_required,
     logout_user,
     LoginManager,
-    current_user,
 )
 from flask import current_app as app
 from application.models import *
@@ -95,7 +94,7 @@ def signin():
                     session["account_type"] = "developer"
                     access_token = create_access_token(identity=user.username)
                     Developer.query.filter_by(username=username).update(
-                        dict(APIkey=access_token)
+                        dict(jwt_id=access_token)
                     )
                     db.session.commit()
                     return redirect(
@@ -268,7 +267,7 @@ def developer_signup():
 def check_user_features(dbClass, name, username, phone, password, email):
     if dbClass.query.filter_by(username=username).first():
         return "Username already exists"
-    elif dbClass.query.filter_by(phone_no=phone).first():
+    elif dbClass!=Developer and dbClass.query.filter_by(phone_no=phone).first():
         return "Phone number already exists"
     elif len(username) < 8:
         return "Username must have atleast 8 characters"

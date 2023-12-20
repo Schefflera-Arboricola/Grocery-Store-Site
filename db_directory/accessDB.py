@@ -1,4 +1,111 @@
 from application.models import *
+import sqlite3
+
+def GetDailyMailCustomers():
+    """Returns a list of dictionary having customer details
+    for customers who have not logged in for more than 24hrs
+    and whose last_login=None"""
+    
+    conn = sqlite3.connect('db_directory/gs.sqlite3')
+    cursor = conn.cursor()
+
+    query = """
+        SELECT email FROM Customer
+        WHERE last_login IS NULL OR last_login < date('now', '-1 day')
+    """
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    c=[]
+    for row in rows: c+=[row[0]]
+    cursor.close()
+    conn.close()
+
+    return c
+
+def GetMonthlyMailCustomers(month):
+    """Returns a list of dictionary having customer details 
+    for customers who ordered in the given month."""
+        
+    conn = sqlite3.connect('db_directory/gs.sqlite3')
+    cursor = conn.cursor()
+
+    query = f"""
+        SELECT od.customer_id, c.customer_id, c.name, c.email, c.username
+        FROM order_details od
+        JOIN Customer c ON od.customer_id = c.customer_id
+        WHERE strftime('%m', od.order_date) = '{month:02}'
+    """
+        
+    cursor.execute(query)
+
+    rows = cursor.fetchall()
+
+    unique_customers = []
+    customer_ids = set() 
+    for row in rows:
+        if row[0] not in customer_ids:
+            customer = {
+                "customer_id": row[0],
+                "name": row[2],
+                "email": row[3],
+                "username": row[4],
+            }
+            unique_customers.append(customer)
+            customer_ids.add(row[0])
+
+    cursor.close()
+    conn.close()
+    return unique_customers
+
+def GetMonthlyReport(customer_id, month):
+    def get_total(orders):
+        total_amount = 0
+        for order in orders:
+            total_amount += order["total_price"]
+        return total_amount
+    
+    conn = sqlite3.connect('db_directory/gs.sqlite3')
+    cursor = conn.cursor()
+
+    query_orders = f"""
+        SELECT od.order_id, od.delivery_status, od.order_date, od.total_price,
+            oi.quantity, oi.price, p.name
+        FROM order_details od
+        JOIN orders_items oi ON od.order_id = oi.order_id
+        JOIN Products p ON oi.product_id = p.product_id
+        WHERE strftime('%m', od.order_date) = ? AND od.customer_id = ?
+    """
+
+    cursor.execute(query_orders, (f"{month:02}", customer_id))
+    rows = cursor.fetchall()
+
+    customer_orders = []
+    for row in rows:
+        order_exists = any(o['order_id'] == row[0] for o in customer_orders)
+        if not order_exists:
+            order = {
+                "order_id": row[0],
+                "delivery_status": row[1],
+                "order_date": row[2],
+                "total_price": row[3],
+                "order_details": []
+            }
+            customer_orders.append(order)
+
+        for order_dict in customer_orders:
+            if order_dict['order_id'] == row[0]:
+                order_dict['order_details'].append({
+                    "quantity": row[4],
+                    "price": row[5],
+                    "product_name": row[6]
+                })
+
+    total = get_total(customer_orders)
+
+    cursor.close()
+    conn.close()
+
+    return customer_orders, total
 
 
 def GetCategory(category_id=None):

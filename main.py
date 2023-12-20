@@ -22,6 +22,9 @@ def create_app():
     db.init_app(app)
     cache.init_app(app)
 
+    from application.models import init_db
+    init_db(app)
+
     from application.views.viewsAdmin import viewsAdmin
     from application.views.viewsCustomer import viewsCustomer
     from application.views.viewsDelExe import viewsDelExe
@@ -70,13 +73,17 @@ app, api = create_app()
 celery = make_celery(app)
 
 from application.tasks import *
+from flask_mail import Mail
+
+mail = Mail(app)
+
 @celery.task
 def send_daily_reminders():
-    daily_email()
+    return daily_email(mail)
 
 @celery.task
 def send_monthly_report():
-    monthly_report()
+    return monthly_report(mail)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8080)
