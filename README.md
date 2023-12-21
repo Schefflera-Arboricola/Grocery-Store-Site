@@ -67,7 +67,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 4. set up your API and mail credentials in `sh local_run.sh` file.
 5. `sh local_setup.sh`
-6. `sh local_run.sh`, if it gives any error, try running one more time.
+6. `sh local_run.sh` 
 7. open `http://127.0.0.1:8080` in the browser to view the website
 
 #### WIP - using docker(not recommended, especially if you are a beginner) :
