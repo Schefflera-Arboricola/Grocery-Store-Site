@@ -91,12 +91,21 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 <hr>
 <br>
 
-Test users' login credentials for all types of users : 
+### Testing 
+
+1. Test users' login credentials for all types of users : 
 
 - `username` : `aditijuneja`
 - `password` : `123456789`
 
 (Change the user's phone number to the number you want to receive the OTP on, using the 'Edit Profile' option on the dashboard)
+
+2. [here](https://stripe.com/docs/testing) you can find some sample cards' credentials for testing payments functionality for Stripe API, for example, 
+
+- `Card number` : `4242 4242 4242 4242`
+- `Expiry date` : any future date like `12/34`
+- `CVC` : any three-digit CVC
+- `zipcode` : any random string of integers
 
 <br>
 
