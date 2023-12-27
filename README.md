@@ -62,22 +62,20 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 1. `git clone https://github.com/Schefflera-Arboricola/Grocery-Store.git`
 2. `cd Grocery-Store`
 3. get API credentials for Twilio from [here](https://www.twilio.com/en-us) and for Stripe from [here](https://stripe.com/en-in). For mailing credentials you might need to generate App password for your Gmail account.
+4. set up your API and mail credentials in `.env` file.
 
 #### using virtual environment :
 
-4. set up your API and mail credentials in `sh local_run.sh` file.
 5. `sh local_setup.sh`
 6. `sh local_run.sh` 
 7. open `http://127.0.0.1:8080` in the browser to view the website
+8. while the website is being hosted on your localhost you can also open another terminal window and run `sh local_beat.sh` to run the celery beat scheduler and `sh local_workers.sh`(in another terminal window) to run the celery worker, if you want to try running the scheduled jobs. (You can use the `ps` command to see all the running processes and `kill -9 <process_id>` to kill a process.)
 
 #### WIP - using docker(not recommended, especially if you are a beginner) :
 
-4. In `application/config.py` file, in the `LocalDevelopmentConfig` class un-comment the `SQLITE_DB_DIR` initialization for docker and comment for the virtual environment
-5. set up your API credentials in `.env` file and `local_run.sh` file also.
+5. In `application/config.py` file, in the `LocalDevelopmentConfig` class un-comment the `SQLITE_DB_DIR` initialization for docker and comment for the virtual environment
 6. `docker-compose up --build`
 7. open `http://127.0.0.1:8080` in the browser to view the website
-
-*<i> If you get any keyword error, go to inspect and try deleting the cookie data</i>
 
 <hr>
 
