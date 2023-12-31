@@ -55,7 +55,7 @@
       <div class="col-md-4">
           <form action="/customer/{{ c_id }}/searchResults" method="POST">
               <p><strong>Quantity :</strong> <select name="quantity" id="quantity" required>
-                  {% for number in range(1, 6) %}
+                  {% for number in range(1, 11) %}
                       <option value="{{ number }}">{{ number }}</option>
                   {% endfor %}
               </select></p>
