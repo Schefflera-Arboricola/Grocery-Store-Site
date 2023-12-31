@@ -189,7 +189,8 @@ def addProduct(strmng_id):
             return redirect(url_for("viewsStoreMng.Product", strmng_id=strmng_id))
         else:
             flash("Something went wrong. Contact Admin", category="error")
-    return render_template("userviews/store_manager/addProduct.html")
+    categories = Category.query.all()
+    return render_template("userviews/store_manager/addProduct.html", categories=categories)
 
 
 @viewsStoreMng.route(
