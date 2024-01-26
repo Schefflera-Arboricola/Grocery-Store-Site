@@ -1,6 +1,6 @@
 ## About 
 
-It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after the approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders.
+It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders.
 
 <br>
 
@@ -8,7 +8,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 1. 5 types of users: Customer, Admin, Store Manager, Delivery Executive, Developer
 2. CRUD APIs for Product and Category management(flask_restx) - You can play around with the API endpoints by pasting the contents of `application/APIdoc.yaml` file in [Swagger Editor](https://editor.swagger.io/)
-3. RBAC for authentication and authorisation of different user types usinf flask-login
+3. RBAC for authentication and authorization of different user types using flask-login
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings, and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
@@ -27,14 +27,14 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 3. Can view their order history and track their orders
 4. Can view their profile and edit their details
 5. Can view their recommendations based on their previous orders
-6. Can view similar products of a given product based on product description
+6. Can view similar products of a given product based on the product description
 7. Can give ratings and reviews to products
 8. Can make online payments and receive OTPs for confirmation of delivery
 9. Receives daily email reminders and monthly reports based on their activity
-10. Can choose whether to receive pdf or text monthly reports via email
+10. Can choose whether to receive PDF or text(HTML) monthly reports via email
 
 ### Admin :
-1. Can view all the store managers' requests for sign up and approve/reject them
+1. Can view all the store managers' requests for sign-up and approve/reject them
 2. Approve/reject requests from store managers to add new categories, edit or delete existing categories
 3. Can add/edit/delete products and categories
 
@@ -45,7 +45,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 ### Delivery Executive :
 1. Can view all the orders assigned to them.
-2. Can update the status of the orders(pending/delivered) by entring the OTP received by the customer.
+2. Can update the status of the orders(pending/delivered) by entering the OTP received by the customer.
 3. Can view their profile and edit their details.
 
 ### Developer :
@@ -59,9 +59,9 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 ### Running the code:
 
-1. `git clone https://github.com/Schefflera-Arboricola/Grocery-Store.git`
-2. `cd Grocery-Store`
-3. get API credentials for Twilio from [here](https://www.twilio.com/en-us) and for Stripe from [here](https://stripe.com/en-in). For mailing credentials you might need to generate App password for your Gmail account.
+1. `git clone https://github.com/Schefflera-Arboricola/Grocery-Store-Site.git`
+2. `cd Grocery-Store-Site`
+3. get API credentials for Twilio from [here](https://www.twilio.com/en-us) and for Stripe from [here](https://stripe.com/en-in). For mailing credentials, you might need to generate App password for your Gmail account.
 4. set up your API and mail credentials in `.env` file.
 
 #### using virtual environment :
