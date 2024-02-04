@@ -69,7 +69,6 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 5. `sh local_setup.sh`
 6. `sh local_run.sh` 
 7. open `http://127.0.0.1:8080` in the browser to view the website
-8. while the website is being hosted on your localhost you can also open another terminal window and run `sh local_beat.sh` to run the celery beat scheduler and `sh local_workers.sh`(in another terminal window) to run the celery worker, if you want to try running the scheduled jobs. (You can use the `ps` command to see all the running processes and `kill -9 <process_id>` to kill a process.)
 
 #### WIP - using docker(not recommended, especially if you are a beginner) :
 

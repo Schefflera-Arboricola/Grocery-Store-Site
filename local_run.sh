@@ -37,7 +37,23 @@ fi
 # Set the path to wkhtmltopdf for pdfkit
 export WKHTMLTOPDF_PATH=$(which wkhtmltopdf)
 
+redis-server --daemonize yes
+
+celery -A main.celery beat --loglevel=info &
+
+# Run Celery Worker in the background
+celery -A main.celery worker -n worker1 --loglevel=info &
+
 # Run the Flask app
 python main.py
+
+# To stop Redis
+redis-cli shutdown
+
+# To stop Celery worker
+pkill -f 'celery worker'
+
+# To stop Celery beat
+pkill -f 'celery beat'
 
 deactivate
