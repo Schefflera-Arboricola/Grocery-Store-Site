@@ -12,9 +12,3 @@
 
 - returns a list of products(dictionary of features) that are similar to the products in the orderItems(that has all the products in the last 5 orders)
 - `similarProducts()` is used to get similar products for each product in the orderItems and then based on the frequency of the products in the similar products list, the products are recommended in order.
-
-<br>
-
-3. `people_also_bought(products,categories,orders,customers,N=6)`
-
-- 
