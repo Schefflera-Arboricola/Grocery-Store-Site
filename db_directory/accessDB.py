@@ -69,7 +69,7 @@ def GetMonthlyReport(customer_id, month):
     conn = sqlite3.connect("db_directory/gs.sqlite3")
     cursor = conn.cursor()
 
-    query_orders = f"""
+    query_orders = """
         SELECT od.order_id, od.delivery_status, od.order_date, od.total_price,
             oi.quantity, oi.price, p.name
         FROM order_details od

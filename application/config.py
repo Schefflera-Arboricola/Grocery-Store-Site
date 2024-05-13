@@ -53,6 +53,7 @@ class LocalDevelopmentConfig(Config):
         else os.path.join(basedir, "../db_directory")
     )
     """
+
     # for virtual environment
     SQLITE_DB_DIR = os.path.join(basedir, "../db_directory")
 

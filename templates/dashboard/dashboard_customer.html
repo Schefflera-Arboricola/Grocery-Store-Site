@@ -1,113 +1,132 @@
-{% extends "dashboard/dashboard_base.html" %}
-
-{% block title %}Customer Dashboard{% endblock %}
-
-
-{% block style %}
+{% extends "dashboard/dashboard_base.html" %} {% block title %}Customer
+Dashboard{% endblock %} {% block style %}
 <style>
-    .container {
-        display: flex;
-        justify-content: space-between;
-    }
-    .left-column {
-        width: 66%;
-        background-color: #f2db80;
-        padding: 20px; 
-        border-radius: 10px;
-    }
-    .right-column {
-        width: 34%;
-        align-items: center;
-        text-align: center;
-        background-color: #f2db80;
-        padding: 20px; 
-        border-radius: 10px;
-        margin-left: 20px;
-    }
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .left-column {
+    width: 66%;
+    background-color: #f2db80;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .right-column {
+    width: 34%;
+    align-items: center;
+    text-align: center;
+    background-color: #f2db80;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+  }
 
-    .product {
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 20px;
-        padding: 10px;
-        border: 1px solid #ddd;
-    }
+  .product {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
 
-    .product img {
-        width: 200px;
-        height: 200px;
-        margin-right: 20px;
-    }
+  .product img {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+  }
 
-    .product-name {
-        font-size: 24px;
-        margin: 0;
-        padding: 0;
-    }
+  .product-name {
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+  }
 
-    .product-attr1 {
-        font-size: 18px;
-        margin: 0;
-        display: inline-block;
-        margin-right: 20px;
-    }
+  .product-attr1 {
+    font-size: 18px;
+    margin: 0;
+    display: inline-block;
+    margin-right: 20px;
+  }
 
-    .product-attr2 {
-        font-size: 14px;
-        margin: 0;
-        display: inline-block;
-    }
+  .product-attr2 {
+    font-size: 14px;
+    margin: 0;
+    display: inline-block;
+  }
 </style>
-{% endblock %}
-
-
-{% block additional_info %}
-            <strong>Address:</strong> {{ address }} <br>
-{% endblock %}
-
-{% block buttons %}
-    <button onclick="window.location.href='/customer/{{ id }}/searchProducts'">Start shopping</button> <br><br>
-    <button onclick="window.location.href='/customer/{{ id }}/cart'">Cart</button> <br><br>
-    <button onclick="window.location.href='/customer/{{ id }}/past_orders'">Past Orders</button> <br><br>
-    <button onclick="window.location.href='/customer/{{ id }}/monthly_report_format'">Monthly Report Format</button> <br><br>
-    <button onclick="window.location.href='/signout'">Sign-out</button> 
-{% endblock %}
-
-{% block products %} 
-        {% if products %}
-            <h1>Recommended for you</h1>
-            {% for product in products %}
-                <form action="/customer/{{ id }}/searchResults" method="POST">
-                    <div class="product">
-                        <img src="{{ product['image_url'] }}" alt="Product Image">
-                        <div>
-                            {% if product['quantity']==0 %}
-                                <h3 style="color: red;">Out of Stock</h3>
-                            {% endif %}
-                            <h2 class="product-name"><a href="/customer/{{ id }}/productDetails/{{ product['product_id'] }}">{{ product['name'] }}</a></h2>
-                            <p class="product-attr1"><strong>Price :</strong> {{ product['price'] }}</p>
-                            <p class="product-attr1"><strong>Quantity :</strong> <select name="quantity" id="quantity" required>
-                                {% for number in range(1, 6) %}
-                                    <option value="{{ number }}">{{ number }}</option>
-                                {% endfor %}
-                            </select></p>
-                            <br>
-                            <p class="product-attr1"><strong>Average Rating : </strong> {{ product['avg_rating'] }}</p>
-                            <br>
-                            <p class="product-attr2"><strong>Price per unit : </strong>{{ product['pricePerUnit'] }} per {{ product['unit'] }}</p>
-                            <br>
-                            <p class="product-attr2"><strong>Life : </strong>{{ product['manufacture_date'] }} to {{ product['expiry_date'] }}</p>
-                            <br>
-                            {% if product['quantity']==0 %}
-                                <button type="submit" disabled>Add to cart</button>
-                            {% else %}
-                                    <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
-                                    <input type="hidden" name="c_id" value="{{ id }}">
-                                    <button type="submit">Add to cart</button>
-                            {% endif %}
-                        </div>
-                    </div>
-                </form>
-            {% endfor %}
-        {% endif %}
-{% endblock %}
+{% endblock %} {% block additional_info %}
+<strong>Address:</strong> {{ address }} <br />
+{% endblock %} {% block buttons %}
+<button onclick="window.location.href='/customer/{{ id }}/searchProducts'">
+  Start shopping
+</button>
+<br /><br />
+<button onclick="window.location.href='/customer/{{ id }}/cart'">Cart</button>
+<br /><br />
+<button onclick="window.location.href='/customer/{{ id }}/past_orders'">
+  Past Orders
+</button>
+<br /><br />
+<button
+  onclick="window.location.href='/customer/{{ id }}/monthly_report_format'"
+>
+  Monthly Report Format
+</button>
+<br /><br />
+<button onclick="window.location.href='/signout'">Sign-out</button>
+{% endblock %} {% block products %} {% if products %}
+<h1>Recommended for you</h1>
+{% for product in products %}
+<form action="/customer/{{ id }}/searchResults" method="POST">
+  <div class="product">
+    <img src="{{ product['image_url'] }}" alt="Product Image" />
+    <div>
+      {% if product['quantity']==0 %}
+      <h3 style="color: red">Out of Stock</h3>
+      {% endif %}
+      <h2 class="product-name">
+        <a href="/customer/{{ id }}/productDetails/{{ product['product_id'] }}"
+          >{{ product['name'] }}</a
+        >
+      </h2>
+      <p class="product-attr1">
+        <strong>Price :</strong> {{ product['price'] }}
+      </p>
+      <p class="product-attr1">
+        <strong>Quantity :</strong>
+        <select name="quantity" id="quantity" required>
+          {% for number in range(1, 6) %}
+          <option value="{{ number }}">{{ number }}</option>
+          {% endfor %}
+        </select>
+      </p>
+      <br />
+      <p class="product-attr1">
+        <strong>Average Rating : </strong> {{ product['avg_rating'] }}
+      </p>
+      <br />
+      <p class="product-attr2">
+        <strong>Price per unit : </strong>{{ product['pricePerUnit'] }} per {{
+        product['unit'] }}
+      </p>
+      <br />
+      <p class="product-attr2">
+        <strong>Life : </strong>{{ product['manufacture_date'] }} to {{
+        product['expiry_date'] }}
+      </p>
+      <br />
+      {% if product['quantity']==0 %}
+      <button type="submit" disabled>Add to cart</button>
+      {% else %}
+      <input
+        type="hidden"
+        name="product_id"
+        value="{{ product['product_id'] }}"
+      />
+      <input type="hidden" name="c_id" value="{{ id }}" />
+      <button type="submit">Add to cart</button>
+      {% endif %}
+    </div>
+  </div>
+</form>
+{% endfor %} {% endif %} {% endblock %}

@@ -1,41 +1,71 @@
-{% extends "form.html" %}
-{% block title %} Sign In {% endblock %}
-{% block jsCSSlinks %}<script src="static/js/signup.js"></script>{% endblock %}
-{% block heading %}<h1 class="heading">Grocery Store</h1><br>{% endblock %}
-
-{% block roleSelection %}
-<br>
+{% extends "form.html" %} {% block title %} Sign In {% endblock %} {% block
+jsCSSlinks %}
+<script src="static/js/signup.js"></script>
+{% endblock %} {% block heading %}
+<h1 class="heading">Grocery Store</h1>
+<br />{% endblock %} {% block roleSelection %}
+<br />
 <div class="role-selection">
-    <input type="radio" id="customer" name="role" value="customer" required>
-    <label for="customer">Customer</label>
-    <input type="radio" id="admin" name="role" value="admin" required>
-    <label for="admin">Admin</label>
-    <input type="radio" id="store-manager" name="role" value="store-manager" required>
-    <label for="store-manager">Store Manager</label>
-    <input type="radio" id="delivery-executive" name="role" value="delivery-executive" required>
-    <label for="delivery-executive">Delivery Executive</label>
-    <input type="radio" id="developer" name="role" value="developer" required>
-    <label for="developer">Developer</label> 
+  <input type="radio" id="customer" name="role" value="customer" required />
+  <label for="customer">Customer</label>
+  <input type="radio" id="admin" name="role" value="admin" required />
+  <label for="admin">Admin</label>
+  <input
+    type="radio"
+    id="store-manager"
+    name="role"
+    value="store-manager"
+    required
+  />
+  <label for="store-manager">Store Manager</label>
+  <input
+    type="radio"
+    id="delivery-executive"
+    name="role"
+    value="delivery-executive"
+    required
+  />
+  <label for="delivery-executive">Delivery Executive</label>
+  <input type="radio" id="developer" name="role" value="developer" required />
+  <label for="developer">Developer</label>
 </div>
-<br>
-{% endblock %}
-
-{% block formHeading %}<h1 class="form-heading">Please sign in </h1>{% endblock %}
-
-{% block inputs %}  
-<br>
-<input type="text" id="username" class="form-control" placeholder="Username" name="username" required autofocus>
-<br>
-{% endblock %}
-
-{% block passwordInput %}<input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
-<p style="color: blue ; text-decoration: underline;"><a onclick="redirectToForgotPswd()">Forgot Password</a></p>
-<br><br> {% endblock %} 
-
-{% block submitButtons %}<button class="btn" type="submit" name="action" value="signin">Sign in</button>{% endblock %}
-
-{% block belowSubmit %} 
+<br />
+{% endblock %} {% block formHeading %}
+<h1 class="form-heading">Please sign in</h1>
+{% endblock %} {% block inputs %}
+<br />
+<input
+  type="text"
+  id="username"
+  class="form-control"
+  placeholder="Username"
+  name="username"
+  required
+  autofocus
+/>
+<br />
+{% endblock %} {% block passwordInput %}<input
+  type="password"
+  id="password"
+  class="form-control"
+  placeholder="Password"
+  name="password"
+  required
+/>
+<p style="color: blue; text-decoration: underline">
+  <a onclick="redirectToForgotPswd()">Forgot Password</a>
+</p>
+<br /><br />
+{% endblock %} {% block submitButtons %}<button
+  class="btn"
+  type="submit"
+  name="action"
+  value="signin"
+>
+  Sign in</button
+>{% endblock %} {% block belowSubmit %}
 <div class="belowSubmit">
-    Don't have an account? <button class="btn" onclick="redirectToSignup()">Sign up</button>
-</div>  
+  Don't have an account?
+  <button class="btn" onclick="redirectToSignup()">Sign up</button>
+</div>
 {% endblock %}

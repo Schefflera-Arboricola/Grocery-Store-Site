@@ -1,68 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Delivery Details</title>
   </head>
   <body>
     <h1>Delivery Details</h1>
-    <h2><a href='/delexe/{{ delexe_id }}/dashboard'>Dashboard</a></h2>
-      <p><strong>Drop location :</strong> {{ customer['address'] }}</p>
-        <br>
-        <p><strong>Phone number :</strong> {{ customer['phone'] }}</p>
-        <br>
-        <p><strong>Customer's name :</strong> {{ customer['name'] }}</p>
-        <br>
-        <p><strong>Total price : {{ total_price }}</strong></p>
-        <br>
-        <p><strong>Mode of Payment :</strong> {{ modeOfPayment }}</p>
-        <br>
-      <div>
-        <h2>Products to be Delivered : </h2>
-        <table>
-          <thead>
-              <tr>
-                  <th>Product name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for product in products %}
-                  <tr>
-                      <td>{{ product['name'] }}</td>
-                      <td>{{ product['quantity'] }}</td>
-                      <td>{{ product['price'] }}</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
+    <h2><a href="/delexe/{{ delexe_id }}/dashboard">Dashboard</a></h2>
+    <p><strong>Drop location :</strong> {{ customer['address'] }}</p>
+    <br />
+    <p><strong>Phone number :</strong> {{ customer['phone'] }}</p>
+    <br />
+    <p><strong>Customer's name :</strong> {{ customer['name'] }}</p>
+    <br />
+    <p><strong>Total price : {{ total_price }}</strong></p>
+    <br />
+    <p><strong>Mode of Payment :</strong> {{ modeOfPayment }}</p>
+    <br />
+    <div>
+      <h2>Products to be Delivered :</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>{{ product['name'] }}</td>
+            <td>{{ product['quantity'] }}</td>
+            <td>{{ product['price'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
-      </div>
-      <br>
-      <div>
-        <form action="/delexe/{{ delexe_id }}/delivery_details/{{ order_id }}" method="POST">
-          {% if delivery_status== 'ORDER PLACED' %}
-          {% if flag %}  
-            <label for="delivery_confirmation">
-              <input type="checkbox" id="delivery_confirmation" required>
-              {% if modeOfPayment == 'Cash on Delivery' %}
-                'I have delivered the above mentioned products to the given address and have recieved the mentioned price from the customer'
-              {% else %}
-                'I have delivered the above mentioned products to the given address.'
-              {% endif %}
-              </label>
-              <br>
-              <input type="hidden" name="flag" value="True">
-              <button type="submit">Generate OTP</button>
-            {% else %}
-              <input type="password" placeholder="6 digit OTP" name="otp" required autofocus>
-              <br>
-              <input type="hidden" name="flag" value="False">
-              <br>
-              <button type="submit">Submit</button>
-            {% endif %}
-          {% endif %}
-        </form>
-      </div>
+    </div>
+    <br />
+    <div>
+      <form
+        action="/delexe/{{ delexe_id }}/delivery_details/{{ order_id }}"
+        method="POST"
+      >
+        {% if delivery_status== 'ORDER PLACED' %} {% if flag %}
+        <label for="delivery_confirmation">
+          <input type="checkbox" id="delivery_confirmation" required />
+          {% if modeOfPayment == 'Cash on Delivery' %} 'I have delivered the
+          above mentioned products to the given address and have recieved the
+          mentioned price from the customer' {% else %} 'I have delivered the
+          above mentioned products to the given address.' {% endif %}
+        </label>
+        <br />
+        <input type="hidden" name="flag" value="True" />
+        <button type="submit">Generate OTP</button>
+        {% else %}
+        <input
+          type="password"
+          placeholder="6 digit OTP"
+          name="otp"
+          required
+          autofocus
+        />
+        <br />
+        <input type="hidden" name="flag" value="False" />
+        <br />
+        <button type="submit">Submit</button>
+        {% endif %} {% endif %}
+      </form>
+    </div>
   </body>
 </html>

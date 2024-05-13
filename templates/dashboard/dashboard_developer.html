@@ -1,27 +1,31 @@
-{% extends "dashboard/dashboard_base.html" %}
-
-{% block title %}Developer Dashboard{% endblock %}
-
-{% block buttons %}
-    <button onclick="window.location.href='/developer/{{ id }}/getAPI'">Get Access Token</button> <br><br>
-    <button onclick="window.location.href='/signout'">Sign-out</button> 
-{% endblock %}
-
-{% block products %} 
+{% extends "dashboard/dashboard_base.html" %} {% block title %}Developer
+Dashboard{% endblock %} {% block buttons %}
+<button onclick="window.location.href='/developer/{{ id }}/getAPI'">
+  Get Access Token
+</button>
+<br /><br />
+<button onclick="window.location.href='/signout'">Sign-out</button>
+{% endblock %} {% block products %}
 <h1>How to use API?</h1>
 <ol>
-    <li>Get the API credentials from above</li>
-    <li>Paste the following contents in <a href="https://editor.swagger.io/">Swagger Editor</a> and play with APIs in swagger editor
-<pre style="background-color: rgb(236, 223, 252);">
+  <li>Get the API credentials from above</li>
+  <li>
+    Paste the following contents in
+    <a href="https://editor.swagger.io/">Swagger Editor</a> and play with APIs
+    in swagger editor
+    <pre style="background-color: rgb(236, 223, 252)">
 {{ swagger_content|safe }}
-</pre>
-    </li>
-    <li>Or run this in a new terminal window :
-        <pre style="background-color: rgb(236, 223, 252);">
+</pre
+    >
+  </li>
+  <li>
+    Or run this in a new terminal window :
+    <pre style="background-color: rgb(236, 223, 252)">
 curl -X GET 'http://127.0.0.1:8080/{endpoint}' -H 'Authorization: Bearer YOUR_API_KEY'
-        </pre>
-        or
-        <pre style="background-color: rgb(236, 223, 252);">
+        </pre
+    >
+    or
+    <pre style="background-color: rgb(236, 223, 252)">
 curl -X POST 'http://127.0.0.1:8080/{endpoint}' \
 -H 'Authorization: Bearer YOUR_API_KEY' \
 -H 'Content-Type: application/json' \
@@ -29,11 +33,10 @@ curl -X POST 'http://127.0.0.1:8080/{endpoint}' \
     "field1": "value1",
     "field2": "value2"
 }'
-</pre>
-
-</li>
+</pre
+    >
+  </li>
 </ol>
 
-The API key updates everytime you log in. And you can make only 100 requests per hour.
-
-{% endblock %}
+The API key updates everytime you log in. And you can make only 100 requests per
+hour. {% endblock %}

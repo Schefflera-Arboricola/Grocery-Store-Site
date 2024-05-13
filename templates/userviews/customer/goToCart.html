@@ -1,103 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Cart</title>
-	<style>
-		.cart-item {
-			display: flex;
-			flex-direction: row;
-			margin-bottom: 20px;
-			padding: 10px;
-			border: 1px solid #ddd;
-		}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cart</title>
+    <style>
+      .cart-item {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
 
-		.cart-item img {
-			width: 200px;
-			height: 200px;
-			margin-right: 20px;
-		}
+      .cart-item img {
+        width: 200px;
+        height: 200px;
+        margin-right: 20px;
+      }
 
-		.cart-item-name {
-			font-size: 24px;
-			margin: 0;
-			padding: 0;
-		}
+      .cart-item-name {
+        font-size: 24px;
+        margin: 0;
+        padding: 0;
+      }
 
-		.cart-item-price {
-			font-size: 18px;
-			margin: 0;
-			padding: 0;
-			display: inline-block;
-			margin-right: 20px;
-		}
+      .cart-item-price {
+        font-size: 18px;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        margin-right: 20px;
+      }
 
-		.cart-item-quantity {
-			font-size: 18px;
-			margin: 0;
-			padding: 0;
-			display: inline-block;
-		}
+      .cart-item-quantity {
+        font-size: 18px;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+      }
 
-		.total-price {
-			text-align: right;
-			font-size: 20px;
-			margin-top: 20px;
-			margin-right: 20px;
-		}
-	</style>
-</head>
-<body>
-	<h1>Cart</h1>
-	<h2><a href='/customer/{{ c_id }}/dashboard'>Dashboard</a></h2>
-	<div class="cart-items">
-		{% for product in products %}
-			<div class="cart-item">
-				<img src="{{ product['image_url'] }}" alt="{{ product['name'] }}">
-				<div class="cart-item-details">
-					<h2 class="cart-item-name"><a href="/customer/{{ c_id }}/productDetails/{{ product['product_id'] }}">{{ product['name'] }}</a></h2>
-					<p class="cart-item-price"><strong>Price : </strong> {{ product['price'] }}</p>
-					{% if product['quantity'] != 0 %}
-						<p class="cart-item-quantity"><strong>Quantity : </strong>{{ product['cart_quantity'] }}</p>
-					{% else %}
-						<p style="color: red;">Out of stock</p>
-					{% endif %}
-					<br>
-					<form>
-						<input type="hidden" name="product_id" value="{{ product['product_id'] }}">
-						<input type="hidden" name="c_id" value="{{ c_id }}">
-						<a href="/customer/{{ c_id }}/removeFromCart/{{ product['product_id'] }}" class="cart-item-remove-link">Remove Item</a>
-					</form>
-				</div>
-			</div>
-		{% endfor %}
-	</div>		
+      .total-price {
+        text-align: right;
+        font-size: 20px;
+        margin-top: 20px;
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cart</h1>
+    <h2><a href="/customer/{{ c_id }}/dashboard">Dashboard</a></h2>
+    <div class="cart-items">
+      {% for product in products %}
+      <div class="cart-item">
+        <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}" />
+        <div class="cart-item-details">
+          <h2 class="cart-item-name">
+            <a
+              href="/customer/{{ c_id }}/productDetails/{{ product['product_id'] }}"
+              >{{ product['name'] }}</a
+            >
+          </h2>
+          <p class="cart-item-price">
+            <strong>Price : </strong> {{ product['price'] }}
+          </p>
+          {% if product['quantity'] != 0 %}
+          <p class="cart-item-quantity">
+            <strong>Quantity : </strong>{{ product['cart_quantity'] }}
+          </p>
+          {% else %}
+          <p style="color: red">Out of stock</p>
+          {% endif %}
+          <br />
+          <form>
+            <input
+              type="hidden"
+              name="product_id"
+              value="{{ product['product_id'] }}"
+            />
+            <input type="hidden" name="c_id" value="{{ c_id }}" />
+            <a
+              href="/customer/{{ c_id }}/removeFromCart/{{ product['product_id'] }}"
+              class="cart-item-remove-link"
+              >Remove Item</a
+            >
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
     <div>
-        <p class="total-price">Total Price: {{ total_price }}</p>
+      <p class="total-price">Total Price: {{ total_price }}</p>
     </div>
-	
-	<div>
-		<div>
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					<div class="flash-messages">
-						{% for message in messages %}
-							<div class="flash-message" style="font-weight: bold; color: red;">{{ message }}</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-			{% endwith %}
-		</div>
-		
-		<form method="POST">
-			<input type="hidden" name="c_id" value="{{ c_id }}">
-			<input type="hidden" name="total_price" value="{{ total_price }}">
-			<input type="hidden" name="products" value="{{ products }}">
-			<button type="submit">Checkout</button>
-		</form>
-		<br>
-		<button onclick="window.location.href='/customer/{{ c_id }}/searchProducts'">Continue Shopping</button>
-	</div>
-</body>
+
+    <div>
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+          <div class="flash-message" style="font-weight: bold; color: red">
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+      </div>
+
+      <form method="POST">
+        <input type="hidden" name="c_id" value="{{ c_id }}" />
+        <input type="hidden" name="total_price" value="{{ total_price }}" />
+        <input type="hidden" name="products" value="{{ products }}" />
+        <button type="submit">Checkout</button>
+      </form>
+      <br />
+      <button
+        onclick="window.location.href='/customer/{{ c_id }}/searchProducts'"
+      >
+        Continue Shopping
+      </button>
+    </div>
+  </body>
 </html>

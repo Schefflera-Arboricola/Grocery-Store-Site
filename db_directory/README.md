@@ -1,6 +1,6 @@
 # Description
 
-## Database : 
+## Database :
 
 ![db](/static/img/dbdiagram.jpg)
 
@@ -17,5 +17,5 @@ Run the code in `database.dbd` [here](https://dbdiagram.io/) to get the db diagr
 - `Cart` table has all the items currently in the carts of all the customers.
 - `OrdersItems` has all the items ordered by all the customers.
 - Once the order is placed a new entry is created in the `OrderDetails` table, and the items
-in the `Cart` table(for that customer) are transferred to the `OrdersItems` table and the quantities in the `Products` table are also decreased accordingly.
+  in the `Cart` table(for that customer) are transferred to the `OrdersItems` table and the quantities in the `Products` table are also decreased accordingly.
 - If payment fails, the order is automatically placed with Cash-on-delivery as the `modeOfPayment`.

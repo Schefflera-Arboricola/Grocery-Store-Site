@@ -1,9 +1,12 @@
-{% extends "dashboard/dashboard_base.html" %}
-
-{% block title %}Delivery Executive Dashboard{% endblock %}
-
-{% block buttons %}
-    <button onclick="window.location.href='/delexe/{{ id }}/pendingDelieveries'">Pending Delieveries</button> <br><br>
-    <button onclick="window.location.href='/delexe/{{ id }}/completedDelieveries'">Completed Delieveries</button> <br><br>
-    <button onclick="window.location.href='/signout'">Sign-out</button> 
+{% extends "dashboard/dashboard_base.html" %} {% block title %}Delivery
+Executive Dashboard{% endblock %} {% block buttons %}
+<button onclick="window.location.href='/delexe/{{ id }}/pendingDelieveries'">
+  Pending Delieveries
+</button>
+<br /><br />
+<button onclick="window.location.href='/delexe/{{ id }}/completedDelieveries'">
+  Completed Delieveries
+</button>
+<br /><br />
+<button onclick="window.location.href='/signout'">Sign-out</button>
 {% endblock %}

@@ -1,14 +1,30 @@
-{% extends "form.html" %}
-{% block formHeading %}<h1 class="form-heading">Edit Profile</h1>{% endblock %}
-{% block inputs %}
-<input type="text" class="form-control" value="{{ name }}" name="name" required autofocus><br>
-<input type="tel" class="form-control" value="{{ phone }}" name="phone" required><br>
-{% block sub_inputs %}
-{% endblock %} 
+{% extends "form.html" %} {% block formHeading %}
+<h1 class="form-heading">Edit Profile</h1>
+{% endblock %} {% block inputs %}
+<input
+  type="text"
+  class="form-control"
+  value="{{ name }}"
+  name="name"
+  required
+  autofocus
+/><br />
+<input
+  type="tel"
+  class="form-control"
+  value="{{ phone }}"
+  name="phone"
+  required
+/><br />
+{% block sub_inputs %} {% endblock %} {% endblock %} {% block passwordInput %}
+<input
+  type="password"
+  class="form-control"
+  placeholder="Password"
+  name="password"
+  required
+/><br /><br />
+{% endblock %} {% block submitButtons %}<button class="btn" type="submit">
+  Save changes
+</button>
 {% endblock %}
-
-{% block passwordInput %}
-<input type="password" class="form-control" placeholder="Password" name="password" required><br><br>
-{% endblock %}
-
-{% block submitButtons %}<button class="btn" type="submit">Save changes</button>  {% endblock %}

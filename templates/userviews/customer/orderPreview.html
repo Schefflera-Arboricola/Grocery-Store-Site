@@ -1,47 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Order preview</title>    
-    </head>
-    <body>
-        <div>
-            <h1>Order preview</h1>
-            <br>
-            <strong>Name : </strong>{{ name }}<br>
-            <strong>Address : </strong>{{ address }}<br>
-            <strong>Phone No : </strong>{{ phone }}<br>
-            <br>
-            <strong>Products : </strong><br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                        <tr>
-                            <td>{{ product['name'] }}</td>
-                            <td>{{ product['cart_quantity'] }}</td>
-                            <td>{{ product['price'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <br>
-            <strong>Total : </strong>{{ total_price }}<br>
-            <br><br>
-            <form method="POST" action="/customer/{{ c_id }}/placeOrder/{{ total_price }}">
-                <input type="radio" name="payment_mode" value="cod" required>
-                <label for="cod">Cash on delivery</label><br>
-                <input type="radio" name="payment_mode" value="online" required>
-                <label for="online">Pay Now</label>
-                <br><br>
-                <button type="submit">Place order</button>
-            </form>
-        </div>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Order preview</title>
+  </head>
+  <body>
+    <div>
+      <h1>Order preview</h1>
+      <br />
+      <strong>Name : </strong>{{ name }}<br />
+      <strong>Address : </strong>{{ address }}<br />
+      <strong>Phone No : </strong>{{ phone }}<br />
+      <br />
+      <strong>Products : </strong><br />
+      <table>
+        <thead>
+          <tr>
+            <th>Product name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>{{ product['name'] }}</td>
+            <td>{{ product['cart_quantity'] }}</td>
+            <td>{{ product['price'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <strong>Total : </strong>{{ total_price }}<br />
+      <br /><br />
+      <form
+        method="POST"
+        action="/customer/{{ c_id }}/placeOrder/{{ total_price }}"
+      >
+        <input type="radio" name="payment_mode" value="cod" required />
+        <label for="cod">Cash on delivery</label><br />
+        <input type="radio" name="payment_mode" value="online" required />
+        <label for="online">Pay Now</label>
+        <br /><br />
+        <button type="submit">Place order</button>
+      </form>
+    </div>
+  </body>
 </html>

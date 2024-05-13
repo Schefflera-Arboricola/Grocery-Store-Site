@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from application.models import *
 from db_directory.accessDB import *
@@ -147,7 +147,9 @@ def updateDetails(admin_id, update_id):
 def Categories(admin_id):
     categories, status_code = GetCategory()
     return render_template(
-        "userviews/admin/viewCategories.html", categories=categories, admin_id=admin_id,
+        "userviews/admin/viewCategories.html",
+        categories=categories,
+        admin_id=admin_id,
     )
 
 
@@ -207,7 +209,9 @@ def deleteCategory(admin_id, cat_id):
 def Product(admin_id):
     products, status_code = GetProduct()
     return render_template(
-        "userviews/admin/viewProducts.html", products=products, admin_id=admin_id,
+        "userviews/admin/viewProducts.html",
+        products=products,
+        admin_id=admin_id,
     )
 
 

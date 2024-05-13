@@ -1,8 +1,6 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
-from flask import current_app as app
 from application.models import *
-from application.database import db
 
 viewsDeveloper = Blueprint("viewsDeveloper", __name__)
 

@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask_login import login_required, current_user
-from flask import current_app as app
 from application.models import *
 from application.database import db
 from application.config import client, sender_phone
@@ -201,7 +200,6 @@ def generateOTP():
 
 
 def sendOTP(otp, phone_no):
-
     message = client.messages.create(
         body=f"Your OTP is: {str(otp)}",
         from_=sender_phone,

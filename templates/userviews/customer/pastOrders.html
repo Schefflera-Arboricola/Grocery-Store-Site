@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Past Orders</title>
     <style>
       table {
         border-collapse: collapse;
         width: 100%;
       }
-      th, td {
+      th,
+      td {
         padding: 10px;
         text-align: left;
         border-bottom: 1px solid #ddd;
@@ -16,32 +17,34 @@
       th {
         background-color: #f2f2f2;
       }
-</style>
-</head>
-<body>
+    </style>
+  </head>
+  <body>
     <div>
-        <h1 style="text-align: center;">Past Orders</h1>
-        <h2><a href='/customer/{{ c_id }}/dashboard'>Dashboard</a></h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Total Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for order in orders %}
-              <tr>
-                <td><a href="/customer/{{ c_id }}/order/{{ order['order_id'] }}">{{ order['order_id'] }}</a></td>
-                <td>{{ order['order_date'] }}</td>
-                <td>{{ order['total_price'] }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      </body>
-      </html>
-      
+      <h1 style="text-align: center">Past Orders</h1>
+      <h2><a href="/customer/{{ c_id }}/dashboard">Dashboard</a></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <a href="/customer/{{ c_id }}/order/{{ order['order_id'] }}"
+                >{{ order['order_id'] }}</a
+              >
+            </td>
+            <td>{{ order['order_date'] }}</td>
+            <td>{{ order['total_price'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

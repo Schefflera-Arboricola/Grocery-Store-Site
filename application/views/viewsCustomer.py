@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask import current_app as app
 from application.models import *
@@ -13,6 +13,7 @@ from db_directory.accessDB import *
 from application.config import cache
 
 viewsCustomer = Blueprint("viewsCustomer", __name__)
+
 
 # Apply the login_required decorator to all routes in the viewsCustomer blueprint
 @viewsCustomer.before_request

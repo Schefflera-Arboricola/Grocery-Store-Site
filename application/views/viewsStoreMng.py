@@ -5,11 +5,9 @@ from flask import (
     flash,
     redirect,
     url_for,
-    session,
     jsonify,
 )
 from flask_login import login_required, current_user
-from flask import current_app as app
 from application.models import *
 from application.database import db
 from werkzeug.security import check_password_hash
@@ -190,7 +188,9 @@ def addProduct(strmng_id):
         else:
             flash("Something went wrong. Contact Admin", category="error")
     categories = Category.query.all()
-    return render_template("userviews/store_manager/addProduct.html", categories=categories)
+    return render_template(
+        "userviews/store_manager/addProduct.html", categories=categories
+    )
 
 
 @viewsStoreMng.route(

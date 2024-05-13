@@ -1,90 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Products</title>
-	<style>
-		.product {
-			display: flex;
-			flex-direction: row;
-			margin-bottom: 20px;
-			padding: 10px;
-			border: 1px solid #ddd;
-		}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Products</title>
+    <style>
+      .product {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
 
-		.product img {
-			width: 200px;
-			height: 200px;
-			margin-right: 20px;
-		}
+      .product img {
+        width: 200px;
+        height: 200px;
+        margin-right: 20px;
+      }
 
-		.product-name {
-			font-size: 24px;
-			margin: 0;
-			padding: 0;
-		}
+      .product-name {
+        font-size: 24px;
+        margin: 0;
+        padding: 0;
+      }
 
-		.product-attr1 {
-			font-size: 18px;
-			margin: 0;
-			display: inline-block;
-			margin-right: 20px;
-		}
+      .product-attr1 {
+        font-size: 18px;
+        margin: 0;
+        display: inline-block;
+        margin-right: 20px;
+      }
 
-		.product-attr2 {
-			font-size: 18px;
-			margin: 0;
-			display: inline-block;
-		}
+      .product-attr2 {
+        font-size: 18px;
+        margin: 0;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">Products</h1>
+    <h2><a href="/storemng/{{ strmng_id }}/addProduct">Add a Product</a></h2>
+    <button onclick="exportProducts()">Download products.csv</button>
+    <br /><br />
+    <h5><a href="/storemng/{{ strmng_id }}/dashboard">Dashboard</a></h5>
+    {% for product in products %}
+    <div class="product">
+      <img src="{{ product['image_url'] }}" alt="Product Image" />
+      <div>
+        {% if product['quantity']==0 %}
+        <h3 style="color: red">Out of Stock</h3>
+        {% endif %}
+        <h2 class="product-name">{{ product['name'] }}</h2>
+        <p class="product-attr1">
+          <strong>Price :</strong> {{ product['price'] }}
+        </p>
+        <p class="product-attr2">
+          <strong>Quantity :</strong> {{ product['quantity'] }} {{
+          product['unit'] }}
+        </p>
+        <br />
+        <p class="product-attr1">
+          <strong>category_id : </strong>{{ product['category_id'] }}
+        </p>
+        <p class="product-attr2">
+          <strong>Price per unit : </strong>{{ product['pricePerUnit'] }}
+        </p>
+        <br />
+        <p class="product-attr1">
+          <strong>Life : </strong>{{ product['manufacture_date'] }} to {{
+          product['expiry_date'] }}
+        </p>
+        <br />
+        <p><strong>Description : </strong>{{ product['description'] }}</p>
+        <a
+          href="/storemng/{{ strmng_id }}/editProduct/{{ product['product_id'] }}"
+          >Edit Product</a
+        >
+        <br />
+        <a
+          href="/storemng/{{ strmng_id }}/deleteProduct/{{ product['product_id'] }}"
+          onclick="return confirm('Are you sure you want to delete this product?')"
+          >Delete</a
+        >
+      </div>
+    </div>
+    {% endfor %}
+    <script>
+      async function exportProducts() {
+        try {
+          console.log("exporting products");
+          const response = await fetch(
+            "/storemng/{{ strmng_id }}/export-products",
+            { method: "POST" },
+          );
+          const data = await response.json();
 
-
-	</style>
-</head>
-<body>
-	<h1 style="text-align: center;">Products</h1>
-	<h2><a href="/storemng/{{ strmng_id }}/addProduct">Add a Product</a></h2>
-	<button onclick="exportProducts()">Download products.csv</button> <br><br>
-	<h5><a href='/storemng/{{ strmng_id }}/dashboard'>Dashboard</a></h5>
-	{% for product in products %}
-		<div class="product">
-			<img src="{{ product['image_url'] }}" alt="Product Image">
-			<div>
-				{% if product['quantity']==0 %}
-						<h3 style="color: red;">Out of Stock</h3>
-				{% endif %}
-				<h2 class="product-name">{{ product['name'] }}</h2>
-				<p class="product-attr1"><strong>Price :</strong> {{ product['price'] }}</p>
-				<p class="product-attr2"><strong>Quantity :</strong> {{ product['quantity'] }} {{ product['unit'] }}</p>
-				<br>
-				<p class="product-attr1"><strong>category_id : </strong>{{ product['category_id'] }}</p>
-				<p class="product-attr2"><strong>Price per unit : </strong>{{ product['pricePerUnit'] }}</p>
-				<br>
-				<p class="product-attr1"><strong>Life : </strong>{{ product['manufacture_date'] }} to {{ product['expiry_date'] }}</p>
-				<br>
-				<p><strong>Description : </strong>{{ product['description'] }}</p>
-				<a href="/storemng/{{ strmng_id }}/editProduct/{{ product['product_id'] }}">Edit Product</a>
-				<br>
-				<a href="/storemng/{{ strmng_id }}/deleteProduct/{{ product['product_id'] }}" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
-			</div>
-		</div>
-	{% endfor %}
-	<script>
-		async function exportProducts() {
-            try {
-				console.log("exporting products");
-                const response = await fetch('/storemng/{{ strmng_id }}/export-products', { method: 'POST' });
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    alert('Exporting products task completed successfully');
-                } else {
-                    alert('Error exporting products: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error exporting products:', error);
-                alert('An error occurred while exporting products');
-            }
+          if (data.status === "success") {
+            alert("Exporting products task completed successfully");
+          } else {
+            alert("Error exporting products: " + data.message);
+          }
+        } catch (error) {
+          console.error("Error exporting products:", error);
+          alert("An error occurred while exporting products");
         }
-	</script>
-</body>
+      }
+    </script>
+  </body>
 </html>

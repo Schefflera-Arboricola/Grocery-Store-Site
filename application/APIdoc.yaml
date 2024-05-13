@@ -4,24 +4,24 @@ info:
   version: 1.0.0
   description: |
     <br>
-    
+
     ## How to use the APIs?
       1. Login as developer
       2. Get the API credentials from the developer dashboard
       3. Paste the API key in the 'Authorize' on right
-    
-    
+
+
     ## Notes : 
       1. Make sure that the app is running on http://127.0.0.1:8080 while you are trying out these endpoints. 
-      2. If you are running the app in a virtual environment then the database will be changed permanently by your POST, PUT and DELETE requests. So it's better to run the app using docker instead. 
-    
+      2. If you are running the app in a virtual environment then the database will be changed permanently by your POST, PUT and DELETE requests. So it's better to run the app using docker instead.
+
 servers:
-- url: http://127.0.0.1:8080
+  - url: http://127.0.0.1:8080
 tags:
-- name: Category
-  description: Operations related to categories
-- name: Product
-  description: Operations related to products
+  - name: Category
+    description: Operations related to categories
+  - name: Product
+    description: Operations related to products
 components:
   securitySchemes:
     BearerAuth:
@@ -34,7 +34,7 @@ paths:
   /api/categories:
     get:
       tags:
-      - Category
+        - Category
       summary: Get all categories
       responses:
         200:
@@ -42,11 +42,11 @@ paths:
           content: {}
     post:
       tags:
-      - Category
+        - Category
       summary: Create a new category
       requestBody:
         content:
-          application/json:     
+          application/json:
             schema:
               type: object
               properties:
@@ -67,33 +67,33 @@ paths:
   /api/categories/{category_id}:
     get:
       tags:
-      - Category
+        - Category
       summary: Get a category by ID
       parameters:
-      - name: category_id
-        in: path
-        description: Category ID
-        required: true
-        schema:
-          type: integer
+        - name: category_id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successful response
           content: {}
     put:
       tags:
-      - Category
+        - Category
       summary: Update an existing category
       parameters:
-      - name: category_id
-        in: path
-        description: Category ID
-        required: true
-        schema:
-          type: integer
+        - name: category_id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
-          application/json:     
+          application/json:
             schema:
               type: object
               properties:
@@ -113,15 +113,15 @@ paths:
           content: {}
     delete:
       tags:
-      - Category
+        - Category
       summary: Delete a category
       parameters:
-      - name: category_id
-        in: path
-        description: Category ID
-        required: true
-        schema:
-          type: integer
+        - name: category_id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Category deleted successfully
@@ -129,7 +129,7 @@ paths:
   /api/products:
     get:
       tags:
-      - Product
+        - Product
       summary: Get all products
       responses:
         200:
@@ -137,21 +137,21 @@ paths:
           content: {}
     post:
       tags:
-      - Product
+        - Product
       summary: Create a new product
       requestBody:
         content:
-          application/json:     
+          application/json:
             schema:
               required:
-              - category_id
-              - expiry_date
-              - image_url
-              - manufacture_date
-              - name
-              - price
-              - pricePerUnit
-              - quantity
+                - category_id
+                - expiry_date
+                - image_url
+                - manufacture_date
+                - name
+                - price
+                - pricePerUnit
+                - quantity
               properties:
                 name:
                   type: string
@@ -204,46 +204,46 @@ paths:
   /api/products/{product_id}:
     get:
       tags:
-      - Product
+        - Product
       summary: Get a product by ID
       parameters:
-      - name: product_id
-        in: path
-        description: Product ID
-        required: true
-        schema:
-          type: integer
+        - name: product_id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successful response
           content: {}
     put:
       tags:
-      - Product
+        - Product
       summary: Update an existing product
       parameters:
-      - name: product_id
-        in: path
-        description: Product ID
-        required: true
-        schema:
-          type: integer
+        - name: product_id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
-          application/json:     
+          application/json:
             schema:
               required:
-              - name
-              - description
-              - category_id
-              - expiry_date
-              - image_url
-              - manufacture_date
-              - price
-              - pricePerUnit
-              - quantity
-              - avg_rating
-              - unit
+                - name
+                - description
+                - category_id
+                - expiry_date
+                - image_url
+                - manufacture_date
+                - price
+                - pricePerUnit
+                - quantity
+                - avg_rating
+                - unit
               properties:
                 name:
                   type: string
@@ -299,15 +299,15 @@ paths:
           content: {}
     delete:
       tags:
-      - Product
+        - Product
       summary: Delete a product
       parameters:
-      - name: product_id
-        in: path
-        description: Product ID
-        required: true
-        schema:
-          type: integer
+        - name: product_id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Product deleted successfully
@@ -315,15 +315,15 @@ paths:
   /api/products/1/{category_id}:
     get:
       tags:
-      - Product
+        - Product
       summary: Get a products in a category_id
       parameters:
-      - name: category_id
-        in: path
-        description: Category ID
-        required: true
-        schema:
-          type: integer
+        - name: category_id
+          in: path
+          description: Category ID
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Successful response

@@ -1,4 +1,4 @@
-## About 
+## About
 
 It's a multi-user e-commerce app to manage a grocery store, made using Flask framework and SQLite database. It can be used to search and query products and place orders by customers, manage product inventories and create/edit/delete different categories by the store manager(after approval from the Admin), and manage deliveries by the delivery executive. The developer can use the CRUD APIs for products and categories using their private API keys. Each folder has a README.md file except static and templates folders.
 
@@ -12,9 +12,8 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 4. External APIs: Stripe for online payments, Twilio for OTPs
 5. Ability to search Products based on category, ratings, and various other product features
 6. Product recommendation systems for customers based on their previous orders and for showing similar products of a given product based on product description.
-7. Scheduled tasks for sending daily email reminders and monthly reports using flask-mail and Celery. 
+7. Scheduled tasks for sending daily email reminders and monthly reports using flask-mail and Celery.
 8. using flask_caching for caching.
-
 
 <hr>
 <br>
@@ -22,6 +21,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 ## Functionalities of all user types :
 
 ### Customer :
+
 1. Can search products based on category, ratings, and various other product features
 2. Can add products to cart and place orders
 3. Can view their order history and track their orders
@@ -34,28 +34,32 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 10. Can choose whether to receive PDF or text(HTML) monthly reports via email
 
 ### Admin :
+
 1. Can view all the store managers' requests for sign-up and approve/reject them
 2. Approve/reject requests from store managers to add new categories, edit or delete existing categories
 3. Can add/edit/delete products and categories
 
 ### Store Manager :
+
 1. Can add/edit/delete products(independently) and categories(needs approval from the Admin)
 2. Can view their profile and edit their details
 3. Can export all products as a csv file
 
 ### Delivery Executive :
+
 1. Can view all the orders assigned to them.
 2. Can update the status of the orders(pending/delivered) by entering the OTP received by the customer.
 3. Can view their profile and edit their details.
 
 ### Developer :
+
 1. Can use the CRUD APIs for products and categories using their private API keys.
 2. Can view their profile and edit their details.
 
 <hr>
 <br>
 
-## How to run the code : 
+## How to run the code :
 
 ### Running the code:
 
@@ -67,7 +71,7 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 #### using virtual environment :
 
 5. `sh local_setup.sh`
-6. `sh local_run.sh` 
+6. `sh local_run.sh`
 7. open `http://127.0.0.1:8080` in the browser to view the website
 
 #### WIP - using docker(not recommended, especially if you are a beginner) :
@@ -81,23 +85,23 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 #### To install Redis on Mac OS :
 
 1. Install Homebrew (if not already installed):
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+   `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2. Install Redis: `brew install redis`
 3. Start the Redis service: `brew services start redis`
 
 <hr>
 <br>
 
-### Testing 
+### Testing
 
-1. Test users' login credentials for all types of users : 
+1. Test users' login credentials for all types of users :
 
 - `username` : `aditijuneja`
 - `password` : `123456789`
 
 (Change the user's phone number to the number you want to receive the OTP on, using the 'Edit Profile' option on the dashboard)
 
-2. [here](https://stripe.com/docs/testing) you can find some sample cards' credentials for testing payments functionality for Stripe API, for example, 
+2. [here](https://stripe.com/docs/testing) you can find some sample cards' credentials for testing payments functionality for Stripe API, for example,
 
 - `Card number` : `4242 4242 4242 4242`
 - `Expiry date` : any future date like `12/34`
@@ -106,8 +110,6 @@ It's a multi-user e-commerce app to manage a grocery store, made using Flask fra
 
 <br>
 
-Feel free to make any issues/PRs to better the project. 
-
+Feel free to make any issues/PRs to better the project.
 
 [Old Repository](https://github.com/Schefflera-Arboricola/Grocery-Store)
-
